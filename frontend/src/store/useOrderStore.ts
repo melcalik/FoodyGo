@@ -1,0 +1,110 @@
+import { create } from 'zustand';
+import { Order, OrderStatus, CartItem, OrderItem } from '../types';
+import api from '../services/api';
+
+/** Maps backend numeric status codes to frontend OrderStatus strings. */
+const STATUS_MAP: Record<number, OrderStatus> = {
+  1: 'preparing',
+  2: 'confirmed',
+  3: 'preparing',
+  4: 'ready',
+  5: 'pickedUp',
+  6: 'cancelled',
+};
+
+/** Maps a raw API order-item object to the typed OrderItem shape. */
+const mapOrderItem = (i: any): OrderItem => ({
+  boxId: i.boxId,
+  boxName: i.boxName,
+  quantity: i.quantity,
+  unitPrice: i.unitPrice,
+  isSuspended: i.isSuspended,
+});
+
+interface OrderState {
+  orders: Order[];
+  activeOrder: Order | null;
+  isLoading: boolean;
+  error: string | null;
+
+  fetchOrders: () => Promise<void>;
+  createOrder: (items: CartItem[], restaurantId: string, restaurantName: string, restaurantImage: any) => Promise<Order>;
+  setActiveOrder: (order: Order | null) => void;
+}
+
+export const useOrderStore = create<OrderState>((set, get) => ({
+  orders: [],
+  activeOrder: null,
+  isLoading: false,
+  error: null,
+
+  fetchOrders: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await api.get('/Orders');
+      const mappedOrders: Order[] = response.data.map((o: any) => ({
+        id: o.id,
+        restaurantId: o.restaurantId,
+        restaurantName: o.restaurantName,
+        restaurantImage: o.restaurantImageUrl
+          ? { uri: o.restaurantImageUrl }
+          : require('../assets/images/restaurants/sweet.png'),
+        items: o.items.map(mapOrderItem),
+        totalAmount: o.totalAmount,
+        status: STATUS_MAP[o.status] ?? 'preparing',
+        type: o.type === 1 ? 'normal' : 'suspended',
+        createdAt: new Date(o.createdAt),
+        updatedAt: new Date(o.updatedAt ?? o.createdAt),
+      }));
+      set({ orders: mappedOrders, isLoading: false });
+    } catch (error: any) {
+      console.error('Failed to fetch orders:', error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  createOrder: async (items, restaurantId, restaurantName, restaurantImage) => {
+    set({ isLoading: true, error: null });
+    try {
+      const payload = {
+        restaurantId,
+        type: items.some(i => i.isSuspended) ? 2 : 1,
+        items: items.map(i => ({
+          boxId: i.box.id,
+          quantity: i.quantity,
+          isSuspended: i.isSuspended,
+        })),
+      };
+
+      const response = await api.post('/Orders', payload);
+      const o = response.data;
+
+      const newOrder: Order = {
+        id: o.id,
+        restaurantId: o.restaurantId,
+        restaurantName: o.restaurantName,
+        restaurantImage,
+        items: o.items.map(mapOrderItem),
+        totalAmount: o.totalAmount,
+        status: STATUS_MAP[o.status] ?? 'preparing',
+        type: o.type === 1 ? 'normal' : 'suspended',
+        createdAt: new Date(o.createdAt),
+        updatedAt: new Date(o.updatedAt ?? o.createdAt),
+      };
+
+      set(state => ({
+        orders: [newOrder, ...state.orders],
+        activeOrder: newOrder,
+        isLoading: false,
+      }));
+
+      return newOrder;
+    } catch (error: any) {
+      console.error('Failed to create order:', error.response?.data || error);
+      set({ error: error.message, isLoading: false });
+      throw error;
+    }
+  },
+
+  setActiveOrder: (order) => set({ activeOrder: order }),
+}));

@@ -1,0 +1,16 @@
+namespace FoodyGo.Core.Entities;
+
+public class Review : BaseEntity
+{
+    public Guid UserId { get; set; }
+    public User User { get; set; } = null!;
+
+    public Guid RestaurantId { get; set; }
+    public Restaurant Restaurant { get; set; } = null!;
+
+    public Guid OrderId { get; set; }
+    public Order Order { get; set; } = null!;
+
+    public int Rating { get; set; } // 1-5
+    public string Comment { get; set; } = string.Empty;
+}

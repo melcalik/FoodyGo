@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FoodyGo.API/FoodyGo.API.csproj" />
+  <Project Path="FoodyGo.Application/FoodyGo.Application.csproj" />
+  <Project Path="FoodyGo.Core/FoodyGo.Core.csproj" />
+  <Project Path="FoodyGo.Infrastructure/FoodyGo.Infrastructure.csproj" />
+</Solution>

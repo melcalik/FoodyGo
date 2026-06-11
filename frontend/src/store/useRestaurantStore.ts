@@ -1,0 +1,41 @@
+import { create } from 'zustand';
+import { Restaurant } from '../types';
+import api from '../services/api';
+import { restaurantImageMap } from '../utils/imageMap';
+
+interface RestaurantState {
+  restaurants: Restaurant[];
+  isLoading: boolean;
+  error: string | null;
+  fetchRestaurants: () => Promise<void>;
+}
+
+export const useRestaurantStore = create<RestaurantState>((set) => ({
+  restaurants: [],
+  isLoading: false,
+  error: null,
+
+  fetchRestaurants: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await api.get('/Restaurants');
+      const restaurants: Restaurant[] = response.data.map((r: any) => ({
+        id: r.id,
+        name: r.name,
+        category: r.category,
+        rating: r.rating,
+        reviewCount: r.reviewCount,
+        address: r.address,
+        distance: r.distance,
+        image: restaurantImageMap[r.imageUrl] ?? restaurantImageMap['sweet.png'],
+        isOpen: true,
+        deliveryTime: r.deliveryTime,
+        suspendedCount: r.suspendedCount,
+      }));
+      set({ restaurants, isLoading: false });
+    } catch (error: any) {
+      console.error('Failed to fetch restaurants:', error.message);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+}));
