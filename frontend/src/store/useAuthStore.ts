@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { User } from '../types';
 import api from '../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface UserStats {
   totalRescuedMeals: number;
@@ -47,10 +48,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       const mappedUser = mapApiUser(user);
 
       await Promise.all([
-        import('@react-native-async-storage/async-storage').then(m =>
-          m.default.setItem('token', token)),
-        import('@react-native-async-storage/async-storage').then(m =>
-          m.default.setItem('auth_user', JSON.stringify(mappedUser))),
+        AsyncStorage.setItem('token', token),
+        AsyncStorage.setItem('auth_user', JSON.stringify(mappedUser)),
       ]);
 
       set({ isAuthenticated: true, user: mappedUser, token, isLoading: false });
@@ -70,10 +69,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       const mappedUser = mapApiUser(user);
 
       await Promise.all([
-        import('@react-native-async-storage/async-storage').then(m =>
-          m.default.setItem('token', token)),
-        import('@react-native-async-storage/async-storage').then(m =>
-          m.default.setItem('auth_user', JSON.stringify(mappedUser))),
+        AsyncStorage.setItem('token', token),
+        AsyncStorage.setItem('auth_user', JSON.stringify(mappedUser)),
       ]);
 
       set({ isAuthenticated: true, user: mappedUser, token, isLoading: false });
@@ -86,14 +83,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: async () => {
-    const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-    await AsyncStorage.multiRemove(['token', 'auth_user']);
+    await Promise.all([
+      AsyncStorage.removeItem('token'),
+      AsyncStorage.removeItem('auth_user')
+    ]);
     set({ isAuthenticated: false, user: null, token: null });
   },
 
   hydrate: async () => {
     try {
-      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
       const [token, userJson] = await Promise.all([
         AsyncStorage.getItem('token'),
         AsyncStorage.getItem('auth_user'),
