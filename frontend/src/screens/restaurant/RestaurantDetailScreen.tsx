@@ -16,10 +16,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import SurpriseBoxCard from '../../components/restaurant/SurpriseBoxCard';
+import ReviewItem from '../../components/restaurant/ReviewItem';
 import { useCartStore } from '../../store/useCartStore';
 import { useReviewStore } from '../../store/useReviewStore';
 import { SurpriseBox } from '../../types';
-import { imageMap } from '../../utils/imageMap';
+import { restaurantImageMap as imageMap } from '../../utils/imageMap';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'RestaurantDetail'>;
 
