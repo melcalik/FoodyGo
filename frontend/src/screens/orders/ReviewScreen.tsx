@@ -18,6 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { OrdersStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useReviewStore } from '../../store/useReviewStore';
+import { ReviewScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<OrdersStackParamList, 'Review'>;
 
@@ -108,101 +109,3 @@ export default function ReviewScreen({ route, navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  flex: { flex: 1 },
-  scroll: { padding: Spacing.md },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  headerTitle: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-
-  infoCard: {
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: Spacing.xl,
-    alignItems: 'center',
-  },
-  restaurantName: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.textPrimary, marginBottom: 4 },
-  itemsText: { fontSize: FontSize.sm, color: Colors.textSecondary, textAlign: 'center' },
-
-  questionText: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: Spacing.lg,
-  },
-
-  starsRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: Spacing.sm,
-    marginBottom: Spacing.md,
-  },
-
-  ratingLabel: {
-    textAlign: 'center',
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.medium,
-    color: Colors.textSecondary,
-    marginBottom: Spacing.xl,
-  },
-
-  inputWrap: {
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    padding: Spacing.md,
-    height: 120,
-  },
-  input: {
-    flex: 1,
-    fontSize: FontSize.md,
-    color: Colors.textPrimary,
-  },
-
-  footer: {
-    padding: Spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: Colors.surfaceBorder,
-    backgroundColor: Colors.background,
-  },
-  submitBtn: {
-    backgroundColor: Colors.primary,
-    height: 56,
-    borderRadius: Radius.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitBtnDisabled: { opacity: 0.5 },
-  submitBtnText: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.white,
-  },
-});

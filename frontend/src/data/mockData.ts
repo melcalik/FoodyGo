@@ -21,7 +21,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     distance: '0.8 km',
     image: Images.restaurants.sweet,
     isOpen: true,
-    deliveryTime: '19:00 - 21:00',
+    deliveryTime: '25 dakika',
     suspendedCount: 12,
   },
   {
@@ -34,7 +34,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     distance: '1.2 km',
     image: Images.restaurants.homemade,
     isOpen: true,
-    deliveryTime: '18:30 - 20:30',
+    deliveryTime: '30 dakika',
     suspendedCount: 5,
   },
   {
@@ -47,7 +47,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     distance: '2.1 km',
     image: Images.restaurants.pizza,
     isOpen: true,
-    deliveryTime: '20:00 - 22:00',
+    deliveryTime: '40 dakika',
     suspendedCount: 8,
   },
   {
@@ -60,7 +60,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     distance: '3.4 km',
     image: Images.restaurants.burger,
     isOpen: true,
-    deliveryTime: '21:00 - 23:00',
+    deliveryTime: '35 dakika',
     suspendedCount: 3,
   },
   {
@@ -73,7 +73,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     distance: '1.7 km',
     image: Images.restaurants.kebab,
     isOpen: true,
-    deliveryTime: '20:30 - 22:30',
+    deliveryTime: '20 dakika',
     suspendedCount: 15,
   },
   {
@@ -86,7 +86,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     distance: '4.2 km',
     image: Images.restaurants.sweet,
     isOpen: false,
-    deliveryTime: '18:00 - 20:00',
+    deliveryTime: '45 dakika',
     suspendedCount: 22,
   },
 ];

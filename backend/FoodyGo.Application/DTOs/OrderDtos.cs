@@ -20,6 +20,7 @@ public class CreateOrderItemDto
     [Range(1, 100, ErrorMessage = "Quantity must be between 1 and 100.")]
     public int Quantity { get; set; }
     public bool IsSuspended { get; set; }
+    public Guid? ClaimingSuspendedMealId { get; set; }
 }
 
 public class OrderResponseDto

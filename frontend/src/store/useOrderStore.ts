@@ -51,7 +51,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
         items: o.items.map(mapOrderItem),
         totalAmount: o.totalAmount,
         status: STATUS_MAP[o.status] ?? 'preparing',
-        type: o.type === 1 ? 'normal' : 'suspended',
+        type: o.type === 1 ? 'normal' : o.type === 3 ? 'claimedSuspended' : 'suspended',
         createdAt: new Date(o.createdAt),
         updatedAt: new Date(o.updatedAt ?? o.createdAt),
       }));
@@ -67,11 +67,12 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     try {
       const payload = {
         restaurantId,
-        type: items.some(i => i.isSuspended) ? 2 : 1,
+        type: items.some(i => i.isSuspended) ? 2 : (items.some(i => i.isClaimingMealId) ? 3 : 1),
         items: items.map(i => ({
           boxId: i.box.id,
           quantity: i.quantity,
           isSuspended: i.isSuspended,
+          claimingSuspendedMealId: i.isClaimingMealId,
         })),
       };
 
@@ -86,7 +87,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
         items: o.items.map(mapOrderItem),
         totalAmount: o.totalAmount,
         status: STATUS_MAP[o.status] ?? 'preparing',
-        type: o.type === 1 ? 'normal' : 'suspended',
+        type: o.type === 1 ? 'normal' : o.type === 3 ? 'claimedSuspended' : 'suspended',
         createdAt: new Date(o.createdAt),
         updatedAt: new Date(o.updatedAt ?? o.createdAt),
       };

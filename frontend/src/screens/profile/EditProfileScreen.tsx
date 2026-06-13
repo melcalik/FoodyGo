@@ -20,6 +20,7 @@ import { ProfileStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useAuthStore } from '../../store/useAuthStore';
 import { isValidEmail, isValidPassword } from '../../utils/validation';
+import { EditProfileScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'EditProfile'>;
 
@@ -154,67 +155,3 @@ export default function EditProfileScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  flex: { flex: 1 },
-  scroll: { padding: Spacing.md },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  headerTitle: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-
-  form: { gap: Spacing.lg, marginTop: Spacing.md },
-  inputGroup: { gap: 8 },
-  label: { fontSize: FontSize.sm, fontWeight: FontWeight.medium, color: Colors.textSecondary },
-  input: {
-    height: 52,
-    color: Colors.textPrimary,
-    fontSize: FontSize.md,
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    paddingHorizontal: Spacing.md,
-  },
-
-  footer: {
-    padding: Spacing.md,
-    backgroundColor: Colors.background,
-    borderTopWidth: 1,
-    borderTopColor: Colors.surfaceBorder,
-  },
-  saveBtn: {
-    backgroundColor: Colors.primary,
-    borderRadius: Radius.lg,
-    height: 56,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  saveBtnDisabled: { opacity: 0.7 },
-  saveBtnText: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.white },
-});

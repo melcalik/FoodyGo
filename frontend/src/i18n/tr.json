@@ -107,9 +107,9 @@
     "delivery": "Teslimat",
     "free": "Ücretsiz",
     "savingInfo": "Bu siparişle gıda israfını önlüyorsun! ~{{co2}} kg CO₂ tasarrufu",
-    "addedTitle": "✅ Sepete Eklendi",
+    "addedTitle": "Sepete Eklendi",
     "addedDesc": "{{name}} sepetine eklendi!",
-    "suspendedTitle": "🤝 Askıda Bırakıldı",
+    "suspendedTitle": "Askıda Bırakıldı",
     "suspendedDesc": "{{name}} ihtiyaç sahibi için bağışlandı!"
   },
   "payment": {
@@ -149,7 +149,7 @@
     "tracking": "Sipariş Takibi",
     "preparing": "Hazırlanıyor",
     "preparingDesc": "Restoran siparişini hazırlıyor",
-    "ready": "Hazır",
+    "ready": "Siparişiniz yola çıktı",
     "readyDesc": "Siparişin teslim almaya hazır!",
     "pickedUp": "Teslim Alındı",
     "pickedUpDesc": "Siparişin teslim alındı, afiyet olsun!",
@@ -198,13 +198,13 @@
     "noDonations": "Henüz bağış yapmadın",
     "noDonationsDesc": "İlk bağışını yaparak birine iyi bir gün hediye et!",
     "claimSuccessTitle": "Başarılı",
-    "claimSuccessDesc": "Askıdaki yemek başarıyla sahiplenildi. Afiyet olsun! 🍲",
-    "claimError": "Sahiplenme sırasında bir hata oluştu.",
+    "claimSuccessDesc": "Askıdaki yemek başarıyla sepete eklendi. Afiyet olsun! 🍲",
+    "claimError": "Sepete eklerken bir hata oluştu.",
     "heroSubtitle": "Senin sayende ihtiyaç sahipleri sıcak bir yemeğe ulaşıyor. İsrafı önlerken dayanışmayı büyütüyoruz.",
-    "waitingToClaim": "Sahiplenilmeyi Bekleyenler",
+    "waitingToClaim": "Askıdan Alınmayı Bekleyenler",
     "emptyList": "Şu an askıda yemek bulunmuyor.",
     "donor": "Bağışlayan: ",
-    "claimBtn": "Sahiplen"
+    "claimBtn": "Askıdan Al"
   },
   "profile": {
     "title": "Profil",

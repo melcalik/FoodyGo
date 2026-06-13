@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { OrdersStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useOrderStore } from '../../store/useOrderStore';
+import { OrderTrackingScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<OrdersStackParamList, 'OrderTracking'>;
 
@@ -114,9 +115,6 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
                     ]}>
                       {step.title}
                     </Text>
-                    {isActive && (
-                      <Text style={styles.stepDesc}>{t('order.currentStage')}</Text>
-                    )}
                   </View>
                 </View>
               );
@@ -153,159 +151,3 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  scroll: { padding: Spacing.md, paddingBottom: 40 },
-
-  errorText: { textAlign: 'center', marginTop: 40, fontSize: FontSize.md },
-  backBtn: { alignSelf: 'center', marginTop: 20, padding: 10 },
-  backBtnText: { color: Colors.primary, fontWeight: 'bold' },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
-  },
-  headerBackBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  headerTitle: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-
-  mapPlaceholder: {
-    height: 200,
-    backgroundColor: Colors.surfaceElevated,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Spacing.md,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  mapText: { fontSize: FontSize.sm, color: Colors.textMuted },
-  codeCard: {
-    position: 'absolute',
-    bottom: Spacing.sm,
-    right: Spacing.sm,
-    backgroundColor: Colors.surface,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 8,
-    borderRadius: Radius.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    alignItems: 'center',
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  codeLabel: { fontSize: 10, color: Colors.textSecondary, marginBottom: 2 },
-  codeValue: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.primary },
-
-  trackerCard: {
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: Spacing.md,
-  },
-  trackerTitle: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    marginBottom: Spacing.md,
-  },
-  stepper: { paddingLeft: 10 },
-  stepRow: { flexDirection: 'row', alignItems: 'flex-start' },
-  stepIndicator: { alignItems: 'center', width: 40 },
-  stepCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: Colors.surfaceElevated,
-    borderWidth: 2,
-    borderColor: Colors.surfaceBorder,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 2,
-  },
-  stepCircleActive: {
-    backgroundColor: Colors.primary + '22',
-    borderColor: Colors.primary,
-  },
-  stepLine: {
-    width: 2,
-    height: 30,
-    backgroundColor: Colors.surfaceBorder,
-    marginVertical: -2,
-    zIndex: 1,
-  },
-  stepLineActive: { backgroundColor: Colors.primary },
-  
-  stepInfo: { flex: 1, paddingTop: 6, paddingBottom: 20 },
-  stepTitle: { fontSize: FontSize.md, fontWeight: FontWeight.medium, color: Colors.textMuted },
-  stepTitleActive: { color: Colors.textPrimary, fontWeight: FontWeight.bold },
-  stepDesc: { fontSize: FontSize.xs, color: Colors.primary, marginTop: 4, fontWeight: FontWeight.medium },
-
-  detailsCard: {
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  detailsTitle: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    marginBottom: 4,
-  },
-  restaurantName: {
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-    marginBottom: Spacing.md,
-  },
-  itemsList: {
-    borderTopWidth: 1,
-    borderTopColor: Colors.surfaceBorder,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.surfaceBorder,
-    paddingVertical: Spacing.sm,
-    gap: 8,
-    marginBottom: Spacing.sm,
-  },
-  itemRow: { flexDirection: 'row', alignItems: 'center' },
-  itemQty: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.primary, width: 24 },
-  itemName: { flex: 1, fontSize: FontSize.sm, color: Colors.textPrimary },
-  itemPrice: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.textPrimary },
-  
-  suspendedBadge: {
-    backgroundColor: Colors.teal + '22',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  suspendedText: { fontSize: 10, color: Colors.teal, fontWeight: 'bold' },
-
-  totalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  totalLabel: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.textPrimary },
-  totalValue: { fontSize: FontSize.lg, fontWeight: FontWeight.extrabold, color: Colors.primary },
-});

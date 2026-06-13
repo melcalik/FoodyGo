@@ -32,12 +32,12 @@ public class AppDbContext : DbContext
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         modelBuilder.Entity<Restaurant>().HasData(
-            new Restaurant { Id = r1Id, Name = "Pasta Dünyası", Category = "sweet", Address = "Bağcılar Mah. No:14, Kadıköy", Rating = 4.8, ReviewCount = 142, Distance = "0.8 km", DeliveryTime = "19:00 - 21:00", ImageUrl = "sweet.png", CreatedAt = fixedDate },
-            new Restaurant { Id = r2Id, Name = "Annem Gibi", Category = "homemade", Address = "Moda Cad. No:55, Kadıköy", Rating = 4.6, ReviewCount = 89, Distance = "1.2 km", DeliveryTime = "18:30 - 20:30", ImageUrl = "homemade.png", CreatedAt = fixedDate },
-            new Restaurant { Id = r3Id, Name = "Forno Napoli", Category = "pizza", Address = "İstiklal Cad. No:87, Beyoğlu", Rating = 4.7, ReviewCount = 213, Distance = "2.1 km", DeliveryTime = "20:00 - 22:00", ImageUrl = "pizza.png", CreatedAt = fixedDate },
-            new Restaurant { Id = r4Id, Name = "Smash Bros. Burger", Category = "burger", Address = "Abdi İpekçi Cad. No:12, Nişantaşı", Rating = 4.5, ReviewCount = 176, Distance = "3.4 km", DeliveryTime = "21:00 - 23:00", ImageUrl = "burger.png", CreatedAt = fixedDate },
-            new Restaurant { Id = r5Id, Name = "Ustanın Döneri", Category = "kebab", Address = "Bağlarbaşı Mah. No:3, Üsküdar", Rating = 4.9, ReviewCount = 308, Distance = "1.7 km", DeliveryTime = "20:30 - 22:30", ImageUrl = "kebab.png", CreatedAt = fixedDate },
-            new Restaurant { Id = r6Id, Name = "Güllüoğlu Baklava", Category = "sweet", Address = "Karaköy Mah. No:3, Beyoğlu", Rating = 4.9, ReviewCount = 421, Distance = "4.2 km", DeliveryTime = "18:00 - 20:00", ImageUrl = "sweet.png", CreatedAt = fixedDate }
+            new Restaurant { Id = r1Id, Name = "Pasta Dünyası", Category = "sweet", Address = "Bağcılar Mah. No:14, Kadıköy", Rating = 4.8, ReviewCount = 142, Distance = "0.8 km", DeliveryTime = "25 dakika", ImageUrl = "sweet.png", CreatedAt = fixedDate },
+            new Restaurant { Id = r2Id, Name = "Anne Elinden", Category = "homemade", Address = "Moda Cad. No:55, Kadıköy", Rating = 4.6, ReviewCount = 89, Distance = "1.2 km", DeliveryTime = "30 dakika", ImageUrl = "homemade.png", CreatedAt = fixedDate },
+            new Restaurant { Id = r3Id, Name = "Forno Napoli", Category = "pizza", Address = "İstiklal Cad. No:87, Beyoğlu", Rating = 4.7, ReviewCount = 213, Distance = "2.1 km", DeliveryTime = "40 dakika", ImageUrl = "pizza.png", CreatedAt = fixedDate },
+            new Restaurant { Id = r4Id, Name = "Smash Bros. Burger", Category = "burger", Address = "Abdi İpekçi Cad. No:12, Nişantaşı", Rating = 4.5, ReviewCount = 176, Distance = "3.4 km", DeliveryTime = "35 dakika", ImageUrl = "burger.png", CreatedAt = fixedDate },
+            new Restaurant { Id = r5Id, Name = "Usta Dönerci", Category = "kebab", Address = "Bağlarbaşı Mah. No:3, Üsküdar", Rating = 4.9, ReviewCount = 308, Distance = "1.7 km", DeliveryTime = "20 dakika", ImageUrl = "kebab.png", CreatedAt = fixedDate },
+            new Restaurant { Id = r6Id, Name = "Güllüoğlu Baklava", Category = "sweet", Address = "Karaköy Mah. No:3, Beyoğlu", Rating = 4.9, ReviewCount = 421, Distance = "4.2 km", DeliveryTime = "45 dakika", ImageUrl = "sweet.png", CreatedAt = fixedDate }
         );
 
         modelBuilder.Entity<Box>().HasData(

@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { MainTabParamList, HomeStackParamList, CartStackParamList, OrdersStackParamList } from './types';
+import { MainTabParamList, HomeStackParamList, CartStackParamList, OrdersStackParamList, ProfileStackParamList } from './types';
 import { Colors, FontSize } from '../constants/theme';
 import { useCartStore } from '../store/useCartStore';
 

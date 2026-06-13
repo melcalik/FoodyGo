@@ -23,6 +23,7 @@ import RestaurantCard from '../../components/home/RestaurantCard';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useRestaurantStore } from '../../store/useRestaurantStore';
 import api from '../../services/api';
+import { HomeScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
@@ -126,102 +127,3 @@ export default function HomeScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  list: { paddingBottom: 80 },
-
-  topBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
-  },
-  greeting: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: 2,
-  },
-  location: { fontSize: FontSize.sm, color: Colors.textSecondary },
-  notifBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.surface,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  searchRow: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.sm,
-  },
-
-  impactBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.teal + '18',
-    borderWidth: 1,
-    borderColor: Colors.teal + '33',
-    borderRadius: 12,
-    marginHorizontal: Spacing.md,
-    marginBottom: Spacing.sm,
-    padding: Spacing.md,
-    gap: 12,
-  },
-  impactText: { flex: 1 },
-  impactTitle: {
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.semibold,
-    color: Colors.teal,
-  },
-  impactSub: {
-    fontSize: FontSize.xs,
-    color: Colors.textSecondary,
-    marginTop: 2,
-  },
-
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.sm,
-    paddingBottom: Spacing.sm,
-  },
-  sectionTitle: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-  sectionCount: {
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-  },
-
-  empty: {
-    alignItems: 'center',
-    paddingVertical: 60,
-    paddingHorizontal: Spacing.xl,
-  },
-  emptyTitle: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.semibold,
-    color: Colors.textPrimary,
-    marginBottom: 6,
-  },
-  emptyText: {
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-});

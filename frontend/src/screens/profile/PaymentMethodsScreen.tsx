@@ -18,6 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ProfileStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { usePaymentStore } from '../../store/usePaymentStore';
+import { PaymentMethodsScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'PaymentMethods'>;
 
@@ -179,30 +180,3 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  flex: { flex: 1 },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: Spacing.md },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.surface, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  headerTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.textPrimary },
-  addBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
-  addBtnText: { fontSize: 24, color: Colors.white, lineHeight: 26 },
-  
-  formCard: { backgroundColor: Colors.surface, margin: Spacing.md, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  formTitle: { fontSize: FontSize.lg, fontWeight: 'bold', color: Colors.textPrimary, marginBottom: Spacing.md },
-  inputGroup: { marginBottom: Spacing.sm },
-  label: { fontSize: FontSize.xs, color: Colors.textSecondary, marginBottom: 4 },
-  input: { color: Colors.textPrimary, backgroundColor: Colors.background, borderRadius: Radius.md, height: 45, paddingHorizontal: Spacing.md, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  row: { flexDirection: 'row' },
-  submitBtn: { backgroundColor: Colors.primary, height: 45, borderRadius: Radius.md, alignItems: 'center', justifyContent: 'center', marginTop: Spacing.sm },
-  submitBtnText: { color: Colors.white, fontWeight: 'bold' },
-
-  list: { padding: Spacing.md },
-  cardItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surface, padding: Spacing.md, borderRadius: Radius.lg, marginBottom: Spacing.md, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  cardInfo: { flex: 1 },
-  cardName: { fontSize: FontSize.md, fontWeight: 'bold', color: Colors.textPrimary, marginBottom: 4 },
-  cardNumber: { fontSize: FontSize.sm, color: Colors.textSecondary },
-  lastUsedBadge: { fontSize: FontSize.xs, color: Colors.primary, fontWeight: 'normal' },
-  actionBtn: { padding: Spacing.sm },
-  emptyText: { textAlign: 'center', color: Colors.textMuted, marginTop: 50 },
-});

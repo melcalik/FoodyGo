@@ -3,6 +3,7 @@ using System;
 using FoodyGo.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodyGo.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260613125311_UpdateRestaurantNames")]
+    partial class UpdateRestaurantNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -328,7 +331,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Bağcılar Mah. No:14, Kadıköy",
                             Category = "sweet",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "25 dakika",
+                            DeliveryTime = "19:00 - 21:00",
                             Distance = "0.8 km",
                             ImageUrl = "sweet.png",
                             Name = "Pasta Dünyası",
@@ -341,7 +344,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Moda Cad. No:55, Kadıköy",
                             Category = "homemade",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "30 dakika",
+                            DeliveryTime = "18:30 - 20:30",
                             Distance = "1.2 km",
                             ImageUrl = "homemade.png",
                             Name = "Anne Elinden",
@@ -354,7 +357,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "İstiklal Cad. No:87, Beyoğlu",
                             Category = "pizza",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "40 dakika",
+                            DeliveryTime = "20:00 - 22:00",
                             Distance = "2.1 km",
                             ImageUrl = "pizza.png",
                             Name = "Forno Napoli",
@@ -367,7 +370,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Abdi İpekçi Cad. No:12, Nişantaşı",
                             Category = "burger",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "35 dakika",
+                            DeliveryTime = "21:00 - 23:00",
                             Distance = "3.4 km",
                             ImageUrl = "burger.png",
                             Name = "Smash Bros. Burger",
@@ -380,7 +383,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Bağlarbaşı Mah. No:3, Üsküdar",
                             Category = "kebab",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "20 dakika",
+                            DeliveryTime = "20:30 - 22:30",
                             Distance = "1.7 km",
                             ImageUrl = "kebab.png",
                             Name = "Usta Dönerci",
@@ -393,7 +396,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Karaköy Mah. No:3, Beyoğlu",
                             Category = "sweet",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "45 dakika",
+                            DeliveryTime = "18:00 - 20:00",
                             Distance = "4.2 km",
                             ImageUrl = "sweet.png",
                             Name = "Güllüoğlu Baklava",

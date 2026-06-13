@@ -23,6 +23,7 @@ import { useRestaurantStore } from '../../store/useRestaurantStore';
 import { Order, SurpriseBox } from '../../types';
 import api from '../../services/api';
 import { restaurantImageMap } from '../../utils/imageMap';
+import { OrderHistoryScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<OrdersStackParamList, 'OrderHistory'>;
 
@@ -131,7 +132,13 @@ export default function OrderHistoryScreen({ navigation }: Props) {
           <Text style={styles.itemsSummary} numberOfLines={1}>
             {item.items.map(i => `${i.quantity}x ${i.boxName}`).join(', ')}
           </Text>
-          <Text style={styles.totalPrice}>₺{item.totalAmount}</Text>
+          {item.type === 'claimedSuspended' ? (
+             <View style={[styles.statusBadge, { backgroundColor: Colors.teal }]}>
+                <Text style={[styles.statusSuccessText, { color: Colors.white }]}>Askıdan Alındı</Text>
+             </View>
+          ) : (
+             <Text style={styles.totalPrice}>₺{item.totalAmount}</Text>
+          )}
         </View>
 
         {isCompleted && (
@@ -180,128 +187,3 @@ export default function OrderHistoryScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  list: { padding: Spacing.md, paddingBottom: 40 },
-
-  header: {
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
-  },
-  headerTitle: {
-    fontSize: FontSize.xxl,
-    fontWeight: FontWeight.extrabold,
-    color: Colors.textPrimary,
-  },
-
-  empty: {
-    alignItems: 'center',
-    paddingVertical: 60,
-  },
-  emptyTitle: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    marginBottom: 8,
-  },
-  emptyText: {
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-
-  card: {
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: Spacing.sm,
-  },
-  restaurantImage: {
-    width: 44,
-    height: 44,
-    borderRadius: Radius.md,
-    marginRight: Spacing.sm,
-  },
-  headerInfo: { flex: 1 },
-  restaurantName: {
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    marginBottom: 2,
-  },
-  date: { fontSize: FontSize.xs, color: Colors.textMuted },
-  
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-  },
-  statusSuccess: { backgroundColor: Colors.success + '11', borderColor: Colors.success + '33' },
-  statusSuccessText: { color: Colors.success, fontSize: 10, fontWeight: 'bold' },
-  statusActive: { backgroundColor: Colors.primary + '11', borderColor: Colors.primary + '33' },
-  statusActiveText: { color: Colors.primary, fontSize: 10, fontWeight: 'bold' },
-
-  itemsWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: Spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: Colors.surfaceBorder,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.surfaceBorder,
-    marginBottom: Spacing.sm,
-  },
-  itemsSummary: {
-    flex: 1,
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-    marginRight: Spacing.sm,
-  },
-  totalPrice: {
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-
-  actions: {
-    flexDirection: 'row',
-    gap: Spacing.sm,
-  },
-  btnSecondary: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: Radius.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  btnSecondaryText: {
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.semibold,
-    color: Colors.textPrimary,
-  },
-  btnPrimary: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: Radius.md,
-    backgroundColor: Colors.primary + '15',
-  },
-  btnPrimaryText: {
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.semibold,
-    color: Colors.primary,
-  },
-});

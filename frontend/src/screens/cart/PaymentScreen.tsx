@@ -22,6 +22,7 @@ import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/t
 import { useCartStore } from '../../store/useCartStore';
 import { useOrderStore } from '../../store/useOrderStore';
 import { usePaymentStore } from '../../store/usePaymentStore';
+import { PaymentScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<CartStackParamList, 'Payment'>;
 
@@ -72,7 +73,7 @@ export default function PaymentScreen({ navigation }: Props) {
   const handlePay = async () => {
     if (items.length === 0) return;
 
-    if (selectedMethodId === 'new') {
+    if (total > 0 && selectedMethodId === 'new') {
       if (!name || !cardNumber || !expiry || !cvv) {
         Alert.alert(t('common.error'), t('payment.fillAll'));
         return;
@@ -103,10 +104,12 @@ export default function PaymentScreen({ navigation }: Props) {
       clearCart();
       setIsProcessing(false);
 
-      if (selectedMethodId === 'new') {
+      if (total > 0 && selectedMethodId === 'new') {
         setShowSaveModal(true);
       } else {
-        await setLastUsed(selectedMethodId);
+        if (total > 0) {
+          await setLastUsed(selectedMethodId);
+        }
         navigation.replace('PaymentSuccess');
       }
     } catch (error: any) {
@@ -317,49 +320,3 @@ export default function PaymentScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  flex: { flex: 1 },
-  scroll: { padding: Spacing.md },
-
-  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: Spacing.md, paddingTop: Spacing.md, paddingBottom: Spacing.sm },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.surface, alignItems: 'center', justifyContent: 'center', marginRight: Spacing.md, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  headerTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.textPrimary },
-
-  amountBox: { backgroundColor: Colors.primary + '11', borderWidth: 1, borderColor: Colors.primary + '33', borderRadius: Radius.lg, padding: Spacing.lg, alignItems: 'center', marginBottom: Spacing.lg },
-  amountLabel: { fontSize: FontSize.sm, color: Colors.primary, marginBottom: 4 },
-  amountValue: { fontSize: 32, fontWeight: FontWeight.extrabold, color: Colors.primary },
-
-  sectionTitle: { fontSize: FontSize.md, fontWeight: 'bold', color: Colors.textPrimary, marginBottom: Spacing.sm },
-  selectorGroup: { marginBottom: Spacing.lg },
-  selectorItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surface, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, marginBottom: Spacing.sm },
-  selectorItemActive: { borderColor: Colors.primary, backgroundColor: Colors.primary + '05' },
-  selectorRadio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center', marginRight: Spacing.sm },
-  selectorRadioInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: Colors.primary },
-  selectorName: { fontSize: FontSize.md, fontWeight: 'bold', color: Colors.textPrimary },
-  selectorDesc: { fontSize: FontSize.xs, color: Colors.textSecondary },
-
-  form: { gap: Spacing.md },
-  row: { flexDirection: 'row' },
-  inputGroup: { gap: 6 },
-  label: { fontSize: FontSize.sm, fontWeight: FontWeight.medium, color: Colors.textSecondary },
-  inputWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surface, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, paddingHorizontal: Spacing.md },
-  input: { flex: 1, height: 52, color: Colors.textPrimary, fontSize: FontSize.md, backgroundColor: Colors.surface, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, paddingHorizontal: Spacing.md },
-
-  noteBox: { flexDirection: 'row', backgroundColor: Colors.surfaceElevated, padding: Spacing.md, borderRadius: Radius.md, marginTop: Spacing.md, gap: 10 },
-  noteText: { flex: 1, fontSize: FontSize.xs, color: Colors.textSecondary, lineHeight: 18 },
-
-  footer: { padding: Spacing.md, backgroundColor: Colors.background, borderTopWidth: 1, borderTopColor: Colors.surfaceBorder },
-  payBtn: { backgroundColor: Colors.primary, borderRadius: Radius.lg, height: 56, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, shadowColor: Colors.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 6 },
-  payBtnDisabled: { opacity: 0.7 },
-  payBtnText: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.white },
-  payBtnAmount: { fontSize: FontSize.md, fontWeight: 'bold', color: Colors.white, backgroundColor: 'rgba(255,255,255,0.2)', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
-
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: Spacing.lg },
-  modalContent: { backgroundColor: Colors.surface, borderRadius: Radius.lg, padding: Spacing.lg, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 4, elevation: 5 },
-  modalTitle: { fontSize: FontSize.lg, fontWeight: 'bold', color: Colors.textPrimary, marginBottom: Spacing.sm },
-  modalDesc: { fontSize: FontSize.sm, color: Colors.textSecondary },
-  modalActions: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: Spacing.lg },
-  modalBtn: { paddingHorizontal: Spacing.lg, paddingVertical: 12, borderRadius: Radius.md, flex: 1, alignItems: 'center' },
-  modalBtnText: { fontSize: FontSize.md, fontWeight: 'bold', color: Colors.white },
-});

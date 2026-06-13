@@ -6,7 +6,7 @@ export type RestaurantCategory =
   | 'kebab';
 
 export type OrderStatus = 'preparing' | 'confirmed' | 'ready' | 'pickedUp' | 'cancelled';
-export type OrderType = 'normal' | 'suspended';
+export type OrderType = 'normal' | 'suspended' | 'claimedSuspended';
 
 export interface Restaurant {
   id: string;
@@ -40,6 +40,7 @@ export interface CartItem {
   restaurant: Restaurant;
   quantity: number;
   isSuspended: boolean;
+  isClaimingMealId?: string;
 }
 
 export interface Order {

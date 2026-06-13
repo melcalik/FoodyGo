@@ -50,19 +50,22 @@ public class OrderService : IOrderService
                 var box = await _boxRepository.GetByIdAsync(itemDto.BoxId);
                 if (box == null) throw new Exception($"Box with ID {itemDto.BoxId} not found.");
                 
-                if (box.Stock < itemDto.Quantity)
+                if (!itemDto.ClaimingSuspendedMealId.HasValue)
                 {
-                    throw new Exception($"Not enough stock for box {box.Name}. Available: {box.Stock}");
-                }
+                    if (box.Stock < itemDto.Quantity)
+                    {
+                        throw new Exception($"Not enough stock for box {box.Name}. Available: {box.Stock}");
+                    }
 
-                box.Stock -= itemDto.Quantity;
-                await _boxRepository.UpdateAsync(box);
+                    box.Stock -= itemDto.Quantity;
+                    await _boxRepository.UpdateAsync(box);
+                }
 
                 var orderItem = new OrderItem
                 {
                     BoxId = box.Id,
                     Quantity = itemDto.Quantity,
-                    UnitPrice = box.DiscountedPrice,
+                    UnitPrice = itemDto.ClaimingSuspendedMealId.HasValue ? 0 : box.DiscountedPrice,
                     IsSuspended = itemDto.IsSuspended
                 };
 
@@ -82,6 +85,18 @@ public class OrderService : IOrderService
                         };
                         await _suspendedMealRepository.AddAsync(suspendedMeal);
                     }
+                }
+
+                if (itemDto.ClaimingSuspendedMealId.HasValue)
+                {
+                    var mealToClaim = await _suspendedMealRepository.GetByIdAsync(itemDto.ClaimingSuspendedMealId.Value);
+                    if (mealToClaim == null || mealToClaim.IsClaimed)
+                    {
+                        throw new Exception("Suspended meal is no longer available.");
+                    }
+                    mealToClaim.IsClaimed = true;
+                    mealToClaim.ClaimedByUserId = userId;
+                    await _suspendedMealRepository.UpdateAsync(mealToClaim);
                 }
             }
 

@@ -11,6 +11,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight } from '../../constants/theme';
+import { SplashScreenStyles as styles } from '../../styles/screenStyles';
 
 const { width } = Dimensions.get('window');
 
@@ -95,61 +96,3 @@ export default function SplashScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bgCircle: {
-    position: 'absolute',
-    width: width * 1.2,
-    height: width * 1.2,
-    borderRadius: width * 0.6,
-    backgroundColor: Colors.primary,
-    opacity: 0.04,
-    top: -width * 0.3,
-  },
-  logoWrap: {
-    width: 130,
-    height: 130,
-    borderRadius: 32,
-    overflow: 'hidden',
-    marginBottom: 24,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 16,
-  },
-  logo: {
-    width: '100%',
-    height: '100%',
-  },
-  appName: {
-    fontSize: 42,
-    fontWeight: FontWeight.extrabold,
-    color: Colors.textPrimary,
-    letterSpacing: -1,
-    marginBottom: 10,
-  },
-  tagline: {
-    fontSize: FontSize.md,
-    color: Colors.textSecondary,
-    letterSpacing: 0.5,
-    marginBottom: 40,
-  },
-  dotRow: {
-    flexDirection: 'row',
-    gap: 6,
-    position: 'absolute',
-    bottom: 60,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: Colors.surfaceBorder,
-  },
-});

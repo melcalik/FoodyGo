@@ -4,7 +4,7 @@ import { CartItem, SurpriseBox, Restaurant } from '../types';
 interface CartState {
   items: CartItem[];
 
-  addItem: (box: SurpriseBox, restaurant: Restaurant, isSuspended?: boolean) => void;
+  addItem: (box: SurpriseBox, restaurant: Restaurant, isSuspended?: boolean, isClaimingMealId?: string) => void;
   removeItem: (boxId: string, isSuspended: boolean) => void;
   updateQuantity: (boxId: string, quantity: number) => void;
   clearCart: () => void;
@@ -17,21 +17,24 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
 
-  addItem: (box, restaurant, isSuspended = false) => {
+  addItem: (box, restaurant, isSuspended = false, isClaimingMealId) => {
+    if (isClaimingMealId) {
+      box = { ...box, discountedPrice: 0, originalPrice: 0 };
+    }
     set(state => {
       const existing = state.items.find(
-        i => i.box.id === box.id && i.isSuspended === isSuspended,
+        i => i.box.id === box.id && i.isSuspended === isSuspended && i.isClaimingMealId === isClaimingMealId,
       );
       if (existing) {
         return {
           items: state.items.map(i =>
-            i.box.id === box.id && i.isSuspended === isSuspended
+            i.box.id === box.id && i.isSuspended === isSuspended && i.isClaimingMealId === isClaimingMealId
               ? { ...i, quantity: i.quantity + 1 }
               : i,
           ),
         };
       }
-      return { items: [...state.items, { box, restaurant, quantity: 1, isSuspended }] };
+      return { items: [...state.items, { box, restaurant, quantity: 1, isSuspended, isClaimingMealId }] };
     });
   },
 
