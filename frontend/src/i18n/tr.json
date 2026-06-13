@@ -45,6 +45,8 @@
     "fillAllFields": "Lütfen tüm alanları doldurun.",
     "passwordMismatch": "Şifreler eşleşmiyor.",
     "passwordTooShort": "Şifre en az 6 karakter olmalı.",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+    "invalidPassword": "Şifre en az 6 karakter olmalı ve büyük harf, küçük harf, rakam ve özel karakter içermelidir.",
     "loginFailed": "Giriş yapılamadı.",
     "registerFailed": "Kayıt olunamadı.",
     "joinUs": "Aramıza Katıl!",
@@ -131,7 +133,16 @@
     "completePayment": "Ödemeyi Tamamla",
     "orderError": "Sipariş oluşturulamadı. Lütfen stok durumunu kontrol edin.",
     "successSubtitle": "Harika bir iş çıkardın! Hem indirimli yemeğini aldın hem de dünyayı kurtarmaya yardım ettin.",
-    "co2Saved": "Bu siparişle ~{{amount}} kg CO₂ emisyonunu önledin."
+    "co2Saved": "Bu siparişle ~{{amount}} kg CO₂ emisyonunu önledin.",
+    "payWithAnother": "Başka bir kart ile öde",
+    "saveCardPrompt": "Bu kartı sonraki alışverişleriniz için kaydetmek ister misiniz?",
+    "saveCardTitle": "Kartı Kaydet",
+    "cardName": "Kart Adı",
+    "fillAll": "Lütfen tüm alanları doldurun.",
+    "addCard": "Kart Ekle",
+    "deleteMethod": "Kartı Sil",
+    "deleteConfirm": "Bu kartı silmek istediğinize emin misiniz?",
+    "noSavedMethods": "Kayıtlı ödeme yönteminiz bulunmuyor."
   },
   "order": {
     "title": "Siparişlerim",
@@ -221,6 +232,12 @@
     "helpCenter": "Yardım Merkezi",
     "termsOfService": "Kullanım Şartları",
     "switchLang": "🇬🇧 Switch to English",
-    "logoutConfirm": "Hesabınızdan çıkmak istediğinize emin misiniz?"
+    "logoutConfirm": "Hesabınızdan çıkmak istediğinize emin misiniz?",
+    "editProfile": "Profili Düzenle",
+    "newPassword": "Yeni Şifre (İsteğe Bağlı)",
+    "confirmNewPassword": "Yeni Şifre (Tekrar)",
+    "newPasswordPlaceholder": "Değiştirmek istemiyorsanız boş bırakın",
+    "updateSuccess": "Profiliniz başarıyla güncellendi!",
+    "updateFailed": "Profil güncellenirken bir hata oluştu."
   }
 }

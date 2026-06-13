@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, FontSize, Radius, Spacing } from '../../constants/theme';
 
 interface SearchBarProps {
@@ -18,7 +19,7 @@ export default function SearchBar({ value, onChangeText }: SearchBarProps) {
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <Text style={styles.icon}>🔍</Text>
+      <Ionicons name="search" size={20} color={Colors.textMuted} style={styles.icon} />
       <TextInput
         style={styles.input}
         value={value}
@@ -27,8 +28,8 @@ export default function SearchBar({ value, onChangeText }: SearchBarProps) {
         placeholderTextColor={Colors.textMuted}
       />
       {value.length > 0 && (
-        <TouchableOpacity onPress={() => onChangeText('')}>
-          <Text style={styles.clear}>✕</Text>
+        <TouchableOpacity onPress={() => onChangeText('')} style={{ padding: 4 }}>
+          <Ionicons name="close-circle" size={20} color={Colors.textMuted} />
         </TouchableOpacity>
       )}
     </View>
@@ -47,15 +48,10 @@ const styles = StyleSheet.create({
     height: 48,
     flex: 1,
   },
-  icon: { fontSize: 16, marginRight: 8 },
+  icon: { marginRight: 8 },
   input: {
     flex: 1,
     color: Colors.textPrimary,
     fontSize: FontSize.md,
-  },
-  clear: {
-    color: Colors.textMuted,
-    fontSize: FontSize.sm,
-    padding: 4,
   },
 });

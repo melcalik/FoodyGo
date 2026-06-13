@@ -31,8 +31,8 @@ export interface SurpriseBox {
   discountedPrice: number;
   stock: number;
   image?: any;
-  emoji?: string;    // optional — not provided by API
-  contents?: string[]; // optional — not provided by API
+  emoji?: string;
+  contents?: string[];
 }
 
 export interface CartItem {
@@ -90,4 +90,14 @@ export interface User {
   id: string;
   name: string;
   email: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  cardName: string;
+  cardNumber: string;
+  cardHolderName: string;
+  expiry: string;
+  cvv: string;
+  isLastUsed: boolean;
 }

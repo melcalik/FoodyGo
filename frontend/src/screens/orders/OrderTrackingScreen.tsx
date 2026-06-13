@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useMemo } from 'react';
 import {
   View,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { OrdersStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useOrderStore } from '../../store/useOrderStore';
@@ -18,9 +19,9 @@ import { useOrderStore } from '../../store/useOrderStore';
 type Props = NativeStackScreenProps<OrdersStackParamList, 'OrderTracking'>;
 
 const getStatusSteps = (t: any) => [
-  { key: 'preparing', title: t('order.preparing'), emoji: '🧑‍🍳' },
-  { key: 'ready', title: t('order.ready'), emoji: '🛍️' },
-  { key: 'pickedUp', title: t('order.pickedUp'), emoji: '✅' },
+  { key: 'preparing', title: t('order.preparing'), icon: 'restaurant' },
+  { key: 'ready', title: t('order.ready'), icon: 'bag-handle' },
+  { key: 'pickedUp', title: t('order.pickedUp'), icon: 'checkmark-circle' },
 ];
 
 export default function OrderTrackingScreen({ route, navigation }: Props) {
@@ -32,11 +33,11 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
   const STATUS_STEPS = getStatusSteps(t);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (order && order.status !== 'pickedUp' && order.status !== 'cancelled') {
       interval = setInterval(() => {
         fetchOrders();
-      }, 5000); // Poll every 5 seconds
+      }, 5000);
     }
     return () => {
       if (interval) clearInterval(interval);
@@ -59,28 +60,26 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
-      
-      {/* Header */}
+
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerBackBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.headerBackIcon}>←</Text>
+          <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t('order.tracking')}</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll}>
-        {/* Map Placeholder */}
+        
         <View style={styles.mapPlaceholder}>
-          <Text style={styles.mapEmoji}>🗺️</Text>
+          <Ionicons name="map-outline" size={40} color={Colors.textPrimary} style={{ marginBottom: 8, opacity: 0.5 }} />
           <Text style={styles.mapText}>{t('order.mapView')}</Text>
-          {/* Pickup code */}
+          
           <View style={styles.codeCard}>
             <Text style={styles.codeLabel}>{t('order.deliveryCode')}</Text>
             <Text style={styles.codeValue}>{order.id.slice(-4).toUpperCase()}</Text>
           </View>
         </View>
 
-        {/* Tracker */}
         <View style={styles.trackerCard}>
           <Text style={styles.trackerTitle}>{t('order.status')}</Text>
           <View style={styles.stepper}>
@@ -95,7 +94,11 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
                       styles.stepCircle,
                       (isActive || isPast) ? styles.stepCircleActive : null,
                     ]}>
-                      <Text style={styles.stepEmoji}>{step.emoji}</Text>
+                      <Ionicons 
+                        name={step.icon} 
+                        size={16} 
+                        color={(isActive || isPast) ? Colors.primary : Colors.textMuted} 
+                      />
                     </View>
                     {index < STATUS_STEPS.length - 1 && (
                       <View style={[
@@ -121,7 +124,6 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
           </View>
         </View>
 
-        {/* Order Details */}
         <View style={styles.detailsCard}>
           <Text style={styles.detailsTitle}>{t('order.details')}</Text>
           <Text style={styles.restaurantName}>{order.restaurantName}</Text>
@@ -177,7 +179,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.surfaceBorder,
   },
-  headerBackIcon: { fontSize: 20, color: Colors.textPrimary },
   headerTitle: {
     fontSize: FontSize.xl,
     fontWeight: FontWeight.bold,
@@ -196,7 +197,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
-  mapEmoji: { fontSize: 40, opacity: 0.5, marginBottom: 8 },
   mapText: { fontSize: FontSize.sm, color: Colors.textMuted },
   codeCard: {
     position: 'absolute',
@@ -250,7 +250,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary + '22',
     borderColor: Colors.primary,
   },
-  stepEmoji: { fontSize: 16 },
   stepLine: {
     width: 2,
     height: 30,

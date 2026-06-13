@@ -31,7 +31,6 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                     
                     var now = DateTime.UtcNow;
 
-                    // Update Confirmed -> ReadyForPickup (after 30 seconds)
                     var thirtySecondsAgo = now.AddSeconds(-30);
                     var confirmedOrders = await dbContext.Orders
                         .Where(o => o.Status == OrderStatus.Confirmed)
@@ -45,7 +44,6 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                         order.UpdatedAt = now;
                     }
 
-                    // Update ReadyForPickup -> Completed (after another 30 seconds)
                     var pickupOrders = await dbContext.Orders
                         .Where(o => o.Status == OrderStatus.ReadyForPickup)
                         .ToListAsync(stoppingToken);
@@ -70,7 +68,7 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                 _logger.LogError(ex, "Error occurred while updating order statuses.");
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken); // Check every 10 seconds
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
         }
     }
 }

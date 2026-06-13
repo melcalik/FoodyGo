@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { OrdersStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useReviewStore } from '../../store/useReviewStore';
@@ -43,17 +44,16 @@ export default function ReviewScreen({ route, navigation }: Props) {
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        
-        {/* Header */}
+
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Text style={styles.backIcon}>←</Text>
+            <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t('review.title')}</Text>
         </View>
 
         <ScrollView contentContainerStyle={styles.scroll}>
-          {/* Restaurant Info */}
+          
           <View style={styles.infoCard}>
             <Text style={styles.restaurantName}>{order.restaurantName}</Text>
             <Text style={styles.itemsText}>
@@ -63,13 +63,14 @@ export default function ReviewScreen({ route, navigation }: Props) {
 
           <Text style={styles.questionText}>{t('review.howWasIt')}</Text>
 
-          {/* Stars */}
           <View style={styles.starsRow}>
             {[1, 2, 3, 4, 5].map(star => (
               <TouchableOpacity key={star} onPress={() => setRating(star)}>
-                <Text style={[styles.starIcon, star <= rating && styles.starIconActive]}>
-                  {star <= rating ? '⭐' : '☆'}
-                </Text>
+                <Ionicons 
+                  name={star <= rating ? "star" : "star-outline"} 
+                  size={40} 
+                  color={star <= rating ? "#FBBF24" : Colors.textMuted} 
+                />
               </TouchableOpacity>
             ))}
           </View>
@@ -79,7 +80,6 @@ export default function ReviewScreen({ route, navigation }: Props) {
              rating < 5 ? t('review.good') : t('review.great')}
           </Text>
 
-          {/* Comment */}
           <View style={styles.inputWrap}>
             <TextInput
               style={styles.input}
@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.surfaceBorder,
   },
-  backIcon: { fontSize: 20, color: Colors.textPrimary },
   headerTitle: {
     fontSize: FontSize.xl,
     fontWeight: FontWeight.bold,
@@ -164,8 +163,6 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     marginBottom: Spacing.md,
   },
-  starIcon: { fontSize: 40, color: Colors.textMuted },
-  starIconActive: { color: Colors.star },
 
   ratingLabel: {
     textAlign: 'center',

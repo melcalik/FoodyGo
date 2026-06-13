@@ -18,6 +18,7 @@ import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/t
 import { useOrderStore } from '../../store/useOrderStore';
 import { useSuspendedStore } from '../../store/useSuspendedStore';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = NativeStackScreenProps<SuspendedStackParamList, 'SuspendedMeal'>;
 
@@ -52,30 +53,28 @@ export default function SuspendedMealScreen({ navigation }: Props) {
       <StatusBar barStyle="light-content" backgroundColor={Colors.teal} />
       
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* Header Hero */}
+        
         <View style={styles.hero}>
-          <Text style={styles.heroEmoji}>🤝</Text>
+          <Ionicons name="heart-circle" size={60} color={Colors.white} style={{ marginBottom: Spacing.md }} />
           <Text style={styles.heroTitle}>{t('suspended.title')}</Text>
           <Text style={styles.heroSubtitle}>
             {t('suspended.heroSubtitle')}
           </Text>
         </View>
 
-        {/* Stats Row */}
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>{t('suspended.myDonations')}</Text>
             <Text style={styles.statValue}>{myDonationsCount}</Text>
-            <Text style={styles.statEmoji}>💝</Text>
+            <Ionicons name="heart" size={50} color={Colors.teal} style={styles.statEmoji} />
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>{t('suspended.totalCount')}</Text>
             <Text style={styles.statValue}>{availableMeals.length}</Text>
-            <Text style={styles.statEmoji}>🌍</Text>
+            <Ionicons name="earth" size={50} color={Colors.teal} style={styles.statEmoji} />
           </View>
         </View>
 
-        {/* Available Meals Section */}
         <View style={styles.listSection}>
           <Text style={styles.sectionTitle}>{t('suspended.waitingToClaim')}</Text>
           
@@ -83,7 +82,7 @@ export default function SuspendedMealScreen({ navigation }: Props) {
             <ActivityIndicator size="large" color={Colors.teal} style={{ marginTop: 20 }} />
           ) : availableMeals.length === 0 ? (
             <View style={styles.emptyCard}>
-              <Text style={styles.emptyEmoji}>🍃</Text>
+              <Ionicons name="leaf" size={40} color={Colors.textMuted} style={{ marginBottom: 8 }} />
               <Text style={styles.emptyText}>{t('suspended.emptyList')}</Text>
             </View>
           ) : (
@@ -124,7 +123,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },
-  heroEmoji: { fontSize: 60, marginBottom: Spacing.md },
   heroTitle: {
     fontSize: 28,
     fontWeight: FontWeight.extrabold,
@@ -163,7 +161,7 @@ const styles = StyleSheet.create({
   },
   statLabel: { fontSize: FontSize.sm, color: Colors.textSecondary, marginBottom: 4, zIndex: 2 },
   statValue: { fontSize: 32, fontWeight: FontWeight.extrabold, color: Colors.teal, zIndex: 2 },
-  statEmoji: { position: 'absolute', right: -10, bottom: -10, fontSize: 50, opacity: 0.1, zIndex: 1 },
+  statEmoji: { position: 'absolute', right: -10, bottom: -10, opacity: 0.1, zIndex: 1 },
 
   listSection: {
     marginTop: Spacing.xl,
@@ -183,7 +181,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.surfaceBorder,
   },
-  emptyEmoji: { fontSize: 40, marginBottom: 8 },
   emptyText: { fontSize: FontSize.sm, color: Colors.textSecondary },
 
   mealCard: {

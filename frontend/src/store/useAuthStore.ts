@@ -23,9 +23,9 @@ interface AuthState {
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
   fetchUserStats: () => Promise<void>;
+  updateProfile: (name: string, email: string, password?: string) => Promise<boolean>;
 }
 
-/** Maps the raw API user object to the frontend User type. */
 const mapApiUser = (user: any): User => ({
   id: user.id,
   name: user.name,
@@ -110,6 +110,23 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ userStats: response.data });
     } catch (error) {
       console.error('Failed to fetch user stats:', error);
+    }
+  },
+
+  updateProfile: async (name, email, password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const payload = { name, email, password };
+      const response = await api.put('/Users/profile', payload);
+      const mappedUser = mapApiUser(response.data);
+
+      await AsyncStorage.setItem('auth_user', JSON.stringify(mappedUser));
+      set({ user: mappedUser, isLoading: false });
+      return true;
+    } catch (error: any) {
+      const message = error.response?.data?.message ?? 'Profile update failed.';
+      set({ error: message, isLoading: false });
+      return false;
     }
   },
 }));

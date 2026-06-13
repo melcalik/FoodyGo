@@ -13,17 +13,85 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { OrdersStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import { useOrderStore } from '../../store/useOrderStore';
-import { Order } from '../../types';
+import { useCartStore } from '../../store/useCartStore';
+import { useRestaurantStore } from '../../store/useRestaurantStore';
+import { Order, SurpriseBox } from '../../types';
+import api from '../../services/api';
+import { restaurantImageMap } from '../../utils/imageMap';
 
 type Props = NativeStackScreenProps<OrdersStackParamList, 'OrderHistory'>;
 
 export default function OrderHistoryScreen({ navigation }: Props) {
   const { t, i18n } = useTranslation();
   const { orders, fetchOrders } = useOrderStore();
+  const { addItem } = useCartStore();
+  const { restaurants } = useRestaurantStore();
+
+  const handleReorder = async (order: Order) => {
+    try {
+      const response = await api.get(`/Restaurants/${order.restaurantId}/boxes`);
+      const boxesData = response.data;
+      
+      let restaurant = restaurants.find(r => r.id === order.restaurantId);
+      if (!restaurant) {
+         restaurant = {
+           id: order.restaurantId,
+           name: order.restaurantName,
+           image: order.restaurantImage,
+           category: 'sweet',
+           rating: 5,
+           reviewCount: 0,
+           address: '',
+           distance: '',
+           isOpen: true,
+           deliveryTime: '',
+           suspendedCount: 0,
+         };
+      }
+
+      const itemsToAdd: Array<{ box: SurpriseBox; quantity: number; isSuspended: boolean }> = [];
+
+      for (const item of order.items) {
+        const boxData = boxesData.find((b: any) => b.id === item.boxId);
+        if (!boxData) {
+          Alert.alert(t('common.error', { defaultValue: 'Hata' }), `${item.boxName} artık bulunmuyor.`);
+          return;
+        }
+        if (boxData.stock < item.quantity) {
+          Alert.alert(t('common.error', { defaultValue: 'Hata' }), `${item.boxName} için yeterli stok yok.`);
+          return;
+        }
+
+        const mappedBox: SurpriseBox = {
+          id: boxData.id,
+          restaurantId: order.restaurantId,
+          name: boxData.name,
+          description: boxData.description,
+          originalPrice: boxData.originalPrice,
+          discountedPrice: boxData.discountedPrice,
+          stock: boxData.stock,
+          image: restaurantImageMap[boxData.imageUrl as keyof typeof restaurantImageMap],
+        };
+        itemsToAdd.push({ box: mappedBox, quantity: item.quantity, isSuspended: item.isSuspended });
+      }
+
+      for (const item of itemsToAdd) {
+        for (let i = 0; i < item.quantity; i++) {
+          addItem(item.box, restaurant, item.isSuspended);
+        }
+      }
+
+      navigation.navigate('CartTab' as any);
+    } catch (err) {
+      console.error(err);
+      Alert.alert(t('common.error', { defaultValue: 'Hata' }), 'Sipariş tekrarlanamadı.');
+    }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -53,7 +121,7 @@ export default function OrderHistoryScreen({ navigation }: Props) {
             <Text style={styles.date}>{dateStr}</Text>
           </View>
           <View style={[styles.statusBadge, isCompleted ? styles.statusSuccess : styles.statusActive]}>
-            <Text style={[styles.statusText, isCompleted ? styles.statusSuccessText : styles.statusActiveText]}>
+            <Text style={isCompleted ? styles.statusSuccessText : styles.statusActiveText}>
               {isCompleted ? t('order.completed') : t('order.ongoing')}
             </Text>
           </View>
@@ -76,7 +144,7 @@ export default function OrderHistoryScreen({ navigation }: Props) {
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.btnPrimary}
-              onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
+              onPress={() => handleReorder(item)}
             >
               <Text style={styles.btnPrimaryText}>{t('order.reorder')}</Text>
             </TouchableOpacity>
@@ -102,7 +170,7 @@ export default function OrderHistoryScreen({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={styles.emptyEmoji}>🍽️</Text>
+            <Ionicons name="restaurant" size={48} color={Colors.textMuted} style={{ marginBottom: 16 }} />
             <Text style={styles.emptyTitle}>{t('order.noOrders')}</Text>
             <Text style={styles.emptyText}>{t('order.noOrdersDesc')}</Text>
           </View>
@@ -131,7 +199,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 60,
   },
-  emptyEmoji: { fontSize: 48, marginBottom: 16 },
   emptyTitle: {
     fontSize: FontSize.lg,
     fontWeight: FontWeight.bold,

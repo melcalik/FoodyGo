@@ -48,8 +48,6 @@ public class AuthService : IAuthService
         return new AuthResponseDto { Token = GenerateJwtToken(user), User = MapToUserDto(user) };
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
-
     private static UserDto MapToUserDto(User user) => new()
     {
         Id = user.Id,

@@ -11,7 +11,6 @@ interface ReviewState {
   submitReview: (restaurantId: string, orderId: string, rating: number, comment: string) => Promise<void>;
 }
 
-/** Maps a raw API review object to the canonical Review type. */
 const mapApiReview = (r: any): Review => ({
   id: r.id,
   restaurantId: r.restaurantId,

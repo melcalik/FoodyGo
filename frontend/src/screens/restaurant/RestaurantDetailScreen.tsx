@@ -13,6 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomeStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import SurpriseBoxCard from '../../components/restaurant/SurpriseBoxCard';
@@ -85,23 +86,21 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
       <FlatList
-        data={activeTab === 'boxes' ? boxes : reviews}
+        data={(activeTab === 'boxes' ? boxes : reviews) as any[]}
         keyExtractor={item => item.id}
         ListHeaderComponent={
           <>
-            {/* Cover Image */}
+            
             <View style={styles.coverWrap}>
               <Image source={restaurant.image} style={styles.cover} resizeMode="cover" />
-              {/* Gradient overlay */}
+              
               <View style={styles.coverGradient} />
 
-              {/* Back Button */}
               <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-                <Text style={styles.backIcon}>←</Text>
+                <Ionicons name="arrow-back" size={24} color={Colors.white} />
               </TouchableOpacity>
             </View>
 
-            {/* Info Card */}
             <View style={styles.infoCard}>
               <View style={styles.titleRow}>
                 <Text style={styles.restaurantName}>{restaurant.name}</Text>
@@ -117,28 +116,30 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
 
               <View style={styles.statsRow}>
                 <View style={styles.statItem}>
-                  <Text style={styles.statIcon}>⭐</Text>
+                  <Ionicons name="star" size={14} color="#FBBF24" />
                   <Text style={styles.statVal}>{restaurant.rating}</Text>
                   <Text style={styles.statLabel}>({restaurant.reviewCount} {t('home.reviews')})</Text>
                 </View>
                 <View style={styles.statDivider} />
                 <View style={styles.statItem}>
-                  <Text style={styles.statIcon}>📍</Text>
+                  <Ionicons name="location" size={14} color={Colors.textSecondary} />
                   <Text style={styles.statVal}>{restaurant.distance}</Text>
                 </View>
                 <View style={styles.statDivider} />
                 <View style={styles.statItem}>
-                  <Text style={styles.statIcon}>🕐</Text>
+                  <Ionicons name="time-outline" size={14} color={Colors.textSecondary} />
                   <Text style={styles.statVal}>{restaurant.deliveryTime}</Text>
                 </View>
               </View>
 
-              <Text style={styles.address}>📌 {restaurant.address}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: Spacing.sm }}>
+                <Ionicons name="map-outline" size={14} color={Colors.textSecondary} />
+                <Text style={styles.address}>{restaurant.address}</Text>
+              </View>
 
-              {/* Suspended banner */}
               {restaurant.suspendedCount > 0 && (
                 <View style={styles.suspendedBanner}>
-                  <Text style={styles.suspendedBannerEmoji}>🤝</Text>
+                  <Ionicons name="heart-circle" size={20} color={Colors.teal} />
                   <Text style={styles.suspendedBannerText}>
                     {t('restaurant.suspendedBanner', { count: restaurant.suspendedCount })}
                   </Text>
@@ -146,23 +147,28 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
               )}
             </View>
 
-            {/* Tabs */}
             <View style={styles.tabs}>
               <TouchableOpacity
                 style={[styles.tab, activeTab === 'boxes' && styles.tabActive]}
                 onPress={() => setActiveTab('boxes')}
               >
-                <Text style={[styles.tabText, activeTab === 'boxes' && styles.tabTextActive]}>
-                  🎁 {t('restaurant.surpriseBoxes')} ({boxes.length})
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Ionicons name="gift" size={14} color={activeTab === 'boxes' ? Colors.white : Colors.textSecondary} />
+                  <Text style={[styles.tabText, activeTab === 'boxes' && styles.tabTextActive]}>
+                    {t('restaurant.surpriseBoxes')} ({boxes.length})
+                  </Text>
+                </View>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.tab, activeTab === 'reviews' && styles.tabActive]}
                 onPress={() => setActiveTab('reviews')}
               >
-                <Text style={[styles.tabText, activeTab === 'reviews' && styles.tabTextActive]}>
-                  💬 {t('restaurant.reviews')} ({reviews.length})
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Ionicons name="chatbubbles" size={14} color={activeTab === 'reviews' ? Colors.white : Colors.textSecondary} />
+                  <Text style={[styles.tabText, activeTab === 'reviews' && styles.tabTextActive]}>
+                    {t('restaurant.reviews')} ({reviews.length})
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </>
@@ -184,7 +190,12 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
         }
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={styles.emptyEmoji}>{activeTab === 'boxes' ? '📦' : '💬'}</Text>
+            <Ionicons 
+              name={activeTab === 'boxes' ? 'cube-outline' : 'chatbubbles-outline'} 
+              size={48} 
+              color={Colors.textMuted} 
+              style={{ marginBottom: 12 }} 
+            />
             <Text style={styles.emptyText}>
               {activeTab === 'boxes' ? t('restaurant.noBoxes') : t('restaurant.noReviews')}
             </Text>
@@ -223,7 +234,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backIcon: { fontSize: 20, color: Colors.white },
 
   infoCard: {
     marginTop: -20,
@@ -270,12 +280,11 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   statItem: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 4 },
-  statIcon: { fontSize: 14 },
   statVal: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.textPrimary },
   statLabel: { fontSize: FontSize.xs, color: Colors.textMuted },
   statDivider: { width: 1, height: 20, backgroundColor: Colors.surfaceBorder, marginHorizontal: 4 },
 
-  address: { fontSize: FontSize.xs, color: Colors.textSecondary, marginBottom: Spacing.sm },
+  address: { fontSize: FontSize.xs, color: Colors.textSecondary },
 
   suspendedBanner: {
     flexDirection: 'row',
@@ -287,7 +296,6 @@ const styles = StyleSheet.create({
     padding: Spacing.sm,
     gap: 8,
   },
-  suspendedBannerEmoji: { fontSize: 20 },
   suspendedBannerText: { fontSize: FontSize.xs, color: Colors.teal, flex: 1, fontWeight: FontWeight.medium },
 
   tabs: {
@@ -313,6 +321,5 @@ const styles = StyleSheet.create({
   itemWrap: { paddingHorizontal: Spacing.md },
 
   empty: { alignItems: 'center', paddingVertical: 40 },
-  emptyEmoji: { fontSize: 40, marginBottom: 10 },
   emptyText: { fontSize: FontSize.md, color: Colors.textSecondary },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CartItem } from '../../types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useCartStore } from '../../store/useCartStore';
@@ -15,18 +16,18 @@ export default function CartItemRow({ item }: CartItemRowProps) {
 
   return (
     <View style={styles.row}>
-      {/* Emoji thumbnail */}
+      
       <View style={styles.thumb}>
-        <Text style={styles.thumbEmoji}>{item.box.emoji}</Text>
+        <Ionicons name="gift" size={28} color={Colors.primary} />
       </View>
 
-      {/* Info */}
       <View style={styles.info}>
         <View style={styles.topRow}>
           <Text style={styles.boxName} numberOfLines={1}>{item.box.name}</Text>
           {item.isSuspended && (
             <View style={styles.suspendedTag}>
-              <Text style={styles.suspendedTagText}>🤝 {t('cart.suspended')}</Text>
+              <Ionicons name="heart-circle" size={12} color={Colors.teal} style={{ marginRight: 2 }} />
+              <Text style={styles.suspendedTagText}>{t('cart.suspended')}</Text>
             </View>
           )}
         </View>
@@ -34,13 +35,16 @@ export default function CartItemRow({ item }: CartItemRowProps) {
         <Text style={styles.price}>₺{item.box.discountedPrice * item.quantity}</Text>
       </View>
 
-      {/* Quantity Controls */}
       <View style={styles.controls}>
         <TouchableOpacity
           style={styles.qtyBtn}
           onPress={() => updateQuantity(item.box.id, item.quantity - 1)}
         >
-          <Text style={styles.qtyBtnText}>{item.quantity === 1 ? '🗑' : '−'}</Text>
+          {item.quantity === 1 ? (
+            <Ionicons name="trash-outline" size={16} color={Colors.textPrimary} />
+          ) : (
+            <Text style={styles.qtyBtnText}>−</Text>
+          )}
         </TouchableOpacity>
 
         <Text style={styles.qty}>{item.quantity}</Text>
@@ -76,7 +80,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  thumbEmoji: { fontSize: 28 },
 
   info: { flex: 1, gap: 3 },
   topRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
@@ -90,9 +93,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.teal + '22',
     borderWidth: 1,
     borderColor: Colors.teal + '55',
-    paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: Radius.full,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   suspendedTagText: { fontSize: 9, color: Colors.teal, fontWeight: FontWeight.semibold },
   restaurantName: { fontSize: FontSize.xs, color: Colors.textMuted },

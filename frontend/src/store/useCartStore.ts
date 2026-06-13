@@ -9,7 +9,6 @@ interface CartState {
   updateQuantity: (boxId: string, quantity: number) => void;
   clearCart: () => void;
 
-  // Computed
   totalItems: () => number;
   totalAmount: () => number;
   getItemQuantity: (boxId: string) => number;
@@ -36,7 +35,6 @@ export const useCartStore = create<CartState>((set, get) => ({
     });
   },
 
-  // Fix: removeItem now respects isSuspended flag to avoid removing both variants at once
   removeItem: (boxId, isSuspended) => {
     set(state => ({
       items: state.items.filter(

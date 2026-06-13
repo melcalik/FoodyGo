@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomeStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Spacing } from '../../constants/theme';
 import { RestaurantCategory } from '../../types';
@@ -20,6 +22,7 @@ import CategoryFilter from '../../components/home/CategoryFilter';
 import RestaurantCard from '../../components/home/RestaurantCard';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useRestaurantStore } from '../../store/useRestaurantStore';
+import api from '../../services/api';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
@@ -30,10 +33,16 @@ export default function HomeScreen({ navigation }: Props) {
 
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<RestaurantCategory | 'all'>('all');
+  const [dailyStats, setDailyStats] = useState(0);
 
-  useEffect(() => {
-    fetchRestaurants();
-  }, [fetchRestaurants]);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchRestaurants();
+      api.get('/Orders/daily-stats')
+        .then(res => setDailyStats(res.data.count))
+        .catch(err => console.error('Failed to load daily stats', err));
+    }, [fetchRestaurants])
+  );
 
   const filtered = useMemo(() => {
     return restaurants.filter(r => {
@@ -54,14 +63,14 @@ export default function HomeScreen({ navigation }: Props) {
         keyExtractor={r => r.id}
         ListHeaderComponent={
           <>
-            {/* Top Bar */}
+            
             <View style={styles.topBar}>
               <View>
                 <Text style={styles.greeting}>
                   {t('home.greeting', { name: user?.name.split(' ')[0] })}
                 </Text>
                 <View style={styles.locationRow}>
-                  <Text style={styles.locationIcon}>📍</Text>
+                  <Ionicons name="location" size={14} color={Colors.textSecondary} />
                   <Text style={styles.location}>{t('home.locationLabel')}</Text>
                 </View>
               </View>
@@ -69,30 +78,26 @@ export default function HomeScreen({ navigation }: Props) {
                 style={styles.notifBtn}
                 onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
               >
-                <Text style={styles.notifIcon}>🔔</Text>
+                <Ionicons name="notifications-outline" size={20} color={Colors.textPrimary} />
               </TouchableOpacity>
             </View>
 
-            {/* Search */}
             <View style={styles.searchRow}>
               <SearchBar value={search} onChangeText={setSearch} />
             </View>
 
-            {/* Impact Banner */}
             <View style={styles.impactBanner}>
-              <Text style={styles.impactEmoji}>🌍</Text>
+              <Ionicons name="earth" size={32} color={Colors.teal} />
               <View style={styles.impactText}>
                 <Text style={styles.impactTitle}>
-                  {t('home.impactTitle', { count: restaurants.length * 3 })}
+                  {t('home.impactTitle', { count: dailyStats })}
                 </Text>
                 <Text style={styles.impactSub}>{t('home.impactSubtitle')}</Text>
               </View>
             </View>
 
-            {/* Category Filter */}
             <CategoryFilter selected={category} onSelect={setCategory} />
 
-            {/* Section Title */}
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>{t('home.title')}</Text>
               <Text style={styles.sectionCount}>
@@ -109,7 +114,7 @@ export default function HomeScreen({ navigation }: Props) {
         )}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={styles.emptyEmoji}>🔍</Text>
+            <Ionicons name="search" size={48} color={Colors.textMuted} style={{ marginBottom: 12 }} />
             <Text style={styles.emptyTitle}>{t('home.noResults')}</Text>
             <Text style={styles.emptyText}>{t('home.noResultsDesc')}</Text>
           </View>
@@ -144,7 +149,6 @@ const styles = StyleSheet.create({
     gap: 4,
     marginTop: 2,
   },
-  locationIcon: { fontSize: 12 },
   location: { fontSize: FontSize.sm, color: Colors.textSecondary },
   notifBtn: {
     width: 44,
@@ -156,7 +160,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  notifIcon: { fontSize: 20 },
 
   searchRow: {
     paddingHorizontal: Spacing.md,
@@ -175,7 +178,6 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     gap: 12,
   },
-  impactEmoji: { fontSize: 32 },
   impactText: { flex: 1 },
   impactTitle: {
     fontSize: FontSize.sm,
@@ -211,7 +213,6 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
     paddingHorizontal: Spacing.xl,
   },
-  emptyEmoji: { fontSize: 48, marginBottom: 12 },
   emptyTitle: {
     fontSize: FontSize.lg,
     fontWeight: FontWeight.semibold,

@@ -1,6 +1,5 @@
 import { Restaurant, SurpriseBox, Review, Order } from '../types';
 
-// ─── Restaurant Images ───────────────────────────────────────────────────────
 const Images = {
   restaurants: {
     sweet: require('../assets/images/restaurants/sweet.png'),
@@ -11,7 +10,6 @@ const Images = {
   },
 };
 
-// ─── Mock Restaurants ────────────────────────────────────────────────────────
 export const MOCK_RESTAURANTS: Restaurant[] = [
   {
     id: 'r1',
@@ -93,9 +91,8 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
   },
 ];
 
-// ─── Mock Surprise Boxes ─────────────────────────────────────────────────────
 export const MOCK_BOXES: SurpriseBox[] = [
-  // Pasta Dünyası
+
   {
     id: 'b1',
     restaurantId: 'r1',
@@ -118,7 +115,7 @@ export const MOCK_BOXES: SurpriseBox[] = [
     emoji: '🥐',
     contents: ['3-4 adet börek', 'Sigara ve su böreği karışık'],
   },
-  // Annem Gibi
+
   {
     id: 'b3',
     restaurantId: 'r2',
@@ -141,7 +138,7 @@ export const MOCK_BOXES: SurpriseBox[] = [
     emoji: '🥘',
     contents: ['Tabldot yemek', '1 çeşit salata', 'Ekmek'],
   },
-  // Forno Napoli
+
   {
     id: 'b5',
     restaurantId: 'r3',
@@ -153,7 +150,7 @@ export const MOCK_BOXES: SurpriseBox[] = [
     emoji: '🍕',
     contents: ['2 dilim pizza (malzeme sürpriz)', '1 kutu gazlı içecek'],
   },
-  // Smash Bros.
+
   {
     id: 'b6',
     restaurantId: 'r4',
@@ -165,7 +162,7 @@ export const MOCK_BOXES: SurpriseBox[] = [
     emoji: '🍔',
     contents: ['1 smash burger', 'Orta boy patates', '1 sos'],
   },
-  // Ustanın Döneri
+
   {
     id: 'b7',
     restaurantId: 'r5',
@@ -190,13 +187,14 @@ export const MOCK_BOXES: SurpriseBox[] = [
   },
 ];
 
-// ─── Mock Reviews ────────────────────────────────────────────────────────────
 export const MOCK_REVIEWS: Review[] = [
   {
     id: 'rv1',
     restaurantId: 'r1',
     userId: 'u1',
     userName: 'Ayşe K.',
+    userAvatar: 'https://i.pravatar.cc/150?u=u1',
+    orderId: 'o1',
     rating: 5,
     comment: 'Harika bir deneyimdi! Baklava muhteşemdi, hem ekonomik hem lezzetli. Kesinlikle tekrar alacağım.',
     createdAt: new Date('2026-06-07'),
@@ -206,6 +204,8 @@ export const MOCK_REVIEWS: Review[] = [
     restaurantId: 'r1',
     userId: 'u2',
     userName: 'Mehmet A.',
+    userAvatar: 'https://i.pravatar.cc/150?u=u2',
+    orderId: 'o2',
     rating: 4,
     comment: 'Güzel bir initiative. Tatlılar tazeydi ve kutu iyi dolu geldi. FoodyGo sayesinde hem tasarruf ettim hem israfı önledim.',
     createdAt: new Date('2026-06-05'),
@@ -215,6 +215,8 @@ export const MOCK_REVIEWS: Review[] = [
     restaurantId: 'r3',
     userId: 'u1',
     userName: 'Ayşe K.',
+    userAvatar: 'https://i.pravatar.cc/150?u=u1',
+    orderId: 'o3',
     rating: 5,
     comment: 'Pizza mükemmeldi! Napoli usulü hamur gerçekten farklı. Fiyat/performans çok iyi.',
     createdAt: new Date('2026-06-08'),
@@ -224,13 +226,14 @@ export const MOCK_REVIEWS: Review[] = [
     restaurantId: 'r5',
     userId: 'u3',
     userName: 'Zeynep T.',
+    userAvatar: 'https://i.pravatar.cc/150?u=u3',
+    orderId: 'o4',
     rating: 5,
     comment: 'Ustanın döneri başka! Et kalitesi ve baharatı gerçekten özenli. Sürpriz kutu alınır!',
     createdAt: new Date('2026-06-06'),
   },
 ];
 
-// ─── Mock Orders ─────────────────────────────────────────────────────────────
 export const MOCK_ORDERS: Order[] = [
   {
     id: 'o1',
@@ -262,7 +265,6 @@ export const MOCK_ORDERS: Order[] = [
   },
 ];
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 export const getBoxesByRestaurant = (restaurantId: string): SurpriseBox[] =>
   MOCK_BOXES.filter(b => b.restaurantId === restaurantId);
 

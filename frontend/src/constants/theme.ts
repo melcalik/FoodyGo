@@ -1,27 +1,23 @@
 export const Colors = {
-  // Brand
+
   primary: '#FF6B35',
   primaryLight: '#FF8A5B',
   primaryDark: '#E55A26',
 
-  // Teal — askıda yemek
   teal: '#2EC4B6',
   tealLight: '#4DD9CC',
   tealDark: '#22A99D',
 
-  // Background
   background: '#0F0F0F',
   surface: '#1A1A1A',
   surfaceElevated: '#242424',
   surfaceBorder: '#2E2E2E',
 
-  // Typography
   textPrimary: '#FFFFFF',
   textSecondary: '#A0A0A0',
   textMuted: '#606060',
   textInverse: '#0F0F0F',
 
-  // Semantic
   success: '#22C55E',
   successLight: '#16A34A20',
   warning: '#F59E0B',
@@ -30,7 +26,6 @@ export const Colors = {
   errorLight: '#EF444420',
   info: '#3B82F6',
 
-  // Utility
   white: '#FFFFFF',
   black: '#000000',
   transparent: 'transparent',

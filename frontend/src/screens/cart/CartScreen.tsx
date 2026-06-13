@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CartStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useCartStore } from '../../store/useCartStore';
@@ -30,7 +31,7 @@ export default function CartScreen({ navigation }: Props) {
           <Text style={styles.headerTitle}>{t('cart.title')}</Text>
         </View>
         <View style={styles.empty}>
-          <Text style={styles.emptyEmoji}>🛒</Text>
+          <Ionicons name="cart-outline" size={64} color={Colors.textMuted} style={{ marginBottom: 16 }} />
           <Text style={styles.emptyTitle}>{t('cart.empty')}</Text>
           <Text style={styles.emptyText}>{t('cart.emptyDesc')}</Text>
         </View>
@@ -42,7 +43,6 @@ export default function CartScreen({ navigation }: Props) {
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
 
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t('cart.title')}</Text>
         <TouchableOpacity onPress={clearCart}>
@@ -58,7 +58,7 @@ export default function CartScreen({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
         ListFooterComponent={
           <View style={styles.footer}>
-            {/* Summary */}
+            
             <View style={styles.summaryCard}>
               <View style={styles.summaryRow}>
                 <Text style={styles.summaryLabel}>{t('cart.subtotal')}</Text>
@@ -74,7 +74,6 @@ export default function CartScreen({ navigation }: Props) {
               </View>
             </View>
 
-            {/* Checkout Button */}
             <TouchableOpacity
               style={styles.checkoutBtn}
               onPress={() => navigation.navigate('Payment')}
@@ -84,11 +83,10 @@ export default function CartScreen({ navigation }: Props) {
               <Text style={styles.checkoutAmount}>₺{total}</Text>
             </TouchableOpacity>
 
-            {/* Saving info */}
             <View style={styles.savingBanner}>
-              <Text style={styles.savingEmoji}>🌍</Text>
+              <Ionicons name="leaf" size={20} color={Colors.teal} />
               <Text style={styles.savingText}>
-                {t('cart.savingInfo', { co2: (items.length * 0.8).toFixed(1) })}
+                {t('cart.savingInfo', { co2: (items.length * 2.5).toFixed(1) })}
               </Text>
             </View>
           </View>
@@ -123,7 +121,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: Spacing.xl,
   },
-  emptyEmoji: { fontSize: 64, marginBottom: 16 },
   emptyTitle: {
     fontSize: FontSize.xl,
     fontWeight: FontWeight.bold,
@@ -205,6 +202,5 @@ const styles = StyleSheet.create({
     padding: Spacing.sm,
     gap: 8,
   },
-  savingEmoji: { fontSize: 20 },
   savingText: { fontSize: FontSize.xs, color: Colors.teal, flex: 1, lineHeight: 18 },
 });

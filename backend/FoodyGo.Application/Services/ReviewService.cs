@@ -38,13 +38,11 @@ public class ReviewService : IReviewService
 
         await _reviewRepository.AddAsync(review);
 
-        // Recalculate restaurant rating
         var allReviews = await _reviewRepository.FindAsync(r => r.RestaurantId == dto.RestaurantId);
         restaurant.ReviewCount = allReviews.Count();
         restaurant.Rating = Math.Round(allReviews.Average(r => r.Rating), 1);
         await _restaurantRepository.UpdateAsync(restaurant);
 
-        // Fetch user info for the response (requires Include)
         var added = (await _reviewRepository.FindAsync(
             r => r.Id == review.Id,
             query => query.Include(r => r.User)

@@ -10,10 +10,12 @@ namespace FoodyGo.Application.Services;
 public class UserService : IUserService
 {
     private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<User> _userRepository;
 
-    public UserService(IRepository<Order> orderRepository)
+    public UserService(IRepository<Order> orderRepository, IRepository<User> userRepository)
     {
         _orderRepository = orderRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<UserStatsDto> GetUserStatsAsync(Guid userId)
@@ -40,7 +42,6 @@ public class UserService : IUserService
                     totalRescued += item.Quantity;
                 }
 
-                // Money saved from all items
                 if (item.Box != null)
                 {
                     moneySaved += (item.Box.OriginalPrice - item.Box.DiscountedPrice) * item.Quantity;
@@ -48,8 +49,6 @@ public class UserService : IUserService
             }
         }
 
-        // Assume ~2.5kg CO2 saved per rescued box.
-        // We only count standard boxes for CO2 savings for the user. (or count all? let's count all boxes purchased)
         double co2Saved = (totalRescued + totalSuspended) * 2.5;
 
         return new UserStatsDto
@@ -58,6 +57,34 @@ public class UserService : IUserService
             TotalSuspendedMeals = totalSuspended,
             TotalCO2SavedKg = co2Saved,
             TotalMoneySaved = moneySaved
+        };
+    }
+
+    public async Task<UserDto> UpdateUserAsync(Guid userId, UpdateProfileDto dto)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new Exception("User not found.");
+        }
+
+        user.Name = dto.Name;
+        user.Email = dto.Email;
+
+        if (!string.IsNullOrEmpty(dto.Password))
+        {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+        }
+
+        await _userRepository.UpdateAsync(user);
+
+        return new UserDto
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            Avatar = user.Avatar,
+            WalletBalance = user.WalletBalance
         };
     }
 }

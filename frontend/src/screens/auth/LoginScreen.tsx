@@ -18,7 +18,6 @@ import { AuthStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Spacing, Radius } from '../../constants/theme';
 import { useAuthStore } from '../../store/useAuthStore';
 
-
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: Props) {
@@ -52,18 +51,16 @@ export default function LoginScreen({ navigation }: Props) {
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Hero */}
+        
         <View style={styles.hero}>
           <Text style={styles.heroEmoji}>🍱</Text>
           <Text style={styles.heroTitle}>{t('auth.welcomeTitle')}</Text>
           <Text style={styles.heroSubtitle}>{t('auth.welcomeSubtitle')}</Text>
         </View>
 
-        {/* Card */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>{t('auth.login')}</Text>
 
-          {/* Email */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>{t('auth.email')}</Text>
             <View style={styles.inputWrap}>
@@ -80,7 +77,6 @@ export default function LoginScreen({ navigation }: Props) {
             </View>
           </View>
 
-          {/* Password */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>{t('auth.password')}</Text>
             <View style={styles.inputWrap}>
@@ -96,15 +92,12 @@ export default function LoginScreen({ navigation }: Props) {
             </View>
           </View>
 
-          {/* Error */}
           {!!error && <Text style={styles.errorText}>{error}</Text>}
 
-          {/* Forgot */}
           <TouchableOpacity style={styles.forgotWrap}>
             <Text style={styles.forgotText}>{t('auth.forgotPassword')}</Text>
           </TouchableOpacity>
 
-          {/* Login Button */}
           <TouchableOpacity
             style={[styles.primaryBtn, isLoading && styles.primaryBtnDisabled]}
             onPress={handleLogin}
@@ -118,14 +111,12 @@ export default function LoginScreen({ navigation }: Props) {
             )}
           </TouchableOpacity>
 
-          {/* Divider */}
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
             <Text style={styles.dividerText}>{t('common.or')}</Text>
             <View style={styles.dividerLine} />
           </View>
 
-          {/* Social */}
           <TouchableOpacity
             style={styles.socialBtn}
             onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
@@ -134,7 +125,6 @@ export default function LoginScreen({ navigation }: Props) {
             <Text style={styles.socialBtnText}>{t('auth.continueWithGoogle')}</Text>
           </TouchableOpacity>
 
-          {/* Register link */}
           <TouchableOpacity
             style={styles.linkRow}
             onPress={() => navigation.navigate('Register')}

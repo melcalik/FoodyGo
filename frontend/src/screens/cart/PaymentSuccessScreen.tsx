@@ -44,7 +44,13 @@ export default function PaymentSuccessScreen({ navigation }: Props) {
         <View style={styles.statsCard}>
           <Text style={styles.statsEmoji}>🌍</Text>
           <Text style={styles.statsText}>
-            <Text style={styles.statsBold}>{t('payment.co2Saved', { amount: '1.2' })}</Text>
+            <Text style={styles.statsBold}>
+              {t('payment.co2Saved', { 
+                amount: activeOrder 
+                  ? (activeOrder.items.reduce((sum, item) => sum + item.quantity, 0) * 2.5).toFixed(1) 
+                  : '2.5' 
+              })}
+            </Text>
           </Text>
         </View>
       </View>

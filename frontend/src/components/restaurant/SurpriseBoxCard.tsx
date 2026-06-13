@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SurpriseBox } from '../../types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 
@@ -19,24 +20,21 @@ export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: Surpris
 
   return (
     <View style={[styles.card, isOutOfStock && styles.cardDisabled]}>
-      {/* Header */}
+      
       <View style={styles.header}>
         <View style={styles.emojiWrap}>
-          <Text style={styles.emoji}>{box.emoji}</Text>
+          <Ionicons name="gift" size={28} color={Colors.primary} />
         </View>
         <View style={styles.headerInfo}>
           <Text style={styles.name}>{box.name}</Text>
           <Text style={styles.description} numberOfLines={2}>{box.description}</Text>
         </View>
-        {/* Discount tag */}
+        
         <View style={styles.discountTag}>
           <Text style={styles.discountText}>-%{discountPct}</Text>
         </View>
       </View>
 
-      {/* Contents removed since API only provides description */}
-
-      {/* Price + Actions */}
       <View style={styles.footer}>
         <View style={styles.priceWrap}>
           <Text style={styles.originalPrice}>₺{box.originalPrice}</Text>
@@ -55,9 +53,12 @@ export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: Surpris
             disabled={isOutOfStock}
             activeOpacity={0.85}
           >
-            <Text style={styles.addBtnText}>
-              {isOutOfStock ? '—' : '+ ' + t('restaurant.addToCart')}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              {!isOutOfStock && <Ionicons name="add" size={16} color={Colors.white} />}
+              <Text style={styles.addBtnText}>
+                {isOutOfStock ? '—' : t('restaurant.addToCart')}
+              </Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -66,7 +67,10 @@ export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: Surpris
             disabled={isOutOfStock}
             activeOpacity={0.85}
           >
-            <Text style={styles.suspendBtnText}>🤝 {t('restaurant.suspendMeal')}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <Ionicons name="heart-circle" size={16} color={Colors.teal} />
+              <Text style={styles.suspendBtnText}>{t('restaurant.suspendMeal')}</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -99,7 +103,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emoji: { fontSize: 28 },
   headerInfo: { flex: 1 },
   name: {
     fontSize: FontSize.md,

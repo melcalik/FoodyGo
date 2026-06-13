@@ -1,18 +1,17 @@
 import { create } from 'zustand';
 import { Order, OrderStatus, CartItem, OrderItem } from '../types';
 import api from '../services/api';
+import { restaurantImageMap } from '../utils/imageMap';
 
-/** Maps backend numeric status codes to frontend OrderStatus strings. */
 const STATUS_MAP: Record<number, OrderStatus> = {
   1: 'preparing',
-  2: 'confirmed',
+  2: 'preparing',
   3: 'preparing',
   4: 'ready',
   5: 'pickedUp',
   6: 'cancelled',
 };
 
-/** Maps a raw API order-item object to the typed OrderItem shape. */
 const mapOrderItem = (i: any): OrderItem => ({
   boxId: i.boxId,
   boxName: i.boxName,
@@ -46,8 +45,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
         id: o.id,
         restaurantId: o.restaurantId,
         restaurantName: o.restaurantName,
-        restaurantImage: o.restaurantImageUrl
-          ? { uri: o.restaurantImageUrl }
+        restaurantImage: o.restaurantImageUrl && restaurantImageMap[o.restaurantImageUrl]
+          ? restaurantImageMap[o.restaurantImageUrl]
           : require('../assets/images/restaurants/sweet.png'),
         items: o.items.map(mapOrderItem),
         totalAmount: o.totalAmount,

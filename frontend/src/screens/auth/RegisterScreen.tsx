@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { AuthStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Spacing, Radius } from '../../constants/theme';
 import { useAuthStore } from '../../store/useAuthStore';
+import { isValidEmail, isValidPassword } from '../../utils/validation';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
@@ -38,8 +39,12 @@ export default function RegisterScreen({ navigation }: Props) {
       setError(t('auth.passwordMismatch'));
       return false;
     }
-    if (password.length < 6) {
-      setError(t('auth.passwordTooShort'));
+    if (!isValidEmail(email)) {
+      setError(t('auth.invalidEmail'));
+      return false;
+    }
+    if (!isValidPassword(password)) {
+      setError(t('auth.invalidPassword'));
       return false;
     }
     return true;
@@ -104,7 +109,7 @@ export default function RegisterScreen({ navigation }: Props) {
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Header */}
+        
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Text style={styles.backIcon}>←</Text>
@@ -112,7 +117,6 @@ export default function RegisterScreen({ navigation }: Props) {
           <Text style={styles.headerTitle}>{t('auth.register')}</Text>
         </View>
 
-        {/* Hero */}
         <View style={styles.hero}>
           <Text style={styles.heroEmoji}>🌱</Text>
           <Text style={styles.heroTitle}>{t('auth.joinUs')}</Text>
@@ -121,7 +125,6 @@ export default function RegisterScreen({ navigation }: Props) {
           </Text>
         </View>
 
-        {/* Card */}
         <View style={styles.card}>
           {fields.map(field => (
             <View key={field.label} style={styles.inputGroup}>
@@ -157,7 +160,6 @@ export default function RegisterScreen({ navigation }: Props) {
             )}
           </TouchableOpacity>
 
-          {/* Terms */}
           <Text style={styles.terms}>
             {t('auth.termsText')}{' '}
             <Text style={styles.termsLink}>{t('auth.termsLink')}</Text>

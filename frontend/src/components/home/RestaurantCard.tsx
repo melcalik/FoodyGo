@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Restaurant } from '../../types';
 import { Colors, FontSize, FontWeight, Radius, Shadow, Spacing } from '../../constants/theme';
 
@@ -18,15 +19,14 @@ interface RestaurantCardProps {
 export default function RestaurantCard({ restaurant, onPress }: RestaurantCardProps) {
   const { t } = useTranslation();
 
-  const discount = Math.round(((180 - 65) / 180) * 100); // example max discount shown
+  const discount = Math.round(((180 - 65) / 180) * 100);
 
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.92}>
-      {/* Cover Image */}
+      
       <View style={styles.imageWrap}>
         <Image source={restaurant.image} style={styles.image} resizeMode="cover" />
 
-        {/* Status badge */}
         <View style={[styles.statusBadge, !restaurant.isOpen && styles.statusBadgeClosed]}>
           <Text style={styles.statusDot}>{restaurant.isOpen ? '●' : '●'}</Text>
           <Text style={styles.statusText}>
@@ -34,32 +34,32 @@ export default function RestaurantCard({ restaurant, onPress }: RestaurantCardPr
           </Text>
         </View>
 
-        {/* Suspended count */}
         {restaurant.suspendedCount > 0 && (
           <View style={styles.suspendedBadge}>
-            <Text style={styles.suspendedText}>🤝 {restaurant.suspendedCount}</Text>
+            <Ionicons name="heart-circle" size={14} color={Colors.white} />
+            <Text style={styles.suspendedText}>{restaurant.suspendedCount}</Text>
           </View>
         )}
       </View>
 
-      {/* Info */}
       <View style={styles.info}>
         <View style={styles.titleRow}>
           <Text style={styles.name} numberOfLines={1}>{restaurant.name}</Text>
           <View style={styles.ratingRow}>
-            <Text style={styles.ratingStar}>⭐</Text>
+            <Ionicons name="star" size={12} color="#FBBF24" />
             <Text style={styles.rating}>{restaurant.rating}</Text>
             <Text style={styles.reviewCount}>({restaurant.reviewCount})</Text>
           </View>
         </View>
 
         <View style={styles.metaRow}>
-          <Text style={styles.meta}>📍 {restaurant.distance}</Text>
+          <Ionicons name="location" size={12} color={Colors.textSecondary} />
+          <Text style={[styles.meta, { marginLeft: -4 }]}>{restaurant.distance}</Text>
           <View style={styles.dot} />
-          <Text style={styles.meta}>🕐 {restaurant.deliveryTime}</Text>
+          <Ionicons name="time-outline" size={12} color={Colors.textSecondary} />
+          <Text style={[styles.meta, { marginLeft: -4 }]}>{restaurant.deliveryTime}</Text>
         </View>
 
-        {/* Pickup time */}
         <View style={styles.pickupRow}>
           <View style={styles.savingBadge}>
             <Text style={styles.savingText}>%{discount}'e kadar indirim</Text>
@@ -110,10 +110,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.teal + 'DD',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: Radius.full,
+    gap: 4,
   },
   suspendedText: { fontSize: FontSize.xs, fontWeight: FontWeight.semibold, color: Colors.white },
 
@@ -133,9 +136,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
   },
-  ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 2 },
-  ratingStar: { fontSize: 13 },
-  rating: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.textPrimary },
+  ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  rating: { fontSize: FontSize.sm, fontWeight: 'bold', color: Colors.textPrimary },
   reviewCount: { fontSize: FontSize.xs, color: Colors.textMuted },
 
   metaRow: {

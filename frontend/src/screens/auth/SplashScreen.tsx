@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useRef } from 'react';
 import {
   View,
@@ -23,7 +23,7 @@ export default function SplashScreen({ navigation }: Props) {
   const taglineOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Logo animasyon zinciri
+
     Animated.sequence([
       Animated.delay(300),
       Animated.parallel([
@@ -60,10 +60,8 @@ export default function SplashScreen({ navigation }: Props) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
 
-      {/* Arka plan degrade circle */}
       <View style={styles.bgCircle} />
 
-      {/* Logo */}
       <Animated.View
         style={[
           styles.logoWrap,
@@ -77,17 +75,14 @@ export default function SplashScreen({ navigation }: Props) {
         />
       </Animated.View>
 
-      {/* App Name */}
       <Animated.Text style={[styles.appName, { opacity: textOpacity }]}>
         FoodyGo
       </Animated.Text>
 
-      {/* Tagline */}
       <Animated.Text style={[styles.tagline, { opacity: taglineOpacity }]}>
         Gıdaya Değer Kat
       </Animated.Text>
 
-      {/* Alt dot */}
       <Animated.View style={[styles.dotRow, { opacity: taglineOpacity }]}>
         {[0, 1, 2].map(i => (
           <View

@@ -55,7 +55,6 @@ public class OrderService : IOrderService
                     throw new Exception($"Not enough stock for box {box.Name}. Available: {box.Stock}");
                 }
 
-                // Deduct stock
                 box.Stock -= itemDto.Quantity;
                 await _boxRepository.UpdateAsync(box);
 
@@ -70,7 +69,6 @@ public class OrderService : IOrderService
                 order.Items.Add(orderItem);
                 order.TotalAmount += orderItem.UnitPrice * orderItem.Quantity;
 
-                // If the item is Suspended, add each quantity as a separate SuspendedMeal
                 if (itemDto.IsSuspended)
                 {
                     for (int i = 0; i < itemDto.Quantity; i++)
@@ -112,6 +110,14 @@ public class OrderService : IOrderService
 
         if (order == null) return null;
         return MapToDto(order, order.Restaurant);
+    }
+
+    public async Task<int> GetTodayTotalRescuedMealsAsync()
+    {
+        var today = DateTime.UtcNow.Date;
+        var orders = await _orderRepository.FindAsync(o => o.CreatedAt >= today, q => q.Include(o => o.Items));
+        int count = orders.SelectMany(o => o.Items).Sum(i => i.Quantity);
+        return count;
     }
 
     private OrderResponseDto MapToDto(Order order, Restaurant restaurant)
