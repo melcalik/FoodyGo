@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { SuspendedMeal } from '../types';
+import { restaurantImageMap } from '../utils/imageMap';
 import api from '../services/api';
 
 interface SuspendedState {
@@ -24,7 +25,9 @@ export const useSuspendedStore = create<SuspendedState>((set) => ({
         id: m.id,
         restaurantId: m.restaurantId,
         restaurantName: m.restaurantName,
-        restaurantImageUrl: m.restaurantImageUrl,
+        restaurantImageUrl: m.restaurantImageUrl && restaurantImageMap[m.restaurantImageUrl] 
+          ? restaurantImageMap[m.restaurantImageUrl] 
+          : require('../assets/images/restaurants/sweet.png'),
         boxId: m.boxId,
         boxName: m.boxName,
         donorName: m.donorName,

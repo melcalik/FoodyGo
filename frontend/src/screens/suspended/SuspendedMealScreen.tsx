@@ -113,7 +113,7 @@ export default function SuspendedMealScreen({ navigation }: Props) {
           ) : (
             availableMeals.map(meal => (
               <View key={meal.id} style={styles.mealCard}>
-                <Image source={{ uri: meal.restaurantImageUrl }} style={styles.restaurantImage} />
+                <Image source={meal.restaurantImageUrl as any} style={styles.restaurantImage} />
                 <View style={styles.mealInfo}>
                   <Text style={styles.mealBoxName}>{meal.boxName}</Text>
                   <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
