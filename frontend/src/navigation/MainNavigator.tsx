@@ -56,6 +56,7 @@ function OrdersStackNavigator() {
   );
 }
 
+import AddressesScreen from '../screens/profile/AddressesScreen';
 import HelpCenterScreen from '../screens/profile/HelpCenterScreen';
 import TermsOfServiceScreen from '../screens/profile/TermsOfServiceScreen';
 
@@ -66,6 +67,7 @@ function ProfileStackNavigator() {
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
       <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
       <ProfileStack.Screen name="PaymentMethods" component={PaymentMethodsScreen} />
+      <ProfileStack.Screen name="Addresses" component={AddressesScreen} />
       <ProfileStack.Screen name="HelpCenter" component={HelpCenterScreen} />
       <ProfileStack.Screen name="TermsOfService" component={TermsOfServiceScreen} />
     </ProfileStack.Navigator>

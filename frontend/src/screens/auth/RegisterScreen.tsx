@@ -30,12 +30,16 @@ export default function RegisterScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [city, setCity] = useState('');
+  const [district, setDistrict] = useState('');
+  const [addressTitle, setAddressTitle] = useState('');
+  const [addressDetail, setAddressDetail] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
   const validate = () => {
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !addressTitle || !city || !district || !addressDetail) {
       setError(t('auth.fillAllFields'));
       return false;
     }
@@ -57,7 +61,7 @@ export default function RegisterScreen({ navigation }: Props) {
   const handleRegister = async () => {
     if (!validate()) return;
     setError('');
-    const success = await register(name, email, password);
+    const success = await register(name, email, password, addressTitle, city, district, addressDetail);
     if (!success) {
       setError(useAuthStore.getState().error || t('auth.registerFailed'));
     }
@@ -81,6 +85,42 @@ export default function RegisterScreen({ navigation }: Props) {
       icon: '✉️',
       secure: false,
       keyboardType: 'email-address' as const,
+    },
+    {
+      label: "Adres Başlığı",
+      value: addressTitle,
+      setter: setAddressTitle,
+      placeholder: "Ev",
+      icon: '🏷️',
+      secure: false,
+      keyboardType: 'default' as const,
+    },
+    {
+      label: "İl",
+      value: city,
+      setter: setCity,
+      placeholder: "İstanbul",
+      icon: '🏙️',
+      secure: false,
+      keyboardType: 'default' as const,
+    },
+    {
+      label: "İlçe",
+      value: district,
+      setter: setDistrict,
+      placeholder: "Ataşehir",
+      icon: '📍',
+      secure: false,
+      keyboardType: 'default' as const,
+    },
+    {
+      label: "Açık Adres",
+      value: addressDetail,
+      setter: setAddressDetail,
+      placeholder: "Atatürk Mah. No:2",
+      icon: '🏠',
+      secure: false,
+      keyboardType: 'default' as const,
     },
     {
       label: t('auth.password'),

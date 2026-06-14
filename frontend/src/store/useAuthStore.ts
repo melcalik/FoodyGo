@@ -19,7 +19,7 @@ interface AuthState {
   userStats: UserStats | null;
 
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, addressTitle: string, city: string, district: string, addressDetail: string) => Promise<boolean>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
   fetchUserStats: () => Promise<void>;
@@ -61,10 +61,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  register: async (name, email, password) => {
+  register: async (name, email, password, addressTitle, city, district, addressDetail) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post('/Auth/register', { name, email, password });
+      const response = await api.post('/auth/register', { name, email, password, addressTitle, city, district, addressDetail });
       const { token, user } = response.data;
       const mappedUser = mapApiUser(user);
 

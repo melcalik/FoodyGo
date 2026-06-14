@@ -9,6 +9,7 @@ public class User : BaseEntity
     public string Avatar { get; set; } = string.Empty;
     public decimal WalletBalance { get; set; } = 0;
 
+    public ICollection<UserAddress> Addresses { get; set; } = new List<UserAddress>();
     public ICollection<Order> Orders { get; set; } = new List<Order>();
     public ICollection<SuspendedMeal> DonatedMeals { get; set; } = new List<SuspendedMeal>();
     public ICollection<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();

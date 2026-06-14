@@ -22,6 +22,7 @@ import CategoryFilter from '../../components/home/CategoryFilter';
 import RestaurantCard from '../../components/home/RestaurantCard';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useRestaurantStore } from '../../store/useRestaurantStore';
+import { useAddressStore } from '../../store/useAddressStore';
 import api from '../../services/api';
 import { HomeScreenStyles as styles } from '../../styles/screenStyles';
 
@@ -31,6 +32,7 @@ export default function HomeScreen({ navigation }: Props) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const { restaurants, fetchRestaurants } = useRestaurantStore();
+  const { addresses, fetchAddresses } = useAddressStore();
 
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<RestaurantCategory | 'all'>('all');
@@ -38,12 +40,15 @@ export default function HomeScreen({ navigation }: Props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchRestaurants();
+      fetchAddresses().then(() => fetchRestaurants());
       api.get('/Orders/daily-stats')
         .then(res => setDailyStats(res.data.count))
         .catch(err => console.error('Failed to load daily stats', err));
-    }, [fetchRestaurants])
+    }, [fetchRestaurants, fetchAddresses])
   );
+
+  const activeAddress = addresses.find(a => a.isActive);
+  const locationLabel = activeAddress ? `${activeAddress.district}, ${activeAddress.city}` : t('home.locationLabel');
 
   const filtered = useMemo(() => {
     return restaurants.filter(r => {
@@ -71,7 +76,7 @@ export default function HomeScreen({ navigation }: Props) {
                 </Text>
                 <View style={styles.locationRow}>
                   <Ionicons name="location" size={14} color={Colors.textSecondary} />
-                  <Text style={styles.location}>{t('home.locationLabel')}</Text>
+                  <Text style={styles.location}>{locationLabel}</Text>
                 </View>
               </View>
               <TouchableOpacity

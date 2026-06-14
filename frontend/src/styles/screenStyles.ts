@@ -572,7 +572,7 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
 // --- HomeScreen ---
 export const HomeScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
-  list: { paddingBottom: 80 },
+  list: {},
 
   topBar: {
     flexDirection: 'row',
@@ -591,7 +591,7 @@ export const HomeScreenStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    marginTop: 2,
+    marginTop: 8,
   },
   location: { fontSize: FontSize.sm, color: Colors.textSecondary },
   notifBtn: {
@@ -618,7 +618,6 @@ export const HomeScreenStyles = StyleSheet.create({
     borderColor: Colors.teal + '33',
     borderRadius: 12,
     marginHorizontal: Spacing.md,
-    marginBottom: Spacing.sm,
     padding: Spacing.md,
     gap: 12,
   },

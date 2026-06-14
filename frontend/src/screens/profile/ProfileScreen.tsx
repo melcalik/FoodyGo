@@ -93,7 +93,7 @@ export default function ProfileScreen({ navigation }: Props) {
           
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
+            onPress={() => navigation.navigate('Addresses')}
           >
             <Ionicons name="location" size={20} color={Colors.textPrimary} style={styles.menuItemIcon} />
             <Text style={styles.menuItemText}>{t('profile.addresses')}</Text>

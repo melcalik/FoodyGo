@@ -33,6 +33,7 @@ export type ProfileStackParamList = {
   Profile: undefined;
   EditProfile: undefined;
   PaymentMethods: undefined;
+  Addresses: undefined;
   HelpCenter: undefined;
   TermsOfService: undefined;
 };

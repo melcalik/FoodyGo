@@ -43,6 +43,27 @@ public class AuthService : IAuthService
             WalletBalance = 0,
         };
 
+        var districtLower = registerDto.District.ToLowerInvariant();
+        double lat = 41.0082; // Default Istanbul
+        double lng = 28.9784;
+
+        if (districtLower.Contains("kadıköy")) { lat = 40.9819; lng = 29.0277; }
+        else if (districtLower.Contains("beyoğlu")) { lat = 41.0340; lng = 28.9799; }
+        else if (districtLower.Contains("nişantaşı")) { lat = 41.0519; lng = 28.9915; }
+        else if (districtLower.Contains("üsküdar")) { lat = 41.0253; lng = 29.0354; }
+        else if (districtLower.Contains("beşiktaş")) { lat = 41.0422; lng = 29.0083; }
+
+        user.Addresses.Add(new UserAddress
+        {
+            Title = !string.IsNullOrWhiteSpace(registerDto.AddressTitle) ? registerDto.AddressTitle : "Ev",
+            City = registerDto.City,
+            District = registerDto.District,
+            AddressDetail = registerDto.AddressDetail,
+            Latitude = lat,
+            Longitude = lng,
+            IsActive = true
+        });
+
         await _userRepo.AddAsync(user);
 
         return new AuthResponseDto { Token = GenerateJwtToken(user), User = MapToUserDto(user) };
