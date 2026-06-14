@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodyGo.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260614204947_AddUserAddressAndRestaurantCoordinates")]
-    partial class AddUserAddressAndRestaurantCoordinates
+    [Migration("20260614223020_AddUserAddresses")]
+    partial class AddUserAddresses
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -299,15 +299,13 @@ namespace FoodyGo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Distance")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("REAL");
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -334,9 +332,8 @@ namespace FoodyGo.Infrastructure.Migrations
                             Category = "sweet",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DeliveryTime = "19:00 - 21:00",
+                            Distance = "0.8 km",
                             ImageUrl = "sweet.png",
-                            Latitude = 40.981900000000003,
-                            Longitude = 29.027699999999999,
                             Name = "Pasta Dünyası",
                             Rating = 4.7999999999999998,
                             ReviewCount = 142
@@ -348,9 +345,8 @@ namespace FoodyGo.Infrastructure.Migrations
                             Category = "homemade",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DeliveryTime = "19:30 - 21:00",
+                            Distance = "1.2 km",
                             ImageUrl = "homemade.png",
-                            Latitude = 40.9801,
-                            Longitude = 29.023199999999999,
                             Name = "Anne Elinden",
                             Rating = 4.5999999999999996,
                             ReviewCount = 89
@@ -362,9 +358,8 @@ namespace FoodyGo.Infrastructure.Migrations
                             Category = "pizza",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DeliveryTime = "20:00 - 22:00",
+                            Distance = "2.1 km",
                             ImageUrl = "pizza.png",
-                            Latitude = 41.033999999999999,
-                            Longitude = 28.979900000000001,
                             Name = "Forno Napoli",
                             Rating = 4.7000000000000002,
                             ReviewCount = 213
@@ -376,9 +371,8 @@ namespace FoodyGo.Infrastructure.Migrations
                             Category = "burger",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DeliveryTime = "21:00 - 23:00",
+                            Distance = "3.4 km",
                             ImageUrl = "burger.png",
-                            Latitude = 41.051900000000003,
-                            Longitude = 28.991499999999998,
                             Name = "Smash Bros. Burger",
                             Rating = 4.5,
                             ReviewCount = 176
@@ -390,9 +384,8 @@ namespace FoodyGo.Infrastructure.Migrations
                             Category = "kebab",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DeliveryTime = "18:00 - 20:00",
+                            Distance = "1.7 km",
                             ImageUrl = "kebab.png",
-                            Latitude = 41.025300000000001,
-                            Longitude = 29.035399999999999,
                             Name = "Usta Dönerci",
                             Rating = 4.9000000000000004,
                             ReviewCount = 308
@@ -404,9 +397,8 @@ namespace FoodyGo.Infrastructure.Migrations
                             Category = "sweet",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DeliveryTime = "20:30 - 22:30",
+                            Distance = "4.2 km",
                             ImageUrl = "sweet.png",
-                            Latitude = 41.0227,
-                            Longitude = 28.974900000000002,
                             Name = "Güllüoğlu Baklava",
                             Rating = 4.9000000000000004,
                             ReviewCount = 421
@@ -555,12 +547,6 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("REAL");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -575,7 +561,7 @@ namespace FoodyGo.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAddresses");
+                    b.ToTable("UserAddress");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Box", b =>

@@ -520,6 +520,47 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("FoodyGo.Core.Entities.UserAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddress");
+                });
+
             modelBuilder.Entity("FoodyGo.Core.Entities.Box", b =>
                 {
                     b.HasOne("FoodyGo.Core.Entities.Restaurant", "Restaurant")
@@ -634,6 +675,17 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("FoodyGo.Core.Entities.UserAddress", b =>
+                {
+                    b.HasOne("FoodyGo.Core.Entities.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FoodyGo.Core.Entities.Order", b =>
                 {
                     b.Navigation("Items");
@@ -652,6 +704,8 @@ namespace FoodyGo.Infrastructure.Migrations
 
             modelBuilder.Entity("FoodyGo.Core.Entities.User", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("DonatedMeals");
 
                     b.Navigation("Orders");

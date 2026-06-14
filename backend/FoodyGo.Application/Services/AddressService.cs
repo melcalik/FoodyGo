@@ -25,26 +25,14 @@ public class AddressService : IAddressService
     {
         var existing = await _addressRepo.FindAsync(a => a.UserId == userId);
         
-        var districtLower = dto.District.ToLowerInvariant();
-        double lat = 41.0082; // Default Istanbul
-        double lng = 28.9784;
-
-        if (districtLower.Contains("kadıköy")) { lat = 40.9819; lng = 29.0277; }
-        else if (districtLower.Contains("beyoğlu")) { lat = 41.0340; lng = 28.9799; }
-        else if (districtLower.Contains("nişantaşı")) { lat = 41.0519; lng = 28.9915; }
-        else if (districtLower.Contains("üsküdar")) { lat = 41.0253; lng = 29.0354; }
-        else if (districtLower.Contains("beşiktaş")) { lat = 41.0422; lng = 29.0083; }
-
         var address = new UserAddress
         {
             UserId = userId,
-            Title = dto.Title,
+            Title = string.IsNullOrWhiteSpace(dto.Title) ? "Ev" : dto.Title,
             City = dto.City,
             District = dto.District,
             AddressDetail = dto.AddressDetail,
-            Latitude = lat,
-            Longitude = lng,
-            IsActive = !existing.Any() // Make active if it's the first one
+            IsActive = !existing.Any()
         };
 
         await _addressRepo.AddAsync(address);
