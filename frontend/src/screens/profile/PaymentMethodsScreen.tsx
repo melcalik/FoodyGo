@@ -55,7 +55,7 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
 
   const handleAdd = async () => {
     if (!cardName || !cardNumber || !cardHolder || !expiry || !cvv) {
-      Alert.alert(t('common.error'), t('payment.fillAll'));
+      Alert.alert('Eksik Bilgi', t('payment.fillAll'));
       return;
     }
 
@@ -63,15 +63,31 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
     const cleanExpiry = expiry.replace(/\D/g, '');
 
     if (cleanCard.length !== 16) {
-      Alert.alert(t('common.error'), 'Kart numarası tam 16 rakam olmalıdır.');
+      Alert.alert('Geçersiz Kart Numarası', 'Kart numarası tam 16 rakam olmalıdır.');
       return;
     }
     if (cleanExpiry.length !== 4) {
-      Alert.alert(t('common.error'), 'Son kullanma tarihi tam 4 rakam olmalıdır (AA/YY).');
+      Alert.alert('Geçersiz Tarih', 'Son kullanma tarihi tam 4 rakam olmalıdır (AA/YY).');
       return;
     }
+
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+    const expMonth = parseInt(cleanExpiry.slice(0, 2), 10);
+    const expYear = parseInt(cleanExpiry.slice(2, 4), 10);
+
+    if (expMonth < 1 || expMonth > 12) {
+      Alert.alert('Geçersiz Ay', 'Geçersiz bir ay girdiniz (01-12).');
+      return;
+    }
+
+    if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+      Alert.alert('Süresi Dolmuş Kart', 'Kartınızın son kullanma tarihi geçmiş. Lütfen geçerli bir kart girin.');
+      return;
+    }
+
     if (cvv.length !== 3) {
-      Alert.alert(t('common.error'), 'CVV tam 3 rakam olmalıdır.');
+      Alert.alert('Geçersiz CVV', 'CVV tam 3 rakam olmalıdır.');
       return;
     }
 
@@ -116,7 +132,11 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t('profile.paymentMethods')}</Text>
           <TouchableOpacity style={styles.addBtn} onPress={() => setShowAddForm(!showAddForm)}>
-            <Text style={styles.addBtnText}>{showAddForm ? t('common.cancel') : '+'}</Text>
+            {showAddForm ? (
+              <Ionicons name="close" size={24} color={Colors.white} />
+            ) : (
+              <Text style={styles.addBtnText}>+</Text>
+            )}
           </TouchableOpacity>
         </View>
 

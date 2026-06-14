@@ -27,24 +27,28 @@ public class UserService : IUserService
 
         int totalRescued = 0;
         int totalSuspended = 0;
+        int totalItems = 0;
         decimal moneySaved = 0;
 
         foreach (var order in completedOrders)
         {
             foreach (var item in order.Items)
             {
+                totalItems += item.Quantity;
+
                 if (item.IsSuspended)
                 {
                     totalSuspended += item.Quantity;
                 }
-                else
+                
+                if (item.UnitPrice > 0)
                 {
                     totalRescued += item.Quantity;
                 }
 
                 if (item.Box != null)
                 {
-                    moneySaved += (item.Box.OriginalPrice - item.Box.DiscountedPrice) * item.Quantity;
+                    moneySaved += (item.Box.OriginalPrice - item.UnitPrice) * item.Quantity;
                 }
             }
         }

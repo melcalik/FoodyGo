@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { AuthStackParamList } from '../../navigation/types';
@@ -27,6 +28,7 @@ export default function LoginScreen({ navigation }: Props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
@@ -83,21 +85,22 @@ export default function LoginScreen({ navigation }: Props) {
             <View style={styles.inputWrap}>
               <Text style={styles.inputIcon}>🔒</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { flex: 1 }]}
                 value={password}
                 onChangeText={setPassword}
                 placeholder={t('auth.passwordPlaceholder')}
                 placeholderTextColor={Colors.textMuted}
-                secureTextEntry
+                secureTextEntry={!showPassword}
               />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ padding: 10 }}>
+                <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color={Colors.textMuted} />
+              </TouchableOpacity>
             </View>
           </View>
 
           {!!error && <Text style={styles.errorText}>{error}</Text>}
 
-          <TouchableOpacity style={styles.forgotWrap}>
-            <Text style={styles.forgotText}>{t('auth.forgotPassword')}</Text>
-          </TouchableOpacity>
+
 
           <TouchableOpacity
             style={[styles.primaryBtn, isLoading && styles.primaryBtnDisabled]}
@@ -110,20 +113,6 @@ export default function LoginScreen({ navigation }: Props) {
             ) : (
               <Text style={styles.primaryBtnText}>{t('auth.login')}</Text>
             )}
-          </TouchableOpacity>
-
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>{t('common.or')}</Text>
-            <View style={styles.dividerLine} />
-          </View>
-
-          <TouchableOpacity
-            style={styles.socialBtn}
-            onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
-          >
-            <Text style={styles.socialIcon}>🔍</Text>
-            <Text style={styles.socialBtnText}>{t('auth.continueWithGoogle')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

@@ -31,6 +31,7 @@ export const useRestaurantStore = create<RestaurantState>((set) => ({
         isOpen: true,
         deliveryTime: r.deliveryTime,
         suspendedCount: r.suspendedCount,
+        boxNames: r.boxNames || [],
       }));
       set({ restaurants, isLoading: false });
     } catch (error: any) {

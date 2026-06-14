@@ -15,4 +15,5 @@ public class Order : BaseEntity
     public OrderType Type { get; set; } = OrderType.Standard;
 
     public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
+    public Review? Review { get; set; }
 }

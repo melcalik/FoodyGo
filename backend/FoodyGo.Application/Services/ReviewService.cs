@@ -24,6 +24,10 @@ public class ReviewService : IReviewService
         if (dto.Rating < 1 || dto.Rating > 5)
             throw new ArgumentException("Rating must be between 1 and 5.");
 
+        var existingReview = await _reviewRepository.FindAsync(r => r.OrderId == dto.OrderId);
+        if (existingReview.Any())
+            throw new Exception("You have already reviewed this order.");
+
         var restaurant = await _restaurantRepository.GetByIdAsync(dto.RestaurantId);
         if (restaurant == null) throw new Exception("Restaurant not found.");
 

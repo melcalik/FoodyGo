@@ -19,9 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomeStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import SurpriseBoxCard from '../../components/restaurant/SurpriseBoxCard';
-import ReviewItem from '../../components/restaurant/ReviewItem';
 import { useCartStore } from '../../store/useCartStore';
-import { useReviewStore } from '../../store/useReviewStore';
 import { SurpriseBox } from '../../types';
 import { restaurantImageMap as imageMap } from '../../utils/imageMap';
 import { RestaurantDetailScreenStyles as styles } from '../../styles/screenStyles';
@@ -34,8 +32,6 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
   const { t } = useTranslation();
   const { restaurant } = route.params;
   const { addItem } = useCartStore();
-  const { reviews, fetchReviewsByRestaurant } = useReviewStore();
-  const [activeTab, setActiveTab] = useState<Tab>('boxes');
 
   const [boxes, setBoxes] = useState<SurpriseBox[]>([]);
   const [isLoadingBoxes, setIsLoadingBoxes] = useState(true);
@@ -65,32 +61,17 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
       };
 
       fetchBoxes();
-      fetchReviewsByRestaurant(restaurant.id);
     }, [restaurant.id])
   );
 
   const handleAddToCart = (boxId: string) => {
     const box = boxes.find(b => b.id === boxId)!;
     addItem(box, restaurant, false);
-    setAlertConfig({
-      visible: true,
-      title: t('cart.addedTitle'),
-      desc: t('cart.addedDesc', { name: box.name }),
-      icon: 'cart',
-      color: Colors.primary
-    });
   };
 
   const handleSuspend = (boxId: string) => {
     const box = boxes.find(b => b.id === boxId)!;
     addItem(box, restaurant, true);
-    setAlertConfig({
-      visible: true,
-      title: t('cart.suspendedTitle'),
-      desc: t('cart.suspendedDesc', { name: box.name }),
-      icon: 'heart',
-      color: Colors.teal
-    });
   };
 
   return (
@@ -98,11 +79,10 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
       <FlatList
-        data={(activeTab === 'boxes' ? boxes : reviews) as any[]}
+        data={boxes}
         keyExtractor={item => item.id}
         ListHeaderComponent={
           <>
-            
             <View style={styles.coverWrap}>
               <Image source={restaurant.image} style={styles.cover} resizeMode="cover" />
               
@@ -129,8 +109,14 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
               <View style={styles.statsRow}>
                 <View style={styles.statItem}>
                   <Ionicons name="star" size={14} color="#FBBF24" />
-                  <Text style={styles.statVal}>{restaurant.rating}</Text>
-                  <Text style={styles.statLabel}>({restaurant.reviewCount} {t('home.reviews')})</Text>
+                  {restaurant.reviewCount === 0 ? (
+                    <Text style={styles.statVal}>{t('restaurant.noReviews', { defaultValue: 'Yorum Yok' })}</Text>
+                  ) : (
+                    <>
+                      <Text style={styles.statVal}>{restaurant.rating}</Text>
+                      <Text style={styles.statLabel}>({restaurant.reviewCount} {t('home.reviews')})</Text>
+                    </>
+                  )}
                 </View>
                 <View style={styles.statDivider} />
                 <View style={styles.statItem}>
@@ -158,35 +144,9 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
                 </View>
               )}
             </View>
-
-            <View style={styles.tabs}>
-              <TouchableOpacity
-                style={[styles.tab, activeTab === 'boxes' && styles.tabActive]}
-                onPress={() => setActiveTab('boxes')}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Ionicons name="gift" size={14} color={activeTab === 'boxes' ? Colors.white : Colors.textSecondary} />
-                  <Text style={[styles.tabText, activeTab === 'boxes' && styles.tabTextActive]}>
-                    {t('restaurant.surpriseBoxes')} ({boxes.length})
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.tab, activeTab === 'reviews' && styles.tabActive]}
-                onPress={() => setActiveTab('reviews')}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Ionicons name="chatbubbles" size={14} color={activeTab === 'reviews' ? Colors.white : Colors.textSecondary} />
-                  <Text style={[styles.tabText, activeTab === 'reviews' && styles.tabTextActive]}>
-                    {t('restaurant.reviews')} ({reviews.length})
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
           </>
         }
         renderItem={({ item }) =>
-          activeTab === 'boxes' ? (
             <View style={styles.itemWrap}>
               <SurpriseBoxCard
                 box={item as any}
@@ -194,22 +154,17 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
                 onSuspend={() => handleSuspend((item as any).id)}
               />
             </View>
-          ) : (
-            <View style={styles.itemWrap}>
-              <ReviewItem review={item as any} />
-            </View>
-          )
         }
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons 
-              name={activeTab === 'boxes' ? 'cube-outline' : 'chatbubbles-outline'} 
+              name={'cube-outline'} 
               size={48} 
               color={Colors.textMuted} 
               style={{ marginBottom: 12 }} 
             />
             <Text style={styles.emptyText}>
-              {activeTab === 'boxes' ? t('restaurant.noBoxes') : t('restaurant.noReviews')}
+              {t('restaurant.noBoxes')}
             </Text>
           </View>
         }

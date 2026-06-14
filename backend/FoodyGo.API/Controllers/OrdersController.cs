@@ -29,8 +29,7 @@ public class OrdersController : BaseController
         }
         catch (Exception ex)
         {
-            var msg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-            return BadRequest(new { message = ex.Message + " Inner: " + msg });
+            return BadRequest(new { message = ex.Message });
         }
     }
 

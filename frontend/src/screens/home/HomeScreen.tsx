@@ -50,8 +50,7 @@ export default function HomeScreen({ navigation }: Props) {
       const matchCat = category === 'all' || r.category === category;
       const matchSearch =
         search.length === 0 ||
-        r.name.toLowerCase().includes(search.toLowerCase()) ||
-        r.address.toLowerCase().includes(search.toLowerCase());
+        r.name.toLowerCase().includes(search.toLowerCase());
       return matchCat && matchSearch;
     });
   }, [search, category, restaurants]);

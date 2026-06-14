@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { CartStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
@@ -27,6 +28,15 @@ export default function PaymentSuccessScreen({ navigation }: Props) {
       navigation.getParent()?.navigate('OrdersTab');
     }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const timer = setTimeout(() => {
+        resetCartStack();
+      }, 10000);
+      return () => clearTimeout(timer);
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.safe}>

@@ -38,7 +38,7 @@ export default function CartItemRow({ item }: CartItemRowProps) {
       <View style={styles.controls}>
         <TouchableOpacity
           style={styles.qtyBtn}
-          onPress={() => updateQuantity(item.box.id, item.quantity - 1)}
+          onPress={() => updateQuantity(item.box.id, item.quantity - 1, item.isSuspended, item.isClaimingMealId)}
         >
           {item.quantity === 1 ? (
             <Ionicons name="trash-outline" size={16} color={Colors.textPrimary} />
@@ -51,7 +51,7 @@ export default function CartItemRow({ item }: CartItemRowProps) {
 
         <TouchableOpacity
           style={[styles.qtyBtn, styles.qtyBtnAdd]}
-          onPress={() => updateQuantity(item.box.id, item.quantity + 1)}
+          onPress={() => updateQuantity(item.box.id, item.quantity + 1, item.isSuspended, item.isClaimingMealId)}
         >
           <Text style={[styles.qtyBtnText, { color: Colors.white }]}>+</Text>
         </TouchableOpacity>

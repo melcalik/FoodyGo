@@ -35,6 +35,7 @@ public class OrderResponseDto
     public OrderType Type { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public bool IsReviewed { get; set; }
     public List<OrderItemResponseDto> Items { get; set; } = new();
 }
 

@@ -31,11 +31,13 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
   const { orders, fetchOrders } = useOrderStore();
 
   const order = useMemo(() => orders.find(o => o.id === orderId), [orders, orderId]);
-  const STATUS_STEPS = getStatusSteps(t);
+  const STATUS_STEPS = order?.type === 'suspended'
+    ? [{ key: 'suspended_left', title: 'Ürün Askıya Bırakıldı', icon: 'heart' }]
+    : getStatusSteps(t);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
-    if (order && order.status !== 'pickedUp' && order.status !== 'cancelled') {
+    if (order && order.status !== 'pickedUp' && order.status !== 'cancelled' && order.type !== 'suspended') {
       interval = setInterval(() => {
         fetchOrders();
       }, 5000);
@@ -43,27 +45,29 @@ export default function OrderTrackingScreen({ route, navigation }: Props) {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [order?.status]);
+  }, [order?.status, order?.type]);
 
   if (!order) {
     return (
       <SafeAreaView style={styles.safe}>
         <Text style={styles.errorText}>{t('order.notFound')}</Text>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('OrderHistory')}>
           <Text style={styles.backBtnText}>{t('common.back')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
   }
 
-  const currentStepIndex = STATUS_STEPS.findIndex(s => s.key === order.status);
+  const currentStepIndex = order.type === 'suspended' 
+    ? 0 
+    : STATUS_STEPS.findIndex(s => s.key === order.status);
 
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
 
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerBackBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.headerBackBtn} onPress={() => navigation.navigate('OrderHistory')}>
           <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t('order.tracking')}</Text>

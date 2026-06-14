@@ -20,6 +20,7 @@ export interface Restaurant {
   isOpen: boolean;
   deliveryTime: string;
   suspendedCount: number;
+  boxNames?: string[];
 }
 
 export interface SurpriseBox {
@@ -54,6 +55,7 @@ export interface Order {
   type: OrderType;
   createdAt: Date;
   updatedAt: Date;
+  isReviewed?: boolean;
 }
 
 export interface OrderItem {

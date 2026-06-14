@@ -32,26 +32,28 @@ export default function EditProfileScreen({ navigation }: Props) {
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSave = async () => {
     if (!name || !email) {
-      Alert.alert(t('common.error'), t('auth.fillAllFields'));
+      Alert.alert('Eksik Bilgi', t('auth.fillAllFields'));
       return;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert(t('common.error'), t('auth.invalidEmail'));
+      Alert.alert('Geçersiz E-posta', t('auth.invalidEmail'));
       return;
     }
 
     if (password) {
       if (!isValidPassword(password)) {
-        Alert.alert(t('common.error'), t('auth.invalidPassword'));
+        Alert.alert('Geçersiz Şifre', t('auth.invalidPassword'));
         return;
       }
       if (password !== confirmPassword) {
-        Alert.alert(t('common.error'), t('auth.passwordMismatch'));
+        Alert.alert('Şifre Uyuşmazlığı', t('auth.passwordMismatch'));
         return;
       }
     }
@@ -112,26 +114,36 @@ export default function EditProfileScreen({ navigation }: Props) {
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('profile.newPassword')}</Text>
-              <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                placeholder={t('profile.newPasswordPlaceholder')}
-                placeholderTextColor={Colors.textMuted}
-                secureTextEntry
-              />
+              <View style={[styles.input, { flexDirection: 'row', alignItems: 'center', padding: 0 }]}>
+                <TextInput
+                  style={{ flex: 1, padding: Spacing.md, color: Colors.textPrimary }}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder={t('profile.newPasswordPlaceholder')}
+                  placeholderTextColor={Colors.textMuted}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ paddingHorizontal: 15 }}>
+                  <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color={Colors.textMuted} />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('profile.confirmNewPassword')}</Text>
-              <TextInput
-                style={styles.input}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                placeholder={t('profile.newPasswordPlaceholder')}
-                placeholderTextColor={Colors.textMuted}
-                secureTextEntry
-              />
+              <View style={[styles.input, { flexDirection: 'row', alignItems: 'center', padding: 0 }]}>
+                <TextInput
+                  style={{ flex: 1, padding: Spacing.md, color: Colors.textPrimary }}
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  placeholder={t('profile.newPasswordPlaceholder')}
+                  placeholderTextColor={Colors.textMuted}
+                  secureTextEntry={!showConfirmPassword}
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={{ paddingHorizontal: 15 }}>
+                  <Ionicons name={showConfirmPassword ? 'eye-off' : 'eye'} size={20} color={Colors.textMuted} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </ScrollView>

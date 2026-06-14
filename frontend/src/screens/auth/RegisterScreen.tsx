@@ -11,6 +11,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { AuthStackParamList } from '../../navigation/types';
@@ -29,6 +30,8 @@ export default function RegisterScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
   const validate = () => {
@@ -85,8 +88,11 @@ export default function RegisterScreen({ navigation }: Props) {
       setter: setPassword,
       placeholder: t('auth.passwordPlaceholder'),
       icon: '🔒',
-      secure: true,
+      secure: !showPassword,
       keyboardType: 'default' as const,
+      isPassword: true,
+      show: showPassword,
+      onToggle: () => setShowPassword(!showPassword)
     },
     {
       label: t('auth.confirmPassword'),
@@ -94,8 +100,11 @@ export default function RegisterScreen({ navigation }: Props) {
       setter: setConfirmPassword,
       placeholder: t('auth.passwordPlaceholder'),
       icon: '🔒',
-      secure: true,
+      secure: !showConfirmPassword,
       keyboardType: 'default' as const,
+      isPassword: true,
+      show: showConfirmPassword,
+      onToggle: () => setShowConfirmPassword(!showConfirmPassword)
     },
   ];
 
@@ -133,15 +142,20 @@ export default function RegisterScreen({ navigation }: Props) {
               <View style={styles.inputWrap}>
                 <Text style={styles.inputIcon}>{field.icon}</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, (field as any).isPassword && { flex: 1 }]}
                   value={field.value}
                   onChangeText={field.setter}
                   placeholder={field.placeholder}
                   placeholderTextColor={Colors.textMuted}
                   secureTextEntry={field.secure}
                   keyboardType={field.keyboardType}
-                  autoCapitalize={field.keyboardType === 'email-address' ? 'none' : 'words'}
+                  autoCapitalize="none"
                 />
+                {(field as any).isPassword && (
+                  <TouchableOpacity onPress={(field as any).onToggle} style={{ padding: 10 }}>
+                    <Ionicons name={(field as any).show ? 'eye-off' : 'eye'} size={20} color={Colors.textMuted} />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           ))}

@@ -56,6 +56,9 @@ function OrdersStackNavigator() {
   );
 }
 
+import HelpCenterScreen from '../screens/profile/HelpCenterScreen';
+import TermsOfServiceScreen from '../screens/profile/TermsOfServiceScreen';
+
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 function ProfileStackNavigator() {
   return (
@@ -63,6 +66,8 @@ function ProfileStackNavigator() {
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
       <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
       <ProfileStack.Screen name="PaymentMethods" component={PaymentMethodsScreen} />
+      <ProfileStack.Screen name="HelpCenter" component={HelpCenterScreen} />
+      <ProfileStack.Screen name="TermsOfService" component={TermsOfServiceScreen} />
     </ProfileStack.Navigator>
   );
 }

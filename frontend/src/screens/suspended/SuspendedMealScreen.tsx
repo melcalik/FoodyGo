@@ -26,13 +26,14 @@ type Props = NativeStackScreenProps<SuspendedStackParamList, 'SuspendedMeal'>;
 
 export default function SuspendedMealScreen({ navigation }: Props) {
   const { t } = useTranslation();
-  const { orders } = useOrderStore();
+  const { orders, fetchOrders } = useOrderStore();
   const { availableMeals, isLoading, fetchAvailableMeals, claimMeal } = useSuspendedStore();
 
   useFocusEffect(
     React.useCallback(() => {
       fetchAvailableMeals();
-    }, [])
+      fetchOrders();
+    }, [fetchAvailableMeals, fetchOrders])
   );
 
   const myDonationsCount = useMemo(() => {
@@ -41,7 +42,19 @@ export default function SuspendedMealScreen({ navigation }: Props) {
     }, 0);
   }, [orders]);
 
-  const { addItem } = useCartStore();
+  const { addItem, getClaimedQuantity, items, updateQuantity } = useCartStore();
+
+  const groupedMeals = useMemo(() => {
+    const map = new Map<string, typeof availableMeals[0] & { count: number }>();
+    availableMeals.forEach(m => {
+      if (map.has(m.boxId)) {
+        map.get(m.boxId)!.count++;
+      } else {
+        map.set(m.boxId, { ...m, count: 1 });
+      }
+    });
+    return Array.from(map.values());
+  }, [availableMeals]);
 
   const handleClaim = (meal: any) => {
     const fakeBox = {
@@ -70,7 +83,6 @@ export default function SuspendedMealScreen({ navigation }: Props) {
     };
 
     addItem(fakeBox as any, fakeRestaurant as any, false, meal.id);
-    navigation.navigate('CartStack' as any);
   };
 
   return (
@@ -111,22 +123,54 @@ export default function SuspendedMealScreen({ navigation }: Props) {
               <Text style={styles.emptyText}>{t('suspended.emptyList')}</Text>
             </View>
           ) : (
-            availableMeals.map(meal => (
-              <View key={meal.id} style={styles.mealCard}>
-                <Image source={meal.restaurantImageUrl as any} style={styles.restaurantImage} />
-                <View style={styles.mealInfo}>
-                  <Text style={styles.mealBoxName}>{meal.boxName}</Text>
-                  <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
-                  <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName}</Text>
+            groupedMeals.map(meal => {
+              const inCart = getClaimedQuantity(meal.boxId);
+              const isOutOfStock = inCart >= meal.count;
+
+              return (
+                <View key={meal.id} style={styles.mealCard}>
+                  <Image source={meal.restaurantImageUrl as any} style={styles.restaurantImage} />
+                  <View style={styles.mealInfo}>
+                    <Text style={styles.mealBoxName}>{meal.boxName}</Text>
+                    <Text style={{ color: Colors.teal, fontWeight: FontWeight.medium, fontSize: FontSize.sm, marginBottom: 4 }}>{meal.count} Adet</Text>
+                    <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
+                    <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName} {meal.count > 1 ? 've diğerleri' : ''}</Text>
+                  </View>
+                  {inCart > 0 ? (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: Spacing.sm, height: 36, width: 115 }}>
+                      <TouchableOpacity
+                        style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }}
+                        onPress={() => updateQuantity(meal.boxId, inCart - 1, false, meal.id)}
+                      >
+                        {inCart === 1 ? (
+                          <Ionicons name="trash-outline" size={16} color={Colors.textPrimary} />
+                        ) : (
+                          <Text style={{ fontSize: 15, color: Colors.textPrimary }}>−</Text>
+                        )}
+                      </TouchableOpacity>
+
+                      <Text style={{ fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.textPrimary, minWidth: 20, textAlign: 'center' }}>{inCart}</Text>
+
+                      <TouchableOpacity
+                        style={[{ width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }, isOutOfStock ? { opacity: 0.5 } : { backgroundColor: Colors.teal, borderColor: Colors.teal }]}
+                        onPress={() => !isOutOfStock && handleClaim(meal)}
+                        disabled={isOutOfStock}
+                      >
+                        <Text style={[{ fontSize: 15, color: Colors.textPrimary }, !isOutOfStock && { color: Colors.white }]}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <TouchableOpacity 
+                      style={[styles.claimBtn, isOutOfStock && { backgroundColor: Colors.textMuted }]}
+                      onPress={() => !isOutOfStock && handleClaim(meal)}
+                      disabled={isOutOfStock}
+                    >
+                      <Text style={styles.claimBtnText}>{isOutOfStock ? 'Tükendi' : t('suspended.claimBtn')}</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
-                <TouchableOpacity 
-                  style={styles.claimBtn}
-                  onPress={() => handleClaim(meal)}
-                >
-                  <Text style={styles.claimBtnText}>{t('suspended.claimBtn')}</Text>
-                </TouchableOpacity>
-              </View>
-            ))
+              );
+            })
           )}
         </View>
 

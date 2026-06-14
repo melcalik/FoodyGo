@@ -54,6 +54,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
         type: o.type === 1 ? 'normal' : o.type === 3 ? 'claimedSuspended' : 'suspended',
         createdAt: new Date(o.createdAt),
         updatedAt: new Date(o.updatedAt ?? o.createdAt),
+        isReviewed: o.isReviewed,
       }));
       set({ orders: mappedOrders, isLoading: false });
     } catch (error: any) {
@@ -67,7 +68,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     try {
       const payload = {
         restaurantId,
-        type: items.some(i => i.isSuspended) ? 2 : (items.some(i => i.isClaimingMealId) ? 3 : 1),
+        type: items.every(i => i.isSuspended) ? 2 : (items.every(i => i.isClaimingMealId) ? 3 : 1),
         items: items.map(i => ({
           boxId: i.box.id,
           quantity: i.quantity,
@@ -100,9 +101,14 @@ export const useOrderStore = create<OrderState>((set, get) => ({
 
       return newOrder;
     } catch (error: any) {
-      console.error('Failed to create order:', error.response?.data || error);
-      set({ error: error.message, isLoading: false });
-      throw error;
+      let errorMsg = error.message;
+      if (error.response?.data) {
+        if (typeof error.response.data === 'string') errorMsg = error.response.data;
+        else if (error.response.data.message) errorMsg = error.response.data.message;
+        else if (error.response.data.detail) errorMsg = error.response.data.detail;
+      }
+      set({ error: errorMsg, isLoading: false });
+      throw new Error(errorMsg);
     }
   },
 

@@ -75,23 +75,40 @@ export default function PaymentScreen({ navigation }: Props) {
 
     if (total > 0 && selectedMethodId === 'new') {
       if (!name || !cardNumber || !expiry || !cvv) {
-        Alert.alert(t('common.error'), t('payment.fillAll'));
+        Alert.alert('Eksik Bilgi', t('payment.fillAll'));
         return;
       }
 
       const cleanCard = cardNumber.replace(/\D/g, '');
       const cleanExpiry = expiry.replace(/\D/g, '');
+      const cleanCvv = cvv.replace(/\D/g, '');
 
       if (cleanCard.length !== 16) {
-        Alert.alert(t('common.error'), 'Kart numarası tam 16 rakam olmalıdır.');
+        Alert.alert('Geçersiz Kart Numarası', 'Kart numarası tam 16 rakam olmalıdır.');
         return;
       }
       if (cleanExpiry.length !== 4) {
-        Alert.alert(t('common.error'), 'Son kullanma tarihi tam 4 rakam olmalıdır (AA/YY).');
+        Alert.alert('Geçersiz Tarih', 'Son kullanma tarihi tam 4 rakam olmalıdır (AA/YY).');
         return;
       }
-      if (cvv.length !== 3) {
-        Alert.alert(t('common.error'), 'CVV tam 3 rakam olmalıdır.');
+
+      const currentYear = new Date().getFullYear() % 100;
+      const currentMonth = new Date().getMonth() + 1;
+      const expMonth = parseInt(cleanExpiry.slice(0, 2), 10);
+      const expYear = parseInt(cleanExpiry.slice(2, 4), 10);
+
+      if (expMonth < 1 || expMonth > 12) {
+        Alert.alert('Geçersiz Ay', 'Geçersiz bir ay girdiniz (01-12).');
+        return;
+      }
+
+      if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+        Alert.alert('Süresi Dolmuş Kart', 'Kartınızın son kullanma tarihi geçmiş. Lütfen geçerli bir kart girin.');
+        return;
+      }
+
+      if (cleanCvv.length !== 3) {
+        Alert.alert('Geçersiz CVV', 'CVV tam 3 rakam olmalıdır.');
         return;
       }
     }
@@ -115,8 +132,8 @@ export default function PaymentScreen({ navigation }: Props) {
     } catch (error: any) {
       setIsProcessing(false);
       Alert.alert(
-        t('common.error'),
-        error.response?.data?.message ?? t('payment.orderError')
+        'Ödeme Başarısız',
+        error instanceof Error ? error.message : t('payment.orderError')
       );
     }
   };

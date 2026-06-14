@@ -34,6 +34,25 @@ public class OrderService : IOrderService
         var restaurant = await _restaurantRepository.GetByIdAsync(createOrderDto.RestaurantId);
         if (restaurant == null) throw new Exception("Restaurant not found.");
 
+        var requestedClaimedSuspendedMeals = createOrderDto.Items.Where(i => i.ClaimingSuspendedMealId.HasValue).Sum(i => i.Quantity);
+        if (requestedClaimedSuspendedMeals > 0)
+        {
+            var twelveHoursAgo = DateTime.UtcNow.AddHours(-12);
+            var pastOrders = await _orderRepository.FindAsync(
+                o => o.UserId == userId && o.CreatedAt >= twelveHoursAgo,
+                q => q.Include(o => o.Items)
+            );
+            
+            int pastClaimedCount = pastOrders.SelectMany(o => o.Items)
+                .Where(i => i.UnitPrice == 0 && !i.IsSuspended)
+                .Sum(i => i.Quantity);
+
+            if (pastClaimedCount + requestedClaimedSuspendedMeals > 5)
+            {
+                throw new Exception("12 saat içerisinde yalnızca 5 adet askıda ürün alabilirsiniz.");
+            }
+        }
+
         var order = new Order
         {
             UserId = userId,
@@ -89,14 +108,19 @@ public class OrderService : IOrderService
 
                 if (itemDto.ClaimingSuspendedMealId.HasValue)
                 {
-                    var mealToClaim = await _suspendedMealRepository.GetByIdAsync(itemDto.ClaimingSuspendedMealId.Value);
-                    if (mealToClaim == null || mealToClaim.IsClaimed)
+                    var mealsToClaim = (await _suspendedMealRepository.FindAsync(m => m.BoxId == box.Id && !m.IsClaimed)).ToList();
+                    if (mealsToClaim.Count < itemDto.Quantity)
                     {
-                        throw new Exception("Suspended meal is no longer available.");
+                        throw new Exception("Not enough suspended meals available.");
                     }
-                    mealToClaim.IsClaimed = true;
-                    mealToClaim.ClaimedByUserId = userId;
-                    await _suspendedMealRepository.UpdateAsync(mealToClaim);
+                    
+                    for (int i = 0; i < itemDto.Quantity; i++)
+                    {
+                        var mealToClaim = mealsToClaim[i];
+                        mealToClaim.IsClaimed = true;
+                        mealToClaim.ClaimedByUserId = userId;
+                        await _suspendedMealRepository.UpdateAsync(mealToClaim);
+                    }
                 }
             }
 
@@ -110,7 +134,7 @@ public class OrderService : IOrderService
     {
         var orders = await _orderRepository.FindAsync(
             o => o.UserId == userId,
-            query => query.Include(o => o.Restaurant).Include(o => o.Items).ThenInclude(i => i.Box)
+            query => query.Include(o => o.Restaurant).Include(o => o.Items).ThenInclude(i => i.Box).Include(o => o.Review)
         );
 
         return orders.Select(o => MapToDto(o, o.Restaurant)).OrderByDescending(o => o.CreatedAt);
@@ -120,7 +144,7 @@ public class OrderService : IOrderService
     {
         var order = await _orderRepository.GetByIdAsync(
             id,
-            query => query.Include(o => o.Restaurant).Include(o => o.Items).ThenInclude(i => i.Box)
+            query => query.Include(o => o.Restaurant).Include(o => o.Items).ThenInclude(i => i.Box).Include(o => o.Review)
         );
 
         if (order == null) return null;
@@ -131,7 +155,7 @@ public class OrderService : IOrderService
     {
         var today = DateTime.UtcNow.Date;
         var orders = await _orderRepository.FindAsync(o => o.CreatedAt >= today, q => q.Include(o => o.Items));
-        int count = orders.SelectMany(o => o.Items).Sum(i => i.Quantity);
+        int count = orders.SelectMany(o => o.Items).Where(i => i.UnitPrice > 0).Sum(i => i.Quantity);
         return count;
     }
 
@@ -149,6 +173,7 @@ public class OrderService : IOrderService
             Type = order.Type,
             CreatedAt = order.CreatedAt,
             UpdatedAt = order.UpdatedAt ?? order.CreatedAt,
+            IsReviewed = order.Review != null,
             Items = order.Items.Select(i => new OrderItemResponseDto
             {
                 BoxId = i.BoxId,

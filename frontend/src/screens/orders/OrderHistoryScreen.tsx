@@ -60,11 +60,11 @@ export default function OrderHistoryScreen({ navigation }: Props) {
       for (const item of order.items) {
         const boxData = boxesData.find((b: any) => b.id === item.boxId);
         if (!boxData) {
-          Alert.alert(t('common.error', { defaultValue: 'Hata' }), `${item.boxName} artık bulunmuyor.`);
+          Alert.alert('Ürün Bulunamadı', `${item.boxName} artık bulunmuyor.`);
           return;
         }
         if (boxData.stock < item.quantity) {
-          Alert.alert(t('common.error', { defaultValue: 'Hata' }), `${item.boxName} için yeterli stok yok.`);
+          Alert.alert('Yetersiz Stok', `${item.boxName} için yeterli stok yok.`);
           return;
         }
 
@@ -90,7 +90,7 @@ export default function OrderHistoryScreen({ navigation }: Props) {
       navigation.navigate('CartTab' as any);
     } catch (err) {
       console.error(err);
-      Alert.alert(t('common.error', { defaultValue: 'Hata' }), 'Sipariş tekrarlanamadı.');
+      Alert.alert('İşlem Başarısız', 'Sipariş tekrarlanamadı.');
     }
   };
 
@@ -130,7 +130,7 @@ export default function OrderHistoryScreen({ navigation }: Props) {
 
         <View style={styles.itemsWrap}>
           <Text style={styles.itemsSummary} numberOfLines={1}>
-            {item.items.map(i => `${i.quantity}x ${i.boxName}`).join(', ')}
+            {item.items.map(i => `${i.quantity} x ${i.boxName}`).join(', ')}
           </Text>
           {item.type === 'claimedSuspended' ? (
              <View style={[styles.statusBadge, { backgroundColor: Colors.teal }]}>
@@ -144,10 +144,13 @@ export default function OrderHistoryScreen({ navigation }: Props) {
         {isCompleted && (
           <View style={styles.actions}>
             <TouchableOpacity 
-              style={styles.btnSecondary}
+              style={[styles.btnSecondary, item.isReviewed && styles.btnSecondaryDisabled]}
               onPress={() => navigation.navigate('Review', { order: item })}
+              disabled={item.isReviewed}
             >
-              <Text style={styles.btnSecondaryText}>{t('order.rate')}</Text>
+              <Text style={[styles.btnSecondaryText, item.isReviewed && styles.btnSecondaryTextDisabled]}>
+                {item.isReviewed ? t('order.rated') ?? 'Değerlendirildi' : t('order.rate')}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.btnPrimary}

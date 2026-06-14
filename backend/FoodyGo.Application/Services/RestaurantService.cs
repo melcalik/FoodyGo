@@ -2,6 +2,7 @@ using FoodyGo.Application.DTOs;
 using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodyGo.Application.Services;
 
@@ -20,7 +21,7 @@ public class RestaurantService : IRestaurantService
 
     public async Task<IEnumerable<RestaurantDto>> GetAllRestaurantsAsync()
     {
-        var restaurants = await _restaurantRepo.GetAllAsync();
+        var restaurants = await _restaurantRepo.FindAsync(r => true, q => q.Include(r => r.Boxes));
         var suspendedMeals = await _suspendedRepo.GetAllAsync();
 
         return restaurants.Select(r => new RestaurantDto
@@ -34,7 +35,8 @@ public class RestaurantService : IRestaurantService
             ImageUrl = r.ImageUrl,
             Distance = r.Distance,
             DeliveryTime = r.DeliveryTime,
-            SuspendedCount = suspendedMeals.Count(sm => sm.RestaurantId == r.Id && !sm.IsClaimed)
+            SuspendedCount = suspendedMeals.Count(sm => sm.RestaurantId == r.Id && !sm.IsClaimed),
+            BoxNames = r.Boxes.Select(b => b.Name).ToList()
         });
     }
 

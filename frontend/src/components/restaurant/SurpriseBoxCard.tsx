@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SurpriseBox } from '../../types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
+import { useCartStore } from '../../store/useCartStore';
 
 interface SurpriseBoxCardProps {
   box: SurpriseBox;
@@ -13,13 +14,21 @@ interface SurpriseBoxCardProps {
 
 export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: SurpriseBoxCardProps) {
   const { t } = useTranslation();
+  const { getItemQuantity, updateQuantity } = useCartStore();
+
   const discountPct = Math.round(
     ((box.originalPrice - box.discountedPrice) / box.originalPrice) * 100,
   );
-  const isOutOfStock = box.stock === 0;
+
+  const inCartNormal = getItemQuantity(box.id, false);
+  const inCartSuspended = getItemQuantity(box.id, true);
+
+  const isGlobalOutOfStock = box.stock === 0;
+  // User cannot add more than stock for a single meal across both suspended and normal.
+  const isOutOfStockTotal = (inCartNormal + inCartSuspended) >= box.stock;
 
   return (
-    <View style={[styles.card, isOutOfStock && styles.cardDisabled]}>
+    <View style={[styles.card, isGlobalOutOfStock && styles.cardDisabled]}>
       
       <View style={styles.header}>
         <View style={styles.emojiWrap}>
@@ -40,38 +49,76 @@ export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: Surpris
           <Text style={styles.originalPrice}>₺{box.originalPrice}</Text>
           <Text style={styles.discountedPrice}>₺{box.discountedPrice}</Text>
           <Text style={styles.stock}>
-            {isOutOfStock
+            {isGlobalOutOfStock
               ? t('restaurant.outOfStock')
               : `${box.stock} ${t('restaurant.stock')}`}
           </Text>
         </View>
 
         <View style={styles.actionsCol}>
-          <TouchableOpacity
-            style={[styles.addBtn, isOutOfStock && styles.addBtnDisabled]}
-            onPress={onAddToCart}
-            disabled={isOutOfStock}
-            activeOpacity={0.85}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {!isOutOfStock && <Ionicons name="add" size={16} color={Colors.white} />}
-              <Text style={styles.addBtnText}>
-                {isOutOfStock ? '—' : t('restaurant.addToCart')}
-              </Text>
+          {inCartNormal > 0 ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 40, width: 135 }}>
+              <TouchableOpacity
+                style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }}
+                onPress={() => updateQuantity(box.id, inCartNormal - 1, false)}
+              >
+                {inCartNormal === 1 ? <Ionicons name="trash-outline" size={18} color={Colors.textPrimary} /> : <Text style={{ fontSize: 18, color: Colors.textPrimary }}>−</Text>}
+              </TouchableOpacity>
+              <Text style={{ fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.textPrimary, minWidth: 24, textAlign: 'center' }}>{inCartNormal}</Text>
+              <TouchableOpacity
+                style={[{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' }, isOutOfStockTotal && { opacity: 0.5 }]}
+                onPress={() => !isOutOfStockTotal && updateQuantity(box.id, inCartNormal + 1, false)}
+                disabled={isOutOfStockTotal}
+              >
+                <Text style={{ fontSize: 18, color: Colors.white }}>+</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.addBtn, isGlobalOutOfStock && styles.addBtnDisabled]}
+              onPress={onAddToCart}
+              disabled={isGlobalOutOfStock || isOutOfStockTotal}
+              activeOpacity={0.85}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                {!isGlobalOutOfStock && <Ionicons name="add" size={16} color={Colors.white} />}
+                <Text style={styles.addBtnText}>
+                  {isGlobalOutOfStock ? '—' : t('restaurant.addToCart')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
 
-          <TouchableOpacity
-            style={[styles.suspendBtn, isOutOfStock && styles.addBtnDisabled]}
-            onPress={onSuspend}
-            disabled={isOutOfStock}
-            activeOpacity={0.85}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              <Ionicons name="heart-circle" size={16} color={Colors.teal} />
-              <Text style={styles.suspendBtnText}>{t('restaurant.suspendMeal')}</Text>
+          {inCartSuspended > 0 ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 36, width: 135 }}>
+              <TouchableOpacity
+                style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.teal + '11', borderWidth: 1, borderColor: Colors.teal + '55', alignItems: 'center', justifyContent: 'center' }}
+                onPress={() => updateQuantity(box.id, inCartSuspended - 1, true)}
+              >
+                {inCartSuspended === 1 ? <Ionicons name="trash-outline" size={18} color={Colors.teal} /> : <Text style={{ fontSize: 18, color: Colors.teal }}>−</Text>}
+              </TouchableOpacity>
+              <Text style={{ fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.teal, minWidth: 24, textAlign: 'center' }}>{inCartSuspended}</Text>
+              <TouchableOpacity
+                style={[{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.teal, alignItems: 'center', justifyContent: 'center' }, isOutOfStockTotal && { opacity: 0.5 }]}
+                onPress={() => !isOutOfStockTotal && updateQuantity(box.id, inCartSuspended + 1, true)}
+                disabled={isOutOfStockTotal}
+              >
+                <Text style={{ fontSize: 18, color: Colors.white }}>+</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.suspendBtn, isGlobalOutOfStock && styles.addBtnDisabled]}
+              onPress={onSuspend}
+              disabled={isGlobalOutOfStock || isOutOfStockTotal}
+              activeOpacity={0.85}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                <Ionicons name="heart-circle" size={16} color={Colors.teal} />
+                <Text style={styles.suspendBtnText}>{t('restaurant.suspendMeal')}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -171,9 +218,11 @@ const styles = StyleSheet.create({
   addBtn: {
     backgroundColor: Colors.primary,
     paddingHorizontal: Spacing.md,
-    paddingVertical: 10,
+    height: 40,
+    width: 135,
     borderRadius: Radius.md,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.35,
@@ -191,9 +240,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.teal,
     paddingHorizontal: Spacing.md,
-    paddingVertical: 8,
+    height: 36,
+    width: 135,
     borderRadius: Radius.md,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   suspendBtnText: {
     color: Colors.teal,

@@ -59,7 +59,7 @@
   },
   "home": {
     "title": "Nearby Restaurants",
-    "searchPlaceholder": "Search restaurants or food...",
+    "searchPlaceholder": "Search restaurants",
     "location": "Location",
     "allCategories": "All",
     "sweet": "Sweet",
@@ -156,6 +156,7 @@
     "date": "Date",
     "amount": "Amount",
     "rate": "Rate",
+    "rated": "Rated",
     "noOrders": "No orders yet",
     "noOrdersDesc": "Explore delicious meals waiting to be rescued!",
     "completed": "Completed",

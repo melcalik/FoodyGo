@@ -783,6 +783,13 @@ export const OrderHistoryScreenStyles = StyleSheet.create({
     fontWeight: FontWeight.semibold,
     color: Colors.textPrimary,
   },
+  btnSecondaryDisabled: {
+    opacity: 0.5,
+    backgroundColor: Colors.surfaceElevated,
+  },
+  btnSecondaryTextDisabled: {
+    color: Colors.textMuted,
+  },
   btnPrimary: {
     flex: 1,
     paddingVertical: 10,
@@ -906,7 +913,7 @@ export const OrderTrackingScreenStyles = StyleSheet.create({
   },
   stepLineActive: { backgroundColor: Colors.primary },
   
-  stepInfo: { flex: 1, height: 36, justifyContent: 'center' },
+  stepInfo: { flex: 1, height: 36, justifyContent: 'center', marginLeft: 12 },
   stepTitle: { fontSize: FontSize.md, fontWeight: FontWeight.medium, color: Colors.textMuted },
   stepTitleActive: { color: Colors.textPrimary, fontWeight: FontWeight.bold },
   stepDesc: { fontSize: FontSize.xs, color: Colors.primary, marginTop: 4, fontWeight: FontWeight.medium },
@@ -1512,9 +1519,12 @@ export const SuspendedMealScreenStyles = StyleSheet.create({
   claimBtn: {
     backgroundColor: Colors.teal,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    height: 36,
+    width: 115,
     borderRadius: Radius.md,
     marginLeft: Spacing.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   claimBtnText: {
     color: Colors.white,

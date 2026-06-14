@@ -37,7 +37,7 @@ export default function ReviewScreen({ route, navigation }: Props) {
         { text: t('common.done'), onPress: () => navigation.goBack() }
       ]);
     } catch (e: any) {
-      Alert.alert(t('common.error'), e.message || t('review.error'));
+      Alert.alert('Değerlendirme Gönderilemedi', e.message || t('review.error'));
     }
   };
 
@@ -58,7 +58,7 @@ export default function ReviewScreen({ route, navigation }: Props) {
           <View style={styles.infoCard}>
             <Text style={styles.restaurantName}>{order.restaurantName}</Text>
             <Text style={styles.itemsText}>
-              {order.items.map(i => `${i.quantity}x ${i.boxName}`).join(', ')}
+              {order.items.map(i => `${i.quantity} x ${i.boxName}`).join(', ')}
             </Text>
           </View>
 
@@ -77,8 +77,10 @@ export default function ReviewScreen({ route, navigation }: Props) {
           </View>
           <Text style={styles.ratingLabel}>
             {rating === 0 ? t('review.tapToRate') : 
-             rating < 3 ? t('review.bad') : 
-             rating < 5 ? t('review.good') : t('review.great')}
+             rating === 1 ? 'Çok Kötü' : 
+             rating === 2 ? 'Kötü' : 
+             rating === 3 ? 'Fena Değil' : 
+             rating === 4 ? 'İyi' : 'Çok İyi'}
           </Text>
 
           <View style={styles.inputWrap}>

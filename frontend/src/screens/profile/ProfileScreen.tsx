@@ -109,14 +109,6 @@ export default function ProfileScreen({ navigation }: Props) {
             <Ionicons name="chevron-forward" size={20} color={Colors.textMuted} style={styles.menuItemArrow} />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
-          >
-            <Ionicons name="notifications" size={20} color={Colors.textPrimary} style={styles.menuItemIcon} />
-            <Text style={styles.menuItemText}>{t('profile.notificationSettings')}</Text>
-            <Ionicons name="chevron-forward" size={20} color={Colors.textMuted} style={styles.menuItemArrow} />
-          </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.menuItem}
@@ -133,7 +125,7 @@ export default function ProfileScreen({ navigation }: Props) {
           
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
+            onPress={() => navigation.navigate('HelpCenter')}
           >
             <Ionicons name="chatbubble-ellipses" size={20} color={Colors.textPrimary} style={styles.menuItemIcon} />
             <Text style={styles.menuItemText}>{t('profile.helpCenter')}</Text>
@@ -142,7 +134,7 @@ export default function ProfileScreen({ navigation }: Props) {
           
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
+            onPress={() => navigation.navigate('TermsOfService')}
           >
             <Ionicons name="document-text" size={20} color={Colors.textPrimary} style={styles.menuItemIcon} />
             <Text style={styles.menuItemText}>{t('profile.termsOfService')}</Text>

@@ -88,6 +88,12 @@ export const useAuthStore = create<AuthState>((set) => ({
       AsyncStorage.removeItem('auth_user')
     ]);
     set({ isAuthenticated: false, user: null, token: null });
+
+    // Clear user-specific data from other stores
+    import('./useCartStore').then(m => m.useCartStore.getState().clearCart());
+    import('./useOrderStore').then(m => m.useOrderStore.setState({ orders: [], activeOrder: null }));
+    import('./usePaymentStore').then(m => m.usePaymentStore.setState({ paymentMethods: [] }));
+    import('./useReviewStore').then(m => m.useReviewStore.setState({ reviews: [] }));
   },
 
   hydrate: async () => {
