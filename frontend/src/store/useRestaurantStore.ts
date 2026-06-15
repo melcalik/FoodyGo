@@ -33,7 +33,12 @@ export const useRestaurantStore = create<RestaurantState>((set) => ({
         suspendedCount: r.suspendedCount,
         boxNames: r.boxNames || [],
       }));
-      set({ restaurants, isLoading: false });
+      const sortedRestaurants = restaurants.sort((a, b) => {
+        const distA = parseFloat(a.distance.replace(',', '.').split(' ')[0]) || 0;
+        const distB = parseFloat(b.distance.replace(',', '.').split(' ')[0]) || 0;
+        return distA - distB;
+      });
+      set({ restaurants: sortedRestaurants, isLoading: false });
     } catch (error: any) {
       console.error('Failed to fetch restaurants:', error.message);
       set({ error: error.message, isLoading: false });

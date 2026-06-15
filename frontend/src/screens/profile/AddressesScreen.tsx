@@ -17,10 +17,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ProfileStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useAddressStore } from '../../store/useAddressStore';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'Addresses'>;
 
 export default function AddressesScreen({ navigation }: Props) {
+  const { t } = useTranslation();
   const { addresses, fetchAddresses, addAddress, setActiveAddress, deleteAddress, isLoading } = useAddressStore();
   
   const [modalVisible, setModalVisible] = useState(false);
