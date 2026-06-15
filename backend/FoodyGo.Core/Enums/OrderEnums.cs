@@ -3,7 +3,8 @@ namespace FoodyGo.Core.Enums;
 public enum OrderType
 {
     Standard = 1,
-    Suspended = 2
+    Suspended = 2,
+    ClaimedSuspended = 3
 }
 
 public enum OrderStatus

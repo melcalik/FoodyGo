@@ -11,11 +11,14 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { AuthStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Spacing, Radius } from '../../constants/theme';
 import { useAuthStore } from '../../store/useAuthStore';
+import { isValidEmail, isValidPassword } from '../../utils/validation';
+import { RegisterScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
@@ -27,10 +30,17 @@ export default function RegisterScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [city, setCity] = useState('');
+  const [district, setDistrict] = useState('');
+  const [addressTitle, setAddressTitle] = useState('');
+  const [addressDetail, setAddressDetail] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
   const validate = () => {
-    if (!name || !email || !password || !confirmPassword) {
+    const cleanEmail = email.trim();
+    if (!name || !cleanEmail || !password || !confirmPassword || !addressTitle || !city || !district || !addressDetail) {
       setError(t('auth.fillAllFields'));
       return false;
     }
@@ -38,8 +48,12 @@ export default function RegisterScreen({ navigation }: Props) {
       setError(t('auth.passwordMismatch'));
       return false;
     }
-    if (password.length < 6) {
-      setError(t('auth.passwordTooShort'));
+    if (!isValidEmail(cleanEmail)) {
+      setError(t('auth.invalidEmail'));
+      return false;
+    }
+    if (!isValidPassword(password)) {
+      setError(t('auth.invalidPassword'));
       return false;
     }
     return true;
@@ -48,7 +62,7 @@ export default function RegisterScreen({ navigation }: Props) {
   const handleRegister = async () => {
     if (!validate()) return;
     setError('');
-    const success = await register(name, email, password);
+    const success = await register(name.trim(), email.trim(), password, addressTitle.trim(), city.trim(), district.trim(), addressDetail.trim());
     if (!success) {
       setError(useAuthStore.getState().error || t('auth.registerFailed'));
     }
@@ -60,7 +74,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: name,
       setter: setName,
       placeholder: t('auth.namePlaceholder'),
-      icon: '👤',
+      icon: 'person-outline',
       secure: false,
       keyboardType: 'default' as const,
     },
@@ -69,27 +83,69 @@ export default function RegisterScreen({ navigation }: Props) {
       value: email,
       setter: setEmail,
       placeholder: t('auth.emailPlaceholder'),
-      icon: '✉️',
+      icon: 'mail-outline',
       secure: false,
       keyboardType: 'email-address' as const,
+    },
+    {
+      label: "Adres Başlığı",
+      value: addressTitle,
+      setter: setAddressTitle,
+      placeholder: "Ev",
+      icon: 'pricetag-outline',
+      secure: false,
+      keyboardType: 'default' as const,
+    },
+    {
+      label: "İl",
+      value: city,
+      setter: setCity,
+      placeholder: "İstanbul",
+      icon: 'business-outline',
+      secure: false,
+      keyboardType: 'default' as const,
+    },
+    {
+      label: "İlçe",
+      value: district,
+      setter: setDistrict,
+      placeholder: "Ataşehir",
+      icon: 'location-outline',
+      secure: false,
+      keyboardType: 'default' as const,
+    },
+    {
+      label: "Açık Adres",
+      value: addressDetail,
+      setter: setAddressDetail,
+      placeholder: "Atatürk Mah. No:2",
+      icon: 'home-outline',
+      secure: false,
+      keyboardType: 'default' as const,
     },
     {
       label: t('auth.password'),
       value: password,
       setter: setPassword,
       placeholder: t('auth.passwordPlaceholder'),
-      icon: '🔒',
-      secure: true,
+      icon: 'lock-closed-outline',
+      secure: !showPassword,
       keyboardType: 'default' as const,
+      isPassword: true,
+      show: showPassword,
+      onToggle: () => setShowPassword(!showPassword)
     },
     {
       label: t('auth.confirmPassword'),
       value: confirmPassword,
       setter: setConfirmPassword,
       placeholder: t('auth.passwordPlaceholder'),
-      icon: '🔒',
-      secure: true,
+      icon: 'lock-closed-outline',
+      secure: !showConfirmPassword,
       keyboardType: 'default' as const,
+      isPassword: true,
+      show: showConfirmPassword,
+      onToggle: () => setShowConfirmPassword(!showConfirmPassword)
     },
   ];
 
@@ -98,13 +154,13 @@ export default function RegisterScreen({ navigation }: Props) {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <ScrollView
         style={styles.flex}
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Header */}
+        
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Text style={styles.backIcon}>←</Text>
@@ -112,32 +168,35 @@ export default function RegisterScreen({ navigation }: Props) {
           <Text style={styles.headerTitle}>{t('auth.register')}</Text>
         </View>
 
-        {/* Hero */}
         <View style={styles.hero}>
-          <Text style={styles.heroEmoji}>🌱</Text>
+          <Ionicons name="leaf" size={56} color={Colors.primary} style={{ marginBottom: 12 }} />
           <Text style={styles.heroTitle}>{t('auth.joinUs')}</Text>
           <Text style={styles.heroSub}>
             {t('auth.joinSubtitle')}
           </Text>
         </View>
 
-        {/* Card */}
         <View style={styles.card}>
           {fields.map(field => (
             <View key={field.label} style={styles.inputGroup}>
               <Text style={styles.label}>{field.label}</Text>
               <View style={styles.inputWrap}>
-                <Text style={styles.inputIcon}>{field.icon}</Text>
+                <Ionicons name={field.icon} size={20} color={Colors.textMuted} style={{ marginRight: 8 }} />
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, (field as any).isPassword && { flex: 1 }]}
                   value={field.value}
                   onChangeText={field.setter}
                   placeholder={field.placeholder}
                   placeholderTextColor={Colors.textMuted}
                   secureTextEntry={field.secure}
                   keyboardType={field.keyboardType}
-                  autoCapitalize={field.keyboardType === 'email-address' ? 'none' : 'words'}
+                  autoCapitalize="none"
                 />
+                {(field as any).isPassword && (
+                  <TouchableOpacity onPress={(field as any).onToggle} style={{ padding: 10 }}>
+                    <Ionicons name={(field as any).show ? 'eye-off' : 'eye'} size={20} color={Colors.textMuted} />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           ))}
@@ -157,7 +216,6 @@ export default function RegisterScreen({ navigation }: Props) {
             )}
           </TouchableOpacity>
 
-          {/* Terms */}
           <Text style={styles.terms}>
             {t('auth.termsText')}{' '}
             <Text style={styles.termsLink}>{t('auth.termsLink')}</Text>
@@ -179,125 +237,3 @@ export default function RegisterScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: Colors.background },
-  scroll: { flexGrow: 1, paddingBottom: 40 },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 50,
-    paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.sm,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: Spacing.sm,
-  },
-  backIcon: { fontSize: 20, color: Colors.textPrimary },
-  headerTitle: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-  },
-
-  hero: {
-    alignItems: 'center',
-    paddingVertical: Spacing.lg,
-    paddingHorizontal: Spacing.lg,
-  },
-  heroEmoji: { fontSize: 48, marginBottom: 12 },
-  heroTitle: {
-    fontSize: FontSize.xxl,
-    fontWeight: FontWeight.extrabold,
-    color: Colors.textPrimary,
-    marginBottom: 8,
-  },
-  heroSub: {
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-
-  card: {
-    backgroundColor: Colors.surface,
-    marginHorizontal: Spacing.md,
-    borderRadius: Radius.xl,
-    padding: Spacing.lg,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-
-  inputGroup: { marginBottom: Spacing.md },
-  label: {
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.medium,
-    color: Colors.textSecondary,
-    marginBottom: 6,
-  },
-  inputWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.surfaceElevated,
-    borderRadius: Radius.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    paddingHorizontal: Spacing.md,
-  },
-  inputIcon: { fontSize: 16, marginRight: 8 },
-  input: {
-    flex: 1,
-    height: 48,
-    color: Colors.textPrimary,
-    fontSize: FontSize.md,
-  },
-
-  errorText: {
-    color: Colors.error,
-    fontSize: FontSize.sm,
-    marginBottom: Spacing.sm,
-  },
-
-  primaryBtn: {
-    backgroundColor: Colors.primary,
-    borderRadius: Radius.md,
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: Spacing.sm,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  primaryBtnDisabled: { opacity: 0.7 },
-  primaryBtnText: {
-    color: Colors.white,
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-  },
-
-  terms: {
-    fontSize: FontSize.xs,
-    color: Colors.textMuted,
-    textAlign: 'center',
-    marginTop: Spacing.md,
-    lineHeight: 18,
-  },
-  termsLink: { color: Colors.primary },
-
-  linkRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: Spacing.md,
-  },
-  linkText: { color: Colors.textSecondary, fontSize: FontSize.sm },
-  linkAccent: { color: Colors.primary, fontSize: FontSize.sm, fontWeight: FontWeight.semibold },
-});

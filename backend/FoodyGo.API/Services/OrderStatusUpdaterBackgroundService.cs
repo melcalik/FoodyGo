@@ -1,5 +1,7 @@
+using Cronos;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Enums;
+using FoodyGo.Core.Constants;
 using FoodyGo.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,8 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var cronExpression = CronExpression.Parse("*/10 * * * * *", CronFormat.IncludeSeconds);
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
@@ -31,21 +35,22 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                     
                     var now = DateTime.UtcNow;
 
-                    // Update Confirmed -> ReadyForPickup (after 30 seconds)
                     var thirtySecondsAgo = now.AddSeconds(-30);
                     var confirmedOrders = await dbContext.Orders
                         .Where(o => o.Status == OrderStatus.Confirmed)
                         .ToListAsync(stoppingToken);
 
                     var toReady = confirmedOrders.Where(o => o.CreatedAt <= thirtySecondsAgo).ToList();
+                    
+                    var notificationService = scope.ServiceProvider.GetRequiredService<FoodyGo.Application.Interfaces.INotificationService>();
 
                     foreach (var order in toReady)
                     {
                         order.Status = OrderStatus.ReadyForPickup;
                         order.UpdatedAt = now;
+                        await notificationService.SendNotificationAsync(order.UserId, Messages.Notification.OrderReadyTitle, Messages.Notification.OrderReadyMessage, order.Id.ToString().Substring(32).ToUpper());
                     }
 
-                    // Update ReadyForPickup -> Completed (after another 30 seconds)
                     var pickupOrders = await dbContext.Orders
                         .Where(o => o.Status == OrderStatus.ReadyForPickup)
                         .ToListAsync(stoppingToken);
@@ -56,6 +61,7 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                     {
                         order.Status = OrderStatus.Completed;
                         order.UpdatedAt = now;
+                        await notificationService.SendNotificationAsync(order.UserId, Messages.Notification.OrderDeliveredTitle, Messages.Notification.OrderDeliveredMessage, order.Id.ToString().Substring(32).ToUpper());
                     }
 
                     if (toReady.Any() || toCompleted.Any())
@@ -70,7 +76,13 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                 _logger.LogError(ex, "Error occurred while updating order statuses.");
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken); // Check every 10 seconds
+            var currentTime = DateTimeOffset.UtcNow;
+            var next = cronExpression.GetNextOccurrence(currentTime, TimeZoneInfo.Utc);
+            if (next.HasValue)
+            {
+                var delay = next.Value - currentTime;
+                await Task.Delay(delay, stoppingToken);
+            }
         }
     }
 }

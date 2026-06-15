@@ -3,6 +3,7 @@ using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Enums;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodyGo.Application.Services;
@@ -10,10 +11,12 @@ namespace FoodyGo.Application.Services;
 public class UserService : IUserService
 {
     private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<User> _userRepository;
 
-    public UserService(IRepository<Order> orderRepository)
+    public UserService(IRepository<Order> orderRepository, IRepository<User> userRepository)
     {
         _orderRepository = orderRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<UserStatsDto> GetUserStatsAsync(Guid userId)
@@ -25,31 +28,32 @@ public class UserService : IUserService
 
         int totalRescued = 0;
         int totalSuspended = 0;
+        int totalItems = 0;
         decimal moneySaved = 0;
 
         foreach (var order in completedOrders)
         {
             foreach (var item in order.Items)
             {
+                totalItems += item.Quantity;
+
                 if (item.IsSuspended)
                 {
                     totalSuspended += item.Quantity;
                 }
-                else
+                
+                if (item.UnitPrice > 0)
                 {
                     totalRescued += item.Quantity;
                 }
 
-                // Money saved from all items
                 if (item.Box != null)
                 {
-                    moneySaved += (item.Box.OriginalPrice - item.Box.DiscountedPrice) * item.Quantity;
+                    moneySaved += (item.Box.OriginalPrice - item.UnitPrice) * item.Quantity;
                 }
             }
         }
 
-        // Assume ~2.5kg CO2 saved per rescued box.
-        // We only count standard boxes for CO2 savings for the user. (or count all? let's count all boxes purchased)
         double co2Saved = (totalRescued + totalSuspended) * 2.5;
 
         return new UserStatsDto
@@ -58,6 +62,33 @@ public class UserService : IUserService
             TotalSuspendedMeals = totalSuspended,
             TotalCO2SavedKg = co2Saved,
             TotalMoneySaved = moneySaved
+        };
+    }
+
+    public async Task<UserDto> UpdateUserAsync(Guid userId, UpdateProfileDto dto)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new Exception(Messages.Error.UserNotFound);
+        }
+
+        user.Name = dto.Name;
+        user.Email = dto.Email;
+
+        if (!string.IsNullOrEmpty(dto.Password))
+        {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+        }
+
+        await _userRepository.UpdateAsync(user);
+
+        return new UserDto
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl
         };
     }
 }

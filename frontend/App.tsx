@@ -6,12 +6,14 @@
  */
 import './src/i18n';
 import React from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme, LogBox } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 
 import AppNavigator from './src/navigation/AppNavigator';
+
+LogBox.ignoreAllLogs();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';

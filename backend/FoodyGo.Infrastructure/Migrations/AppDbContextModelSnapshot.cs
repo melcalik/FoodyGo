@@ -15,7 +15,7 @@ namespace FoodyGo.Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Box", b =>
                 {
@@ -66,7 +66,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Günün bakiye tatlılarından oluşan mix kutu",
                             DiscountedPrice = 65m,
-                            ImageUrl = "",
+                            ImageUrl = "sweet.png",
                             Name = "Tatlı Sürpriz Kutu",
                             OriginalPrice = 180m,
                             RestaurantId = new Guid("11111111-1111-1111-1111-111111111111"),
@@ -78,7 +78,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Taze pişmiş böreklerden oluşan kutu",
                             DiscountedPrice = 45m,
-                            ImageUrl = "",
+                            ImageUrl = "homemade.png",
                             Name = "Mini Börek Kutusu",
                             OriginalPrice = 120m,
                             RestaurantId = new Guid("11111111-1111-1111-1111-111111111111"),
@@ -90,7 +90,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Günlük ana yemek + çorba + pilav seti",
                             DiscountedPrice = 75m,
-                            ImageUrl = "",
+                            ImageUrl = "homemade.png",
                             Name = "Ev Yemeği Seti",
                             OriginalPrice = 200m,
                             RestaurantId = new Guid("22222222-2222-2222-2222-222222222222"),
@@ -102,7 +102,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Günün bakiyesinden sürpriz tabldot",
                             DiscountedPrice = 55m,
-                            ImageUrl = "",
+                            ImageUrl = "homemade.png",
                             Name = "Böyle Kutu",
                             OriginalPrice = 150m,
                             RestaurantId = new Guid("22222222-2222-2222-2222-222222222222"),
@@ -114,7 +114,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "2 dilim artisan pizza + içecek",
                             DiscountedPrice = 80m,
-                            ImageUrl = "",
+                            ImageUrl = "pizza.png",
                             Name = "Pizza Sürpriz",
                             OriginalPrice = 220m,
                             RestaurantId = new Guid("33333333-3333-3333-3333-333333333333"),
@@ -126,7 +126,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Smash burger + patates kızartması",
                             DiscountedPrice = 110m,
-                            ImageUrl = "",
+                            ImageUrl = "burger.png",
                             Name = "Burger Kutusu",
                             OriginalPrice = 280m,
                             RestaurantId = new Guid("44444444-4444-4444-4444-444444444444"),
@@ -138,7 +138,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Tavuk veya et döner dürüm + ayran",
                             DiscountedPrice = 60m,
-                            ImageUrl = "",
+                            ImageUrl = "kebab.png",
                             Name = "Döner Dürüm Seti",
                             OriginalPrice = 160m,
                             RestaurantId = new Guid("55555555-5555-5555-5555-555555555555"),
@@ -150,12 +150,48 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Döner tabak + salata + ekmek",
                             DiscountedPrice = 75m,
-                            ImageUrl = "",
+                            ImageUrl = "kebab.png",
                             Name = "Tabak Set",
                             OriginalPrice = 200m,
                             RestaurantId = new Guid("55555555-5555-5555-5555-555555555555"),
                             Stock = 4
                         });
+                });
+
+            modelBuilder.Entity("FoodyGo.Core.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OrderCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Order", b =>
@@ -230,6 +266,51 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("FoodyGo.Core.Entities.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CVV")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CardHolderName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CardName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Expiry")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsLastUsed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PaymentMethods");
+                });
+
             modelBuilder.Entity("FoodyGo.Core.Entities.Restaurant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -296,10 +377,10 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Moda Cad. No:55, Kadıköy",
                             Category = "homemade",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "18:30 - 20:30",
+                            DeliveryTime = "19:30 - 21:00",
                             Distance = "1.2 km",
                             ImageUrl = "homemade.png",
-                            Name = "Annem Gibi",
+                            Name = "Anne Elinden",
                             Rating = 4.5999999999999996,
                             ReviewCount = 89
                         },
@@ -335,10 +416,10 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Bağlarbaşı Mah. No:3, Üsküdar",
                             Category = "kebab",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "20:30 - 22:30",
+                            DeliveryTime = "18:00 - 20:00",
                             Distance = "1.7 km",
                             ImageUrl = "kebab.png",
-                            Name = "Ustanın Döneri",
+                            Name = "Usta Dönerci",
                             Rating = 4.9000000000000004,
                             ReviewCount = 308
                         },
@@ -348,7 +429,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             Address = "Karaköy Mah. No:3, Beyoğlu",
                             Category = "sweet",
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DeliveryTime = "18:00 - 20:00",
+                            DeliveryTime = "20:30 - 22:30",
                             Distance = "4.2 km",
                             ImageUrl = "sweet.png",
                             Name = "Güllüoğlu Baklava",
@@ -387,7 +468,8 @@ namespace FoodyGo.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.HasIndex("RestaurantId");
 
@@ -440,8 +522,7 @@ namespace FoodyGo.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Avatar")
-                        .IsRequired()
+                    b.Property<string>("AvatarUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -466,12 +547,50 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("WalletBalance")
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FoodyGo.Core.Entities.UserAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddress");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Box", b =>
@@ -483,6 +602,17 @@ namespace FoodyGo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FoodyGo.Core.Entities.Notification", b =>
+                {
+                    b.HasOne("FoodyGo.Core.Entities.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Order", b =>
@@ -523,11 +653,22 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("FoodyGo.Core.Entities.PaymentMethod", b =>
+                {
+                    b.HasOne("FoodyGo.Core.Entities.User", "User")
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FoodyGo.Core.Entities.Review", b =>
                 {
                     b.HasOne("FoodyGo.Core.Entities.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
+                        .WithOne("Review")
+                        .HasForeignKey("FoodyGo.Core.Entities.Review", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -577,9 +718,22 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("FoodyGo.Core.Entities.UserAddress", b =>
+                {
+                    b.HasOne("FoodyGo.Core.Entities.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FoodyGo.Core.Entities.Order", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Restaurant", b =>
@@ -593,9 +747,15 @@ namespace FoodyGo.Infrastructure.Migrations
 
             modelBuilder.Entity("FoodyGo.Core.Entities.User", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("DonatedMeals");
 
+                    b.Navigation("Notifications");
+
                     b.Navigation("Orders");
+
+                    b.Navigation("PaymentMethods");
                 });
 #pragma warning restore 612, 618
         }

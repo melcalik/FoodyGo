@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useRef } from 'react';
 import {
   View,
@@ -11,19 +11,23 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight } from '../../constants/theme';
+import { SplashScreenStyles as styles } from '../../styles/screenStyles';
 
 const { width } = Dimensions.get('window');
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'Splash'>;
+type Props = {
+  navigation?: any;
+  onComplete?: () => void;
+};
 
-export default function SplashScreen({ navigation }: Props) {
+export default function SplashScreen({ navigation, onComplete }: Props) {
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.7)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
   const taglineOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Logo animasyon zinciri
+
     Animated.sequence([
       Animated.delay(300),
       Animated.parallel([
@@ -52,18 +56,20 @@ export default function SplashScreen({ navigation }: Props) {
       }),
       Animated.delay(900),
     ]).start(() => {
-      navigation.replace('Login');
+      if (onComplete) {
+        onComplete();
+      } else if (navigation) {
+        navigation.replace('Login');
+      }
     });
   }, []);
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
 
-      {/* Arka plan degrade circle */}
       <View style={styles.bgCircle} />
 
-      {/* Logo */}
       <Animated.View
         style={[
           styles.logoWrap,
@@ -71,23 +77,20 @@ export default function SplashScreen({ navigation }: Props) {
         ]}
       >
         <Image
-          source={require('../../assets/images/splash/logo.png')}
+          source={require('../../assets/images/splash/logo_brown_transparent.png')}
           style={styles.logo}
           resizeMode="contain"
         />
       </Animated.View>
 
-      {/* App Name */}
       <Animated.Text style={[styles.appName, { opacity: textOpacity }]}>
         FoodyGo
       </Animated.Text>
 
-      {/* Tagline */}
       <Animated.Text style={[styles.tagline, { opacity: taglineOpacity }]}>
         Gıdaya Değer Kat
       </Animated.Text>
 
-      {/* Alt dot */}
       <Animated.View style={[styles.dotRow, { opacity: taglineOpacity }]}>
         {[0, 1, 2].map(i => (
           <View
@@ -100,61 +103,3 @@ export default function SplashScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bgCircle: {
-    position: 'absolute',
-    width: width * 1.2,
-    height: width * 1.2,
-    borderRadius: width * 0.6,
-    backgroundColor: Colors.primary,
-    opacity: 0.04,
-    top: -width * 0.3,
-  },
-  logoWrap: {
-    width: 130,
-    height: 130,
-    borderRadius: 32,
-    overflow: 'hidden',
-    marginBottom: 24,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 16,
-  },
-  logo: {
-    width: '100%',
-    height: '100%',
-  },
-  appName: {
-    fontSize: 42,
-    fontWeight: FontWeight.extrabold,
-    color: Colors.textPrimary,
-    letterSpacing: -1,
-    marginBottom: 10,
-  },
-  tagline: {
-    fontSize: FontSize.md,
-    color: Colors.textSecondary,
-    letterSpacing: 0.5,
-    marginBottom: 40,
-  },
-  dotRow: {
-    flexDirection: 'row',
-    gap: 6,
-    position: 'absolute',
-    bottom: 60,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: Colors.surfaceBorder,
-  },
-});

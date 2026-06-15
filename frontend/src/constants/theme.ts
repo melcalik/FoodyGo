@@ -1,42 +1,37 @@
 export const Colors = {
-  // Brand
-  primary: '#FF6B35',
-  primaryLight: '#FF8A5B',
-  primaryDark: '#E55A26',
 
-  // Teal — askıda yemek
-  teal: '#2EC4B6',
-  tealLight: '#4DD9CC',
-  tealDark: '#22A99D',
+  primary: '#8A561D',
+  primaryLight: '#EAD6C3',
+  primaryDark: '#5E3A12',
 
-  // Background
-  background: '#0F0F0F',
-  surface: '#1A1A1A',
-  surfaceElevated: '#242424',
-  surfaceBorder: '#2E2E2E',
+  teal: '#8A561D',
+  tealLight: '#EAD6C3',
+  tealDark: '#5E3A12',
 
-  // Typography
-  textPrimary: '#FFFFFF',
-  textSecondary: '#A0A0A0',
-  textMuted: '#606060',
-  textInverse: '#0F0F0F',
+  background: '#FFF8F0',
+  surface: '#FFFFFF',
+  surfaceElevated: '#FFFFFF',
+  surfaceBorder: '#EBDCCB',
 
-  // Semantic
+  textPrimary: '#3A281F',
+  textSecondary: '#8B7365',
+  textMuted: '#AD9C92',
+  textInverse: '#FFFFFF',
+
   success: '#22C55E',
-  successLight: '#16A34A20',
-  warning: '#F59E0B',
-  warningLight: '#F59E0B20',
+  successLight: '#E8F5E9',
+  warning: '#D97706',
+  warningLight: '#FEF3C7',
   error: '#EF4444',
-  errorLight: '#EF444420',
+  errorLight: '#FEE2E2',
   info: '#3B82F6',
 
-  // Utility
   white: '#FFFFFF',
   black: '#000000',
   transparent: 'transparent',
-  overlay: 'rgba(0,0,0,0.6)',
-  cardShadow: 'rgba(0,0,0,0.4)',
-  star: '#FFD700',
+  overlay: 'rgba(58, 40, 31, 0.4)',
+  cardShadow: 'rgba(200, 110, 36, 0.1)',
+  star: '#FBBF24',
 };
 
 export const Spacing = {

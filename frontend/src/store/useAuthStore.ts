@@ -19,13 +19,13 @@ interface AuthState {
   userStats: UserStats | null;
 
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, addressTitle: string, city: string, district: string, addressDetail: string) => Promise<boolean>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
   fetchUserStats: () => Promise<void>;
+  updateProfile: (name: string, email: string, password?: string) => Promise<boolean>;
 }
 
-/** Maps the raw API user object to the frontend User type. */
 const mapApiUser = (user: any): User => ({
   id: user.id,
   name: user.name,
@@ -61,10 +61,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  register: async (name, email, password) => {
+  register: async (name, email, password, addressTitle, city, district, addressDetail) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post('/Auth/register', { name, email, password });
+      const response = await api.post('/auth/register', { name, email, password, addressTitle, city, district, addressDetail });
       const { token, user } = response.data;
       const mappedUser = mapApiUser(user);
 
@@ -88,6 +88,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       AsyncStorage.removeItem('auth_user')
     ]);
     set({ isAuthenticated: false, user: null, token: null });
+
+    import('./useCartStore').then(m => m.useCartStore.getState().clearCart());
+    import('./useOrderStore').then(m => m.useOrderStore.setState({ orders: [], activeOrder: null }));
+    import('./usePaymentStore').then(m => m.usePaymentStore.setState({ paymentMethods: [] }));
+    import('./useReviewStore').then(m => m.useReviewStore.setState({ reviews: [] }));
   },
 
   hydrate: async () => {
@@ -110,6 +115,23 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ userStats: response.data });
     } catch (error) {
       console.error('Failed to fetch user stats:', error);
+    }
+  },
+
+  updateProfile: async (name, email, password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const payload = { name, email, password };
+      const response = await api.put('/Users/profile', payload);
+      const mappedUser = mapApiUser(response.data);
+
+      await AsyncStorage.setItem('auth_user', JSON.stringify(mappedUser));
+      set({ user: mappedUser, isLoading: false });
+      return true;
+    } catch (error: any) {
+      const message = error.response?.data?.message ?? 'Profile update failed.';
+      set({ error: message, isLoading: false });
+      return false;
     }
   },
 }));

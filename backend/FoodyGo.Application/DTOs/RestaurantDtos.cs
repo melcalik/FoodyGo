@@ -12,6 +12,7 @@ public class RestaurantDto
     public string Distance { get; set; } = string.Empty;
     public string DeliveryTime { get; set; } = string.Empty;
     public int SuspendedCount { get; set; } = 0;
+    public List<string> BoxNames { get; set; } = new();
 }
 
 public class BoxDto

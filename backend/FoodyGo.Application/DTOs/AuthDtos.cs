@@ -24,7 +24,19 @@ public class RegisterDto
 
     [Required]
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\':{}|<>]).{6,}$", ErrorMessage = "Password must have at least one uppercase, one lowercase, one number and one special character.")]
     public string Password { get; set; } = string.Empty;
+
+    [Required]
+    public string City { get; set; } = string.Empty;
+
+    [Required]
+    public string District { get; set; } = string.Empty;
+
+    public string AddressTitle { get; set; } = string.Empty;
+
+    [Required]
+    public string AddressDetail { get; set; } = string.Empty;
 }
 
 public class AuthResponseDto
@@ -38,6 +50,20 @@ public class UserDto
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string Avatar { get; set; } = string.Empty;
-    public decimal WalletBalance { get; set; }
+    public string? AvatarUrl { get; set; }
+}
+
+public class UpdateProfileDto
+{
+    [Required]
+    [MaxLength(100)]
+    public string Name { get; set; } = string.Empty;
+
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
+    [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\':{}|<>]).{6,}$", ErrorMessage = "Password must have at least one uppercase, one lowercase, one number and one special character.")]
+    public string? Password { get; set; }
 }

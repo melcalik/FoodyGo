@@ -6,7 +6,7 @@ export type RestaurantCategory =
   | 'kebab';
 
 export type OrderStatus = 'preparing' | 'confirmed' | 'ready' | 'pickedUp' | 'cancelled';
-export type OrderType = 'normal' | 'suspended';
+export type OrderType = 'normal' | 'suspended' | 'claimedSuspended';
 
 export interface Restaurant {
   id: string;
@@ -20,6 +20,7 @@ export interface Restaurant {
   isOpen: boolean;
   deliveryTime: string;
   suspendedCount: number;
+  boxNames?: string[];
 }
 
 export interface SurpriseBox {
@@ -31,8 +32,8 @@ export interface SurpriseBox {
   discountedPrice: number;
   stock: number;
   image?: any;
-  emoji?: string;    // optional — not provided by API
-  contents?: string[]; // optional — not provided by API
+  emoji?: string;
+  contents?: string[];
 }
 
 export interface CartItem {
@@ -40,6 +41,7 @@ export interface CartItem {
   restaurant: Restaurant;
   quantity: number;
   isSuspended: boolean;
+  isClaimingMealId?: string;
 }
 
 export interface Order {
@@ -53,6 +55,7 @@ export interface Order {
   type: OrderType;
   createdAt: Date;
   updatedAt: Date;
+  isReviewed?: boolean;
 }
 
 export interface OrderItem {
@@ -73,6 +76,7 @@ export interface Review {
   rating: number;
   comment: string;
   createdAt: Date;
+  orderItems?: string[];
 }
 
 export interface SuspendedMeal {
@@ -90,4 +94,14 @@ export interface User {
   id: string;
   name: string;
   email: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  cardName: string;
+  cardNumber: string;
+  cardHolderName: string;
+  expiry: string;
+  cvv: string;
+  isLastUsed: boolean;
 }

@@ -7,16 +7,17 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RestaurantCategory } from '../../types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 
-const CATEGORIES: { key: RestaurantCategory | 'all'; emoji: string; labelKey: string }[] = [
-  { key: 'all', emoji: '🍽️', labelKey: 'home.allCategories' },
-  { key: 'sweet', emoji: '🍰', labelKey: 'home.sweet' },
-  { key: 'homemade', emoji: '🍲', labelKey: 'home.homemade' },
-  { key: 'pizza', emoji: '🍕', labelKey: 'home.pizza' },
-  { key: 'burger', emoji: '🍔', labelKey: 'home.burger' },
-  { key: 'kebab', emoji: '🌯', labelKey: 'home.kebab' },
+const CATEGORIES: { key: RestaurantCategory | 'all'; icon: string; labelKey: string }[] = [
+  { key: 'all', icon: 'restaurant', labelKey: 'home.allCategories' },
+  { key: 'sweet', icon: 'ice-cream', labelKey: 'home.sweet' },
+  { key: 'homemade', icon: 'nutrition', labelKey: 'home.homemade' },
+  { key: 'pizza', icon: 'pizza', labelKey: 'home.pizza' },
+  { key: 'burger', icon: 'fast-food', labelKey: 'home.burger' },
+  { key: 'kebab', icon: 'flame', labelKey: 'home.kebab' },
 ];
 
 interface CategoryFilterProps {
@@ -41,7 +42,7 @@ export default function CategoryFilter({ selected, onSelect }: CategoryFilterPro
             onPress={() => onSelect(cat.key)}
             activeOpacity={0.8}
           >
-            <Text style={styles.pillEmoji}>{cat.emoji}</Text>
+            <Ionicons name={cat.icon} size={18} color={isActive ? Colors.primary : Colors.textSecondary} />
             <Text style={[styles.pillLabel, isActive && styles.pillLabelActive]}>
               {t(cat.labelKey)}
             </Text>
@@ -71,17 +72,15 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   pillActive: {
-    backgroundColor: Colors.primary,
     borderColor: Colors.primary,
   },
-  pillEmoji: { fontSize: 16 },
   pillLabel: {
     color: Colors.textSecondary,
     fontSize: FontSize.sm,
     fontWeight: FontWeight.medium,
   },
   pillLabelActive: {
-    color: Colors.white,
+    color: Colors.primary,
     fontWeight: FontWeight.semibold,
   },
 });

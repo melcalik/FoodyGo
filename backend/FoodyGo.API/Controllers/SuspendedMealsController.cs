@@ -1,5 +1,6 @@
 using FoodyGo.Application.DTOs;
 using FoodyGo.Application.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +33,7 @@ public class SuspendedMealsController : BaseController
         var result = await _suspendedMealService.ClaimSuspendedMealAsync(id, userId.Value);
 
         return result
-            ? Ok(new { message = "Suspended meal claimed successfully." })
-            : BadRequest(new { message = "This meal has already been claimed or does not exist." });
+            ? Ok(new { message = Messages.Success.SuspendedMealClaimed })
+            : BadRequest(new { message = Messages.Error.SuspendedMealAlreadyClaimed });
     }
 }

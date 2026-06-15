@@ -17,19 +17,23 @@ import { SuspendedStackParamList } from '../../navigation/types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 import { useOrderStore } from '../../store/useOrderStore';
 import { useSuspendedStore } from '../../store/useSuspendedStore';
+import { useCartStore } from '../../store/useCartStore';
 import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { SuspendedMealScreenStyles as styles } from '../../styles/screenStyles';
 
 type Props = NativeStackScreenProps<SuspendedStackParamList, 'SuspendedMeal'>;
 
 export default function SuspendedMealScreen({ navigation }: Props) {
   const { t } = useTranslation();
-  const { orders } = useOrderStore();
+  const { orders, fetchOrders } = useOrderStore();
   const { availableMeals, isLoading, fetchAvailableMeals, claimMeal } = useSuspendedStore();
 
   useFocusEffect(
     React.useCallback(() => {
       fetchAvailableMeals();
-    }, [])
+      fetchOrders();
+    }, [fetchAvailableMeals, fetchOrders])
   );
 
   const myDonationsCount = useMemo(() => {
@@ -38,71 +42,136 @@ export default function SuspendedMealScreen({ navigation }: Props) {
     }, 0);
   }, [orders]);
 
-  const handleClaim = async (id: string) => {
-    try {
-      await claimMeal(id);
-      Alert.alert(t('suspended.claimSuccessTitle'), t('suspended.claimSuccessDesc'));
-    } catch (e: any) {
-      Alert.alert(t('common.error'), e.message || t('suspended.claimError'));
-    }
+  const { addItem, getClaimedQuantity, items, updateQuantity } = useCartStore();
+
+  const groupedMeals = useMemo(() => {
+    const map = new Map<string, typeof availableMeals[0] & { count: number }>();
+    availableMeals.forEach(m => {
+      if (map.has(m.boxId)) {
+        map.get(m.boxId)!.count++;
+      } else {
+        map.set(m.boxId, { ...m, count: 1 });
+      }
+    });
+    return Array.from(map.values());
+  }, [availableMeals]);
+
+  const handleClaim = (meal: any) => {
+    const fakeBox = {
+      id: meal.boxId,
+      restaurantId: meal.restaurantId,
+      name: meal.boxName,
+      description: 'Askıdan alınan yemek',
+      originalPrice: 0,
+      discountedPrice: 0,
+      stock: 1,
+      createdAt: meal.createdAt.toISOString(),
+      image: meal.restaurantImageUrl
+    };
+    
+    const fakeRestaurant = {
+      id: meal.restaurantId,
+      name: meal.restaurantName,
+      imageUrl: meal.restaurantImageUrl,
+      rating: 0,
+      reviewCount: 0,
+      distance: '',
+      deliveryTime: '',
+      category: 'homemade' as any,
+      address: '',
+      isOpen: true,
+      suspendedCount: 0
+    };
+
+    addItem(fakeBox as any, fakeRestaurant as any, false, meal.id);
   };
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.teal} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.primary} />
       
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* Header Hero */}
+        
         <View style={styles.hero}>
-          <Text style={styles.heroEmoji}>🤝</Text>
+          <Ionicons name="heart-circle" size={60} color={Colors.white} style={{ marginBottom: Spacing.md }} />
           <Text style={styles.heroTitle}>{t('suspended.title')}</Text>
           <Text style={styles.heroSubtitle}>
             {t('suspended.heroSubtitle')}
           </Text>
         </View>
 
-        {/* Stats Row */}
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>{t('suspended.myDonations')}</Text>
             <Text style={styles.statValue}>{myDonationsCount}</Text>
-            <Text style={styles.statEmoji}>💝</Text>
+            <Ionicons name="heart" size={50} color={Colors.primary} style={styles.statEmoji} />
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>{t('suspended.totalCount')}</Text>
             <Text style={styles.statValue}>{availableMeals.length}</Text>
-            <Text style={styles.statEmoji}>🌍</Text>
+            <Ionicons name="earth" size={50} color={Colors.primary} style={styles.statEmoji} />
           </View>
         </View>
 
-        {/* Available Meals Section */}
         <View style={styles.listSection}>
           <Text style={styles.sectionTitle}>{t('suspended.waitingToClaim')}</Text>
           
           {isLoading && availableMeals.length === 0 ? (
-            <ActivityIndicator size="large" color={Colors.teal} style={{ marginTop: 20 }} />
+            <ActivityIndicator size="large" color={Colors.primary} style={{ marginTop: 20 }} />
           ) : availableMeals.length === 0 ? (
             <View style={styles.emptyCard}>
-              <Text style={styles.emptyEmoji}>🍃</Text>
+              <Ionicons name="leaf" size={40} color={Colors.textMuted} style={{ marginBottom: 8 }} />
               <Text style={styles.emptyText}>{t('suspended.emptyList')}</Text>
             </View>
           ) : (
-            availableMeals.map(meal => (
-              <View key={meal.id} style={styles.mealCard}>
-                <Image source={{ uri: meal.restaurantImageUrl }} style={styles.restaurantImage} />
-                <View style={styles.mealInfo}>
-                  <Text style={styles.mealBoxName}>{meal.boxName}</Text>
-                  <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
-                  <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName}</Text>
+            groupedMeals.map(meal => {
+              const inCart = getClaimedQuantity(meal.boxId);
+              const isOutOfStock = inCart >= meal.count;
+
+              return (
+                <View key={meal.id} style={styles.mealCard}>
+                  <Image source={meal.restaurantImageUrl as any} style={styles.restaurantImage} />
+                  <View style={styles.mealInfo}>
+                    <Text style={styles.mealBoxName}>{meal.boxName}</Text>
+                    <Text style={{ color: Colors.primary, fontWeight: FontWeight.medium, fontSize: FontSize.sm, marginBottom: 4 }}>{meal.count} {t('common.piece')}</Text>
+                    <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
+                    <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName} {meal.count > 1 ? t('suspended.andOthers') : ''}</Text>
+                  </View>
+                  {inCart > 0 ? (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: Spacing.sm, height: 36, width: 115 }}>
+                      <TouchableOpacity
+                        style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }}
+                        onPress={() => updateQuantity(meal.boxId, inCart - 1, false, meal.id)}
+                      >
+                        {inCart === 1 ? (
+                          <Ionicons name="trash-outline" size={16} color={Colors.textPrimary} />
+                        ) : (
+                          <Text style={{ fontSize: 15, color: Colors.textPrimary }}>−</Text>
+                        )}
+                      </TouchableOpacity>
+
+                      <Text style={{ fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.textPrimary, minWidth: 20, textAlign: 'center' }}>{inCart}</Text>
+
+                      <TouchableOpacity
+                        style={[{ width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }, isOutOfStock ? { opacity: 0.5 } : { backgroundColor: Colors.primary, borderColor: Colors.primary }]}
+                        onPress={() => !isOutOfStock && handleClaim(meal)}
+                        disabled={isOutOfStock}
+                      >
+                        <Text style={[{ fontSize: 15, color: Colors.textPrimary }, !isOutOfStock && { color: Colors.white }]}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <TouchableOpacity 
+                      style={[styles.claimBtn, isOutOfStock && { backgroundColor: Colors.textMuted }]}
+                      onPress={() => !isOutOfStock && handleClaim(meal)}
+                      disabled={isOutOfStock}
+                    >
+                      <Text style={styles.claimBtnText}>{isOutOfStock ? 'Tükendi' : t('suspended.claimBtn')}</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
-                <TouchableOpacity 
-                  style={styles.claimBtn}
-                  onPress={() => handleClaim(meal.id)}
-                >
-                  <Text style={styles.claimBtnText}>{t('suspended.claimBtn')}</Text>
-                </TouchableOpacity>
-              </View>
-            ))
+              );
+            })
           )}
         </View>
 
@@ -111,128 +180,3 @@ export default function SuspendedMealScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.background },
-  scroll: { paddingBottom: 40 },
-
-  hero: {
-    backgroundColor: Colors.teal,
-    alignItems: 'center',
-    paddingTop: Spacing.xl,
-    paddingBottom: Spacing.xxl,
-    paddingHorizontal: Spacing.xl,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-  },
-  heroEmoji: { fontSize: 60, marginBottom: Spacing.md },
-  heroTitle: {
-    fontSize: 28,
-    fontWeight: FontWeight.extrabold,
-    color: Colors.white,
-    marginBottom: Spacing.sm,
-  },
-  heroSubtitle: {
-    fontSize: FontSize.md,
-    color: Colors.white,
-    textAlign: 'center',
-    lineHeight: 22,
-    opacity: 0.9,
-  },
-
-  statsRow: {
-    flexDirection: 'row',
-    paddingHorizontal: Spacing.md,
-    marginTop: -30,
-    gap: Spacing.md,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    padding: Spacing.md,
-    alignItems: 'center',
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  statLabel: { fontSize: FontSize.sm, color: Colors.textSecondary, marginBottom: 4, zIndex: 2 },
-  statValue: { fontSize: 32, fontWeight: FontWeight.extrabold, color: Colors.teal, zIndex: 2 },
-  statEmoji: { position: 'absolute', right: -10, bottom: -10, fontSize: 50, opacity: 0.1, zIndex: 1 },
-
-  listSection: {
-    marginTop: Spacing.xl,
-    paddingHorizontal: Spacing.md,
-  },
-  sectionTitle: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    marginBottom: Spacing.md,
-  },
-  emptyCard: {
-    alignItems: 'center',
-    padding: Spacing.xl,
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  emptyEmoji: { fontSize: 40, marginBottom: 8 },
-  emptyText: { fontSize: FontSize.sm, color: Colors.textSecondary },
-
-  mealCard: {
-    flexDirection: 'row',
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.lg,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    alignItems: 'center',
-  },
-  restaurantImage: {
-    width: 50,
-    height: 50,
-    borderRadius: Radius.md,
-    marginRight: Spacing.md,
-    backgroundColor: Colors.surfaceElevated,
-  },
-  mealInfo: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  mealBoxName: {
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
-    color: Colors.textPrimary,
-    marginBottom: 2,
-  },
-  mealRestaurantName: {
-    fontSize: FontSize.sm,
-    color: Colors.textSecondary,
-    marginBottom: 4,
-  },
-  mealDonor: {
-    fontSize: 10,
-    color: Colors.teal,
-    fontWeight: FontWeight.medium,
-  },
-  claimBtn: {
-    backgroundColor: Colors.teal,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: Radius.md,
-    marginLeft: Spacing.sm,
-  },
-  claimBtnText: {
-    color: Colors.white,
-    fontWeight: 'bold',
-    fontSize: FontSize.sm,
-  },
-});

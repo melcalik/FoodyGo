@@ -4,10 +4,10 @@
 
 namespace FoodyGo.Infrastructure.Migrations
 {
-    /// <inheritdoc />
+
     public partial class AddUserAvatarAndWallet : Migration
     {
-        /// <inheritdoc />
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -25,7 +25,6 @@ namespace FoodyGo.Infrastructure.Migrations
                 defaultValue: 0m);
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

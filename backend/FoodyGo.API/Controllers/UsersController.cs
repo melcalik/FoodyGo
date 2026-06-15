@@ -25,4 +25,21 @@ public class UsersController : BaseController
         var stats = await _userService.GetUserStatsAsync(userId.Value);
         return Ok(stats);
     }
+
+    [HttpPut("profile")]
+    public async Task<ActionResult<UserDto>> UpdateProfile([FromBody] UpdateProfileDto dto)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        try
+        {
+            var updatedUser = await _userService.UpdateUserAsync(userId.Value, dto);
+            return Ok(updatedUser);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
 }

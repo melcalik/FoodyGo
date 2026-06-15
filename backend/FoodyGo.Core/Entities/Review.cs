@@ -11,6 +11,6 @@ public class Review : BaseEntity
     public Guid OrderId { get; set; }
     public Order Order { get; set; } = null!;
 
-    public int Rating { get; set; } // 1-5
+    public int Rating { get; set; }
     public string Comment { get; set; } = string.Empty;
 }

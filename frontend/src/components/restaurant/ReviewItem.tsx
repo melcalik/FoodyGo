@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Review } from '../../types';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '../../constants/theme';
 
@@ -8,7 +10,9 @@ interface ReviewItemProps {
 }
 
 export default function ReviewItem({ review }: ReviewItemProps) {
-  const stars = Array.from({ length: 5 }, (_, i) => i < review.rating ? '⭐' : '☆');
+  const stars = Array.from({ length: 5 }, (_, i) => (
+    <Ionicons key={i} name={i < review.rating ? "star" : "star-outline"} size={12} color="#FBBF24" />
+  ));
   const dateStr = review.createdAt.toLocaleDateString('tr-TR', {
     day: 'numeric',
     month: 'long',
@@ -25,9 +29,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           <Text style={styles.date}>{dateStr}</Text>
         </View>
         <View style={styles.starsRow}>
-          {stars.map((s, i) => (
-            <Text key={i} style={styles.star}>{s}</Text>
-          ))}
+          {stars}
         </View>
       </View>
       <Text style={styles.comment}>{review.comment}</Text>
@@ -68,8 +70,7 @@ const styles = StyleSheet.create({
   headerInfo: { flex: 1 },
   name: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.textPrimary },
   date: { fontSize: FontSize.xs, color: Colors.textMuted },
-  starsRow: { flexDirection: 'row' },
-  star: { fontSize: 12 },
+  starsRow: { flexDirection: 'row', gap: 2 },
   comment: {
     fontSize: FontSize.sm,
     color: Colors.textSecondary,

@@ -52,9 +52,16 @@ public class OrdersController : BaseController
         var order = await _orderService.GetOrderByIdAsync(id);
         if (order is null) return NotFound();
 
-        // Ownership check: users can only fetch their own orders
         if (order.UserId != userId.Value) return Forbid();
 
         return Ok(order);
+    }
+
+    [HttpGet("daily-stats")]
+    [AllowAnonymous]
+    public async Task<ActionResult> GetDailyStats()
+    {
+        var count = await _orderService.GetTodayTotalRescuedMealsAsync();
+        return Ok(new { count });
     }
 }
