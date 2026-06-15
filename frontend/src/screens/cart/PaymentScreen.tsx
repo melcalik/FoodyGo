@@ -154,7 +154,7 @@ export default function PaymentScreen({ navigation }: Props) {
   if (showSaveModal) {
     return (
       <SafeAreaView style={styles.safe}>
-        <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+        <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
         <KeyboardAvoidingView
           style={styles.flex}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -173,7 +173,7 @@ export default function PaymentScreen({ navigation }: Props) {
                 style={[styles.input, { flex: undefined, color: Colors.textPrimary, width: '100%', marginTop: 8, marginBottom: Spacing.xl }]}
                 value={newCardName}
                 onChangeText={setNewCardName}
-                placeholder="Örn: İş Kartım"
+                placeholder="İş Kartım"
                 autoFocus={true}
               />
 
@@ -200,7 +200,7 @@ export default function PaymentScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -253,14 +253,16 @@ export default function PaymentScreen({ navigation }: Props) {
             <View style={styles.form}>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>{t('payment.cardHolderName')}</Text>
-                <TextInput
-                  style={styles.input}
-                  value={name}
-                  onChangeText={setName}
-                  placeholder="Örn: AD SOYAD"
-                  placeholderTextColor={Colors.textMuted}
-                  autoCapitalize="characters"
-                />
+                <View style={styles.inputWrap}>
+                  <TextInput
+                    style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]}
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Ad Soyad"
+                    placeholderTextColor={Colors.textMuted}
+                    autoCapitalize="characters"
+                  />
+                </View>
               </View>
 
               <View style={styles.inputGroup}>
@@ -268,10 +270,10 @@ export default function PaymentScreen({ navigation }: Props) {
                 <View style={styles.inputWrap}>
                   <Ionicons name="card" size={20} color={Colors.textPrimary} style={{ marginRight: 8 }} />
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]}
                     value={cardNumber}
                     onChangeText={formatCardNumber}
-                    placeholder="0000 0000 0000 0000"
+                    placeholder="1234 1234 1234 1234"
                     placeholderTextColor={Colors.textMuted}
                     keyboardType="numeric"
                     maxLength={19}
@@ -282,40 +284,45 @@ export default function PaymentScreen({ navigation }: Props) {
               <View style={styles.row}>
                 <View style={[styles.inputGroup, { flex: 1, marginRight: Spacing.sm }]}>
                   <Text style={styles.label}>{t('payment.expiry')}</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={expiry}
-                    onChangeText={formatExpiry}
-                    placeholder="AA/YY"
-                    placeholderTextColor={Colors.textMuted}
-                    keyboardType="numeric"
-                    maxLength={5}
-                  />
+                  <View style={styles.inputWrap}>
+                    <TextInput
+                      style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]}
+                      value={expiry}
+                      onChangeText={formatExpiry}
+                      placeholder="AA/YY"
+                      placeholderTextColor={Colors.textMuted}
+                      keyboardType="numeric"
+                      maxLength={5}
+                    />
+                  </View>
                 </View>
                 <View style={[styles.inputGroup, { flex: 1 }]}>
                   <Text style={styles.label}>CVV</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={cvv}
-                    onChangeText={setCvv}
-                    placeholder="123"
-                    placeholderTextColor={Colors.textMuted}
-                    keyboardType="numeric"
-                    maxLength={3}
-                    secureTextEntry
-                  />
+                  <View style={styles.inputWrap}>
+                    <TextInput
+                      style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]}
+                      value={cvv}
+                      onChangeText={setCvv}
+                      placeholder="123"
+                      placeholderTextColor={Colors.textMuted}
+                      keyboardType="numeric"
+                      maxLength={3}
+                      secureTextEntry
+                    />
+                  </View>
                 </View>
               </View>
             </View>
           )}
 
-          <View style={styles.noteBox}>
-            <Ionicons name="lock-closed" size={20} color={Colors.textSecondary} />
-            <Text style={styles.noteText}>{t('payment.sslNote')}</Text>
-          </View>
         </ScrollView>
 
         <View style={styles.footer}>
+          <View style={[styles.noteBox, { marginTop: 0, marginBottom: Spacing.md }]}>
+            <Ionicons name="lock-closed" size={20} color={Colors.textSecondary} />
+            <Text style={styles.noteText}>{t('payment.sslNote')}</Text>
+          </View>
+
           <TouchableOpacity
             style={[styles.payBtn, isProcessing && styles.payBtnDisabled]}
             onPress={handlePay}

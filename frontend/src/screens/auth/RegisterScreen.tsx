@@ -39,7 +39,8 @@ export default function RegisterScreen({ navigation }: Props) {
   const [error, setError] = useState('');
 
   const validate = () => {
-    if (!name || !email || !password || !confirmPassword || !addressTitle || !city || !district || !addressDetail) {
+    const cleanEmail = email.trim();
+    if (!name || !cleanEmail || !password || !confirmPassword || !addressTitle || !city || !district || !addressDetail) {
       setError(t('auth.fillAllFields'));
       return false;
     }
@@ -47,7 +48,7 @@ export default function RegisterScreen({ navigation }: Props) {
       setError(t('auth.passwordMismatch'));
       return false;
     }
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(cleanEmail)) {
       setError(t('auth.invalidEmail'));
       return false;
     }
@@ -61,7 +62,7 @@ export default function RegisterScreen({ navigation }: Props) {
   const handleRegister = async () => {
     if (!validate()) return;
     setError('');
-    const success = await register(name, email, password, addressTitle, city, district, addressDetail);
+    const success = await register(name.trim(), email.trim(), password, addressTitle.trim(), city.trim(), district.trim(), addressDetail.trim());
     if (!success) {
       setError(useAuthStore.getState().error || t('auth.registerFailed'));
     }
@@ -73,7 +74,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: name,
       setter: setName,
       placeholder: t('auth.namePlaceholder'),
-      icon: '👤',
+      icon: 'person-outline',
       secure: false,
       keyboardType: 'default' as const,
     },
@@ -82,7 +83,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: email,
       setter: setEmail,
       placeholder: t('auth.emailPlaceholder'),
-      icon: '✉️',
+      icon: 'mail-outline',
       secure: false,
       keyboardType: 'email-address' as const,
     },
@@ -91,7 +92,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: addressTitle,
       setter: setAddressTitle,
       placeholder: "Ev",
-      icon: '🏷️',
+      icon: 'pricetag-outline',
       secure: false,
       keyboardType: 'default' as const,
     },
@@ -100,7 +101,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: city,
       setter: setCity,
       placeholder: "İstanbul",
-      icon: '🏙️',
+      icon: 'business-outline',
       secure: false,
       keyboardType: 'default' as const,
     },
@@ -109,7 +110,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: district,
       setter: setDistrict,
       placeholder: "Ataşehir",
-      icon: '📍',
+      icon: 'location-outline',
       secure: false,
       keyboardType: 'default' as const,
     },
@@ -118,7 +119,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: addressDetail,
       setter: setAddressDetail,
       placeholder: "Atatürk Mah. No:2",
-      icon: '🏠',
+      icon: 'home-outline',
       secure: false,
       keyboardType: 'default' as const,
     },
@@ -127,7 +128,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: password,
       setter: setPassword,
       placeholder: t('auth.passwordPlaceholder'),
-      icon: '🔒',
+      icon: 'lock-closed-outline',
       secure: !showPassword,
       keyboardType: 'default' as const,
       isPassword: true,
@@ -139,7 +140,7 @@ export default function RegisterScreen({ navigation }: Props) {
       value: confirmPassword,
       setter: setConfirmPassword,
       placeholder: t('auth.passwordPlaceholder'),
-      icon: '🔒',
+      icon: 'lock-closed-outline',
       secure: !showConfirmPassword,
       keyboardType: 'default' as const,
       isPassword: true,
@@ -153,7 +154,7 @@ export default function RegisterScreen({ navigation }: Props) {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <ScrollView
         style={styles.flex}
         contentContainerStyle={styles.scroll}
@@ -168,7 +169,7 @@ export default function RegisterScreen({ navigation }: Props) {
         </View>
 
         <View style={styles.hero}>
-          <Text style={styles.heroEmoji}>🌱</Text>
+          <Ionicons name="leaf" size={56} color={Colors.primary} style={{ marginBottom: 12 }} />
           <Text style={styles.heroTitle}>{t('auth.joinUs')}</Text>
           <Text style={styles.heroSub}>
             {t('auth.joinSubtitle')}
@@ -180,7 +181,7 @@ export default function RegisterScreen({ navigation }: Props) {
             <View key={field.label} style={styles.inputGroup}>
               <Text style={styles.label}>{field.label}</Text>
               <View style={styles.inputWrap}>
-                <Text style={styles.inputIcon}>{field.icon}</Text>
+                <Ionicons name={field.icon} size={20} color={Colors.textMuted} style={{ marginRight: 8 }} />
                 <TextInput
                   style={[styles.input, (field as any).isPassword && { flex: 1 }]}
                   value={field.value}

@@ -4,6 +4,7 @@
     "loading": "Yükleniyor...",
     "error": "Bir hata oluştu",
     "retry": "Tekrar Dene",
+    "delete": "Sil",
     "cancel": "İptal",
     "confirm": "Onayla",
     "save": "Kaydet",
@@ -166,7 +167,7 @@
     "reorder": "Tekrar Sipariş Ver",
     "notFound": "Sipariş bulunamadı.",
     "mapView": "Harita Görünümü",
-    "deliveryCode": "Teslimat Kodu",
+    "deliveryCode": "Sipariş Kodu",
     "status": "Durum",
     "currentStage": "Şu anki aşama",
     "details": "Sipariş Detayı"

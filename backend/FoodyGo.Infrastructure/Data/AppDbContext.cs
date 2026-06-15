@@ -17,6 +17,8 @@ public class AppDbContext : DbContext
     public DbSet<SuspendedMeal> SuspendedMeals { get; set; } = null!;
     public DbSet<Review> Reviews { get; set; } = null!;
     public DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
+    public DbSet<UserAddress> UserAddress { get; set; } = null!;
+    public DbSet<Notification> Notifications { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,14 +43,14 @@ public class AppDbContext : DbContext
         );
 
         modelBuilder.Entity<Box>().HasData(
-            new Box { Id = Guid.Parse("aaaa1111-1111-1111-1111-111111111111"), RestaurantId = r1Id, Name = "Tatlı Sürpriz Kutu", Description = "Günün bakiye tatlılarından oluşan mix kutu", OriginalPrice = 180, DiscountedPrice = 65, Stock = 4, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("aaaa2222-1111-1111-1111-111111111111"), RestaurantId = r1Id, Name = "Mini Börek Kutusu", Description = "Taze pişmiş böreklerden oluşan kutu", OriginalPrice = 120, DiscountedPrice = 45, Stock = 2, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("bbbb1111-2222-2222-2222-222222222222"), RestaurantId = r2Id, Name = "Ev Yemeği Seti", Description = "Günlük ana yemek + çorba + pilav seti", OriginalPrice = 200, DiscountedPrice = 75, Stock = 3, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("bbbb2222-2222-2222-2222-222222222222"), RestaurantId = r2Id, Name = "Böyle Kutu", Description = "Günün bakiyesinden sürpriz tabldot", OriginalPrice = 150, DiscountedPrice = 55, Stock = 5, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("cccc1111-3333-3333-3333-333333333333"), RestaurantId = r3Id, Name = "Pizza Sürpriz", Description = "2 dilim artisan pizza + içecek", OriginalPrice = 220, DiscountedPrice = 80, Stock = 6, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("dddd1111-4444-4444-4444-444444444444"), RestaurantId = r4Id, Name = "Burger Kutusu", Description = "Smash burger + patates kızartması", OriginalPrice = 280, DiscountedPrice = 110, Stock = 2, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("eeee1111-5555-5555-5555-555555555555"), RestaurantId = r5Id, Name = "Döner Dürüm Seti", Description = "Tavuk veya et döner dürüm + ayran", OriginalPrice = 160, DiscountedPrice = 60, Stock = 8, CreatedAt = fixedDate },
-            new Box { Id = Guid.Parse("eeee2222-5555-5555-5555-555555555555"), RestaurantId = r5Id, Name = "Tabak Set", Description = "Döner tabak + salata + ekmek", OriginalPrice = 200, DiscountedPrice = 75, Stock = 4, CreatedAt = fixedDate }
+            new Box { Id = Guid.Parse("aaaa1111-1111-1111-1111-111111111111"), RestaurantId = r1Id, Name = "Tatlı Sürpriz Kutu", Description = "Günün bakiye tatlılarından oluşan mix kutu", OriginalPrice = 180, DiscountedPrice = 65, Stock = 4, ImageUrl = "sweet.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("aaaa2222-1111-1111-1111-111111111111"), RestaurantId = r1Id, Name = "Mini Börek Kutusu", Description = "Taze pişmiş böreklerden oluşan kutu", OriginalPrice = 120, DiscountedPrice = 45, Stock = 2, ImageUrl = "homemade.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("bbbb1111-2222-2222-2222-222222222222"), RestaurantId = r2Id, Name = "Ev Yemeği Seti", Description = "Günlük ana yemek + çorba + pilav seti", OriginalPrice = 200, DiscountedPrice = 75, Stock = 3, ImageUrl = "homemade.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("bbbb2222-2222-2222-2222-222222222222"), RestaurantId = r2Id, Name = "Böyle Kutu", Description = "Günün bakiyesinden sürpriz tabldot", OriginalPrice = 150, DiscountedPrice = 55, Stock = 5, ImageUrl = "homemade.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("cccc1111-3333-3333-3333-333333333333"), RestaurantId = r3Id, Name = "Pizza Sürpriz", Description = "2 dilim artisan pizza + içecek", OriginalPrice = 220, DiscountedPrice = 80, Stock = 6, ImageUrl = "pizza.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("dddd1111-4444-4444-4444-444444444444"), RestaurantId = r4Id, Name = "Burger Kutusu", Description = "Smash burger + patates kızartması", OriginalPrice = 280, DiscountedPrice = 110, Stock = 2, ImageUrl = "burger.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("eeee1111-5555-5555-5555-555555555555"), RestaurantId = r5Id, Name = "Döner Dürüm Seti", Description = "Tavuk veya et döner dürüm + ayran", OriginalPrice = 160, DiscountedPrice = 60, Stock = 8, ImageUrl = "kebab.png", CreatedAt = fixedDate },
+            new Box { Id = Guid.Parse("eeee2222-5555-5555-5555-555555555555"), RestaurantId = r5Id, Name = "Tabak Set", Description = "Döner tabak + salata + ekmek", OriginalPrice = 200, DiscountedPrice = 75, Stock = 4, ImageUrl = "kebab.png", CreatedAt = fixedDate }
         );
     }
 }

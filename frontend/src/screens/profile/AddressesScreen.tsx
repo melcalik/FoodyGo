@@ -123,7 +123,7 @@ export default function AddressesScreen({ navigation }: Props) {
               <Ionicons name="close" size={24} color={Colors.textPrimary} />
             </TouchableOpacity>
 
-            <View style={[styles.inputGroup, { marginTop: Spacing.m }]}>
+            <View style={[styles.inputGroup, { marginTop: Spacing.md }]}>
               <Text style={styles.label}>Adres Başlığı</Text>
               <View style={styles.inputWrap}>
                 <Text style={styles.inputIcon}>🏷️</Text>
@@ -171,14 +171,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: Spacing.m,
-    paddingVertical: Spacing.s,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
     backgroundColor: Colors.background,
   },
   backBtn: {
     width: 40,
     height: 40,
-    borderRadius: Radius.m,
+    borderRadius: Radius.md,
     backgroundColor: Colors.background,
     justifyContent: 'center',
     alignItems: 'center',
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
   },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  list: { padding: Spacing.m },
+  list: { paddingHorizontal: Spacing.md, paddingTop: Spacing.md },
   addressCard: {
     backgroundColor: Colors.surface,
     padding: 16,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   activeCard: {
     borderColor: Colors.primary,
-    backgroundColor: `${Colors.primary}08`,
+    backgroundColor: Colors.primaryLight,
   },
   addressHeader: {
     flexDirection: 'row',
@@ -226,21 +226,21 @@ const styles = StyleSheet.create({
   addressText: { fontSize: FontSize.sm, color: Colors.textSecondary, marginVertical: 6 },
   addressDetail: { fontSize: FontSize.sm, color: Colors.textMuted },
   emptyContainer: { alignItems: 'center', marginTop: 100 },
-  emptyText: { marginTop: Spacing.m, fontSize: FontSize.md, color: Colors.textMuted },
-  footer: { paddingVertical: Spacing.s, paddingHorizontal: Spacing.m, borderTopWidth: 1, borderColor: Colors.border, backgroundColor: Colors.surface, justifyContent: 'center' },
+  emptyText: { marginTop: Spacing.xl, fontSize: FontSize.md, color: Colors.textMuted },
+  footer: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.md, backgroundColor: Colors.background, justifyContent: 'center' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   modalContent: {
     backgroundColor: Colors.surface,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
     paddingTop: 48,
-    paddingBottom: Spacing.l,
-    paddingHorizontal: 16,
+    paddingBottom: Spacing.lg,
+    paddingHorizontal: Spacing.md,
     minHeight: '60%',
   },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.l },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.lg },
   modalTitle: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.textPrimary },
-  label: { fontSize: FontSize.sm, fontWeight: FontWeight.medium, color: Colors.textSecondary, marginBottom: Spacing.xs, marginTop: Spacing.m },
+  label: { fontSize: FontSize.sm, fontWeight: FontWeight.medium, color: Colors.textSecondary, marginBottom: Spacing.xs, marginTop: Spacing.md },
   inputGroup: { marginBottom: Spacing.md },
   inputWrap: {
     flexDirection: 'row',

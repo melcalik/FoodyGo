@@ -10,7 +10,9 @@ import { Colors, FontSize } from '../constants/theme';
 import { useCartStore } from '../store/useCartStore';
 
 import HomeScreen from '../screens/home/HomeScreen';
+import NotificationsScreen from '../screens/home/NotificationsScreen';
 import RestaurantDetailScreen from '../screens/restaurant/RestaurantDetailScreen';
+import RestaurantReviewsScreen from '../screens/restaurant/RestaurantReviewsScreen';
 import CartScreen from '../screens/cart/CartScreen';
 import PaymentScreen from '../screens/cart/PaymentScreen';
 import PaymentSuccessScreen from '../screens/cart/PaymentSuccessScreen';
@@ -27,7 +29,9 @@ function HomeStackNavigator() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Notifications" component={NotificationsScreen} />
       <HomeStack.Screen name="RestaurantDetail" component={RestaurantDetailScreen} />
+      <HomeStack.Screen name="RestaurantReviews" component={RestaurantReviewsScreen} />
     </HomeStack.Navigator>
   );
 }

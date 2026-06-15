@@ -76,7 +76,7 @@ export default function OrderHistoryScreen({ navigation }: Props) {
           originalPrice: boxData.originalPrice,
           discountedPrice: boxData.discountedPrice,
           stock: boxData.stock,
-          image: restaurantImageMap[boxData.imageUrl as keyof typeof restaurantImageMap],
+          image: restaurantImageMap[boxData.imageUrl as keyof typeof restaurantImageMap] || restaurantImageMap['sweet.png'],
         };
         itemsToAdd.push({ box: mappedBox, quantity: item.quantity, isSuspended: item.isSuspended });
       }

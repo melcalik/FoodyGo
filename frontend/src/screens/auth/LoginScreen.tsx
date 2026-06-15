@@ -11,6 +11,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -37,7 +38,7 @@ export default function LoginScreen({ navigation }: Props) {
       return;
     }
     setError('');
-    const success = await login(email, password);
+    const success = await login(email.trim(), password);
     if (!success) {
       setError(t('auth.loginFailed'));
     }
@@ -48,7 +49,7 @@ export default function LoginScreen({ navigation }: Props) {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <ScrollView
         style={styles.flex}
         contentContainerStyle={styles.scroll}
@@ -56,7 +57,7 @@ export default function LoginScreen({ navigation }: Props) {
       >
         
         <View style={styles.hero}>
-          <Text style={styles.heroEmoji}>🍱</Text>
+          <Ionicons name="restaurant" size={56} color={Colors.primary} style={{ marginBottom: 16 }} />
           <Text style={styles.heroTitle}>{t('auth.welcomeTitle')}</Text>
           <Text style={styles.heroSubtitle}>{t('auth.welcomeSubtitle')}</Text>
         </View>
@@ -67,7 +68,7 @@ export default function LoginScreen({ navigation }: Props) {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>{t('auth.email')}</Text>
             <View style={styles.inputWrap}>
-              <Text style={styles.inputIcon}>✉️</Text>
+              <Ionicons name="mail-outline" size={20} color={Colors.textMuted} style={{ marginRight: 8 }} />
               <TextInput
                 style={styles.input}
                 value={email}
@@ -83,7 +84,7 @@ export default function LoginScreen({ navigation }: Props) {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>{t('auth.password')}</Text>
             <View style={styles.inputWrap}>
-              <Text style={styles.inputIcon}>🔒</Text>
+              <Ionicons name="lock-closed-outline" size={20} color={Colors.textMuted} style={{ marginRight: 8 }} />
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 value={password}
@@ -114,6 +115,8 @@ export default function LoginScreen({ navigation }: Props) {
               <Text style={styles.primaryBtnText}>{t('auth.login')}</Text>
             )}
           </TouchableOpacity>
+
+
 
           <TouchableOpacity
             style={styles.linkRow}

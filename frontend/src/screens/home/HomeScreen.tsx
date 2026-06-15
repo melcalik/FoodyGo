@@ -15,13 +15,15 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomeStackParamList } from '../../navigation/types';
-import { Colors, FontSize, FontWeight, Spacing } from '../../constants/theme';
+import { Colors, FontSize, FontWeight, Radius } from '../../constants/theme';
 import { RestaurantCategory } from '../../types';
 import SearchBar from '../../components/home/SearchBar';
 import CategoryFilter from '../../components/home/CategoryFilter';
 import RestaurantCard from '../../components/home/RestaurantCard';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useOrderStore } from '../../store/useOrderStore';
 import { useRestaurantStore } from '../../store/useRestaurantStore';
+import { useNotificationStore } from '../../store/useNotificationStore';
 import { useAddressStore } from '../../store/useAddressStore';
 import api from '../../services/api';
 import { HomeScreenStyles as styles } from '../../styles/screenStyles';
@@ -30,9 +32,11 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
   const { t } = useTranslation();
-  const { user } = useAuthStore();
+  const { user, userStats, fetchUserStats } = useAuthStore();
   const { restaurants, fetchRestaurants } = useRestaurantStore();
   const { addresses, fetchAddresses } = useAddressStore();
+  const { fetchOrders } = useOrderStore();
+  const { unreadCount } = useNotificationStore();
 
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<RestaurantCategory | 'all'>('all');
@@ -62,7 +66,7 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <FlatList
         data={filtered}
         keyExtractor={r => r.id}
@@ -81,9 +85,16 @@ export default function HomeScreen({ navigation }: Props) {
               </View>
               <TouchableOpacity
                 style={styles.notifBtn}
-                onPress={() => Alert.alert(t('common.comingSoon'), t('common.comingSoonMsg'))}
+                onPress={() => navigation.navigate('Notifications')}
               >
-                <Ionicons name="notifications-outline" size={20} color={Colors.textPrimary} />
+                <Ionicons name="notifications-outline" size={24} color={Colors.textPrimary} />
+                {unreadCount > 0 && (
+                  <View style={styles.notifBadge}>
+                    <Text style={styles.notifBadgeText}>
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
 

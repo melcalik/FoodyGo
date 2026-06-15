@@ -39,8 +39,7 @@ public class AuthService : IAuthService
             Name = registerDto.Name,
             Email = registerDto.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
-            Avatar = "https://i.pravatar.cc/150",
-            WalletBalance = 0,
+            AvatarUrl = "https://ui-avatars.com/api/?name=" + Uri.EscapeDataString(registerDto.Name) + "&background=random"
         };
 
         user.Addresses.Add(new UserAddress
@@ -62,8 +61,7 @@ public class AuthService : IAuthService
         Id = user.Id,
         Name = user.Name,
         Email = user.Email,
-        Avatar = user.Avatar,
-        WalletBalance = user.WalletBalance,
+        AvatarUrl = user.AvatarUrl
     };
 
     private string GenerateJwtToken(User user)
@@ -80,6 +78,8 @@ public class AuthService : IAuthService
         {
             new System.Security.Claims.Claim(
                 System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new System.Security.Claims.Claim(
+                System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString()),
             new System.Security.Claims.Claim(
                 System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email, user.Email),
             new System.Security.Claims.Claim("name", user.Name),

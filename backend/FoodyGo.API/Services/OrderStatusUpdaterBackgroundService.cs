@@ -37,11 +37,14 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                         .ToListAsync(stoppingToken);
 
                     var toReady = confirmedOrders.Where(o => o.CreatedAt <= thirtySecondsAgo).ToList();
+                    
+                    var notificationService = scope.ServiceProvider.GetRequiredService<FoodyGo.Application.Interfaces.INotificationService>();
 
                     foreach (var order in toReady)
                     {
                         order.Status = OrderStatus.ReadyForPickup;
                         order.UpdatedAt = now;
+                        await notificationService.SendNotificationAsync(order.UserId, "Siparişiniz Hazır", "Siparişiniz teslim alınmaya hazır.", order.Id.ToString().Substring(32).ToUpper());
                     }
 
                     var pickupOrders = await dbContext.Orders
@@ -54,6 +57,7 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                     {
                         order.Status = OrderStatus.Completed;
                         order.UpdatedAt = now;
+                        await notificationService.SendNotificationAsync(order.UserId, "Siparişiniz Teslim Edildi", "Afiyet olsun!", order.Id.ToString().Substring(32).ToUpper());
                     }
 
                     if (toReady.Any() || toCompleted.Any())

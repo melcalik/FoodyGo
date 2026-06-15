@@ -1,7 +1,6 @@
 import { Restaurant, SurpriseBox, Order } from '../types';
 
 export type AuthStackParamList = {
-  Splash: undefined;
   Login: undefined;
   Register: undefined;
 };
@@ -9,6 +8,8 @@ export type AuthStackParamList = {
 export type HomeStackParamList = {
   Home: undefined;
   RestaurantDetail: { restaurant: Restaurant };
+  RestaurantReviews: { restaurant: Restaurant };
+  Notifications: undefined;
 };
 
 export type CartStackParamList = {

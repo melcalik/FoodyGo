@@ -27,7 +27,7 @@ export default function CartScreen({ navigation }: Props) {
   if (items.length === 0) {
     return (
       <SafeAreaView style={styles.safe}>
-        <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+        <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t('cart.title')}</Text>
         </View>
@@ -42,7 +42,7 @@ export default function CartScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
 
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t('cart.title')}</Text>
@@ -53,46 +53,44 @@ export default function CartScreen({ navigation }: Props) {
 
       <FlatList
         data={items}
+        style={{ flex: 1 }}
         keyExtractor={i => `${i.box.id}-${i.isSuspended}`}
         renderItem={({ item }) => <CartItemRow item={item} />}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={
-          <View style={styles.footer}>
-            
-            <View style={styles.summaryCard}>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>{t('cart.subtotal')}</Text>
-                <Text style={styles.summaryValue}>₺{total}</Text>
-              </View>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>{t('cart.delivery')}</Text>
-                <Text style={[styles.summaryValue, { color: Colors.success }]}>{t('cart.free')}</Text>
-              </View>
-              <View style={[styles.summaryRow, styles.totalRow]}>
-                <Text style={styles.totalLabel}>{t('cart.total')}</Text>
-                <Text style={styles.totalValue}>₺{total}</Text>
-              </View>
+      />
+
+      {items.length > 0 && (
+        <View style={[styles.footer, { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, marginTop: 0 }]}>
+          <View style={styles.summaryCard}>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>{t('cart.subtotal')}</Text>
+              <Text style={styles.summaryValue}>₺{total}</Text>
             </View>
 
-            <TouchableOpacity
-              style={styles.checkoutBtn}
-              onPress={() => navigation.navigate('Payment')}
-              activeOpacity={0.85}
-            >
-              <Text style={styles.checkoutText}>{t('cart.checkout')}</Text>
-              <Text style={styles.checkoutAmount}>₺{total}</Text>
-            </TouchableOpacity>
-
-            <View style={styles.savingBanner}>
-              <Ionicons name="leaf" size={20} color={Colors.teal} />
-              <Text style={styles.savingText}>
-                {t('cart.savingInfo', { co2: (items.length * 2.5).toFixed(1) })}
-              </Text>
+            <View style={[styles.summaryRow, styles.totalRow]}>
+              <Text style={styles.totalLabel}>{t('cart.total')}</Text>
+              <Text style={styles.totalValue}>₺{total}</Text>
             </View>
           </View>
-        }
-      />
+
+          <TouchableOpacity
+            style={styles.checkoutBtn}
+            onPress={() => navigation.navigate('Payment')}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.checkoutText}>{t('cart.checkout')}</Text>
+            <Text style={styles.checkoutAmount}>₺{total}</Text>
+          </TouchableOpacity>
+
+          <View style={styles.savingBanner}>
+            <Ionicons name="leaf" size={20} color={Colors.teal} />
+            <Text style={styles.savingText}>
+              {t('cart.savingInfo', { co2: (items.length * 2.5).toFixed(1) })}
+            </Text>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

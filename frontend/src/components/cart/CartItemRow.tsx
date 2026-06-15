@@ -17,9 +17,13 @@ export default function CartItemRow({ item }: CartItemRowProps) {
   return (
     <View style={styles.row}>
       
-      <View style={styles.thumb}>
-        <Ionicons name="gift" size={28} color={Colors.primary} />
-      </View>
+      {item.box.image ? (
+        <Image source={item.box.image} style={styles.thumb} />
+      ) : (
+        <View style={styles.thumb}>
+          <Ionicons name="gift" size={28} color={Colors.primary} />
+        </View>
+      )}
 
       <View style={styles.info}>
         <View style={styles.topRow}>

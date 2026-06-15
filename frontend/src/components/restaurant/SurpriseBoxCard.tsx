@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SurpriseBox } from '../../types';
@@ -31,9 +31,13 @@ export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: Surpris
     <View style={[styles.card, isGlobalOutOfStock && styles.cardDisabled]}>
       
       <View style={styles.header}>
-        <View style={styles.emojiWrap}>
-          <Ionicons name="gift" size={28} color={Colors.primary} />
-        </View>
+        {box.image ? (
+          <Image source={box.image} style={styles.emojiWrap} />
+        ) : (
+          <View style={styles.emojiWrap}>
+            <Ionicons name="gift" size={28} color={Colors.primary} />
+          </View>
+        )}
         <View style={styles.headerInfo}>
           <Text style={styles.name}>{box.name}</Text>
           <Text style={styles.description} numberOfLines={2}>{box.description}</Text>
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.surfaceBorder,
   },
-  cardDisabled: { opacity: 0.5 },
+  cardDisabled: { opacity: 0.7 },
 
   header: {
     flexDirection: 'row',

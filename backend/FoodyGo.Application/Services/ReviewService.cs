@@ -59,7 +59,7 @@ public class ReviewService : IReviewService
     {
         var reviews = await _reviewRepository.FindAsync(
             r => r.RestaurantId == restaurantId,
-            query => query.Include(r => r.User)
+            query => query.Include(r => r.User).Include(r => r.Order).ThenInclude(o => o.Items).ThenInclude(i => i.Box)
         );
 
         return reviews.Select(MapToDto).OrderByDescending(r => r.CreatedAt);
@@ -71,10 +71,11 @@ public class ReviewService : IReviewService
         RestaurantId = rev.RestaurantId,
         UserId = rev.UserId,
         UserName = rev.User?.Name ?? "",
-        UserAvatar = rev.User?.Avatar ?? "",
+        UserAvatar = rev.User?.AvatarUrl ?? "",
         OrderId = rev.OrderId,
         Rating = rev.Rating,
         Comment = rev.Comment,
-        CreatedAt = rev.CreatedAt
+        CreatedAt = rev.CreatedAt,
+        OrderItems = rev.Order?.Items.Select(i => i.Box?.Name ?? "Bilinmeyen Ürün").ToList() ?? new List<string>()
     };
 }

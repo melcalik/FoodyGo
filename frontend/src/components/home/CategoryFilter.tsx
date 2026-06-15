@@ -42,7 +42,7 @@ export default function CategoryFilter({ selected, onSelect }: CategoryFilterPro
             onPress={() => onSelect(cat.key)}
             activeOpacity={0.8}
           >
-            <Ionicons name={cat.icon} size={18} color={isActive ? Colors.white : Colors.textSecondary} />
+            <Ionicons name={cat.icon} size={18} color={isActive ? Colors.primary : Colors.textSecondary} />
             <Text style={[styles.pillLabel, isActive && styles.pillLabelActive]}>
               {t(cat.labelKey)}
             </Text>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontWeight: FontWeight.medium,
   },
   pillLabelActive: {
-    color: Colors.white,
+    color: Colors.primary,
     fontWeight: FontWeight.semibold,
   },
 });

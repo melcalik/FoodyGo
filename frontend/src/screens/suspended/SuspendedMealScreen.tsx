@@ -87,7 +87,7 @@ export default function SuspendedMealScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.teal} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.primary} />
       
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         
@@ -103,12 +103,12 @@ export default function SuspendedMealScreen({ navigation }: Props) {
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>{t('suspended.myDonations')}</Text>
             <Text style={styles.statValue}>{myDonationsCount}</Text>
-            <Ionicons name="heart" size={50} color={Colors.teal} style={styles.statEmoji} />
+            <Ionicons name="heart" size={50} color={Colors.primary} style={styles.statEmoji} />
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>{t('suspended.totalCount')}</Text>
             <Text style={styles.statValue}>{availableMeals.length}</Text>
-            <Ionicons name="earth" size={50} color={Colors.teal} style={styles.statEmoji} />
+            <Ionicons name="earth" size={50} color={Colors.primary} style={styles.statEmoji} />
           </View>
         </View>
 
@@ -116,7 +116,7 @@ export default function SuspendedMealScreen({ navigation }: Props) {
           <Text style={styles.sectionTitle}>{t('suspended.waitingToClaim')}</Text>
           
           {isLoading && availableMeals.length === 0 ? (
-            <ActivityIndicator size="large" color={Colors.teal} style={{ marginTop: 20 }} />
+            <ActivityIndicator size="large" color={Colors.primary} style={{ marginTop: 20 }} />
           ) : availableMeals.length === 0 ? (
             <View style={styles.emptyCard}>
               <Ionicons name="leaf" size={40} color={Colors.textMuted} style={{ marginBottom: 8 }} />
@@ -132,7 +132,7 @@ export default function SuspendedMealScreen({ navigation }: Props) {
                   <Image source={meal.restaurantImageUrl as any} style={styles.restaurantImage} />
                   <View style={styles.mealInfo}>
                     <Text style={styles.mealBoxName}>{meal.boxName}</Text>
-                    <Text style={{ color: Colors.teal, fontWeight: FontWeight.medium, fontSize: FontSize.sm, marginBottom: 4 }}>{meal.count} Adet</Text>
+                    <Text style={{ color: Colors.primary, fontWeight: FontWeight.medium, fontSize: FontSize.sm, marginBottom: 4 }}>{meal.count} Adet</Text>
                     <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
                     <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName} {meal.count > 1 ? 've diğerleri' : ''}</Text>
                   </View>
@@ -152,7 +152,7 @@ export default function SuspendedMealScreen({ navigation }: Props) {
                       <Text style={{ fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.textPrimary, minWidth: 20, textAlign: 'center' }}>{inCart}</Text>
 
                       <TouchableOpacity
-                        style={[{ width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }, isOutOfStock ? { opacity: 0.5 } : { backgroundColor: Colors.teal, borderColor: Colors.teal }]}
+                        style={[{ width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceElevated, borderWidth: 1, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' }, isOutOfStock ? { opacity: 0.5 } : { backgroundColor: Colors.primary, borderColor: Colors.primary }]}
                         onPress={() => !isOutOfStock && handleClaim(meal)}
                         disabled={isOutOfStock}
                       >

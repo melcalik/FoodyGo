@@ -29,4 +29,5 @@ public class ReviewResponseDto
     public int Rating { get; set; }
     public string Comment { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public List<string> OrderItems { get; set; } = new();
 }

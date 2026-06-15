@@ -76,6 +76,7 @@ export interface Review {
   rating: number;
   comment: string;
   createdAt: Date;
+  orderItems?: string[];
 }
 
 export interface SuspendedMeal {

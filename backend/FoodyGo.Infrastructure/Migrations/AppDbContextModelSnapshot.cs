@@ -66,7 +66,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Günün bakiye tatlılarından oluşan mix kutu",
                             DiscountedPrice = 65m,
-                            ImageUrl = "",
+                            ImageUrl = "sweet.png",
                             Name = "Tatlı Sürpriz Kutu",
                             OriginalPrice = 180m,
                             RestaurantId = new Guid("11111111-1111-1111-1111-111111111111"),
@@ -78,7 +78,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Taze pişmiş böreklerden oluşan kutu",
                             DiscountedPrice = 45m,
-                            ImageUrl = "",
+                            ImageUrl = "homemade.png",
                             Name = "Mini Börek Kutusu",
                             OriginalPrice = 120m,
                             RestaurantId = new Guid("11111111-1111-1111-1111-111111111111"),
@@ -90,7 +90,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Günlük ana yemek + çorba + pilav seti",
                             DiscountedPrice = 75m,
-                            ImageUrl = "",
+                            ImageUrl = "homemade.png",
                             Name = "Ev Yemeği Seti",
                             OriginalPrice = 200m,
                             RestaurantId = new Guid("22222222-2222-2222-2222-222222222222"),
@@ -102,7 +102,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Günün bakiyesinden sürpriz tabldot",
                             DiscountedPrice = 55m,
-                            ImageUrl = "",
+                            ImageUrl = "homemade.png",
                             Name = "Böyle Kutu",
                             OriginalPrice = 150m,
                             RestaurantId = new Guid("22222222-2222-2222-2222-222222222222"),
@@ -114,7 +114,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "2 dilim artisan pizza + içecek",
                             DiscountedPrice = 80m,
-                            ImageUrl = "",
+                            ImageUrl = "pizza.png",
                             Name = "Pizza Sürpriz",
                             OriginalPrice = 220m,
                             RestaurantId = new Guid("33333333-3333-3333-3333-333333333333"),
@@ -126,7 +126,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Smash burger + patates kızartması",
                             DiscountedPrice = 110m,
-                            ImageUrl = "",
+                            ImageUrl = "burger.png",
                             Name = "Burger Kutusu",
                             OriginalPrice = 280m,
                             RestaurantId = new Guid("44444444-4444-4444-4444-444444444444"),
@@ -138,7 +138,7 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Tavuk veya et döner dürüm + ayran",
                             DiscountedPrice = 60m,
-                            ImageUrl = "",
+                            ImageUrl = "kebab.png",
                             Name = "Döner Dürüm Seti",
                             OriginalPrice = 160m,
                             RestaurantId = new Guid("55555555-5555-5555-5555-555555555555"),
@@ -150,12 +150,48 @@ namespace FoodyGo.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Döner tabak + salata + ekmek",
                             DiscountedPrice = 75m,
-                            ImageUrl = "",
+                            ImageUrl = "kebab.png",
                             Name = "Tabak Set",
                             OriginalPrice = 200m,
                             RestaurantId = new Guid("55555555-5555-5555-5555-555555555555"),
                             Stock = 4
                         });
+                });
+
+            modelBuilder.Entity("FoodyGo.Core.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OrderCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Order", b =>
@@ -486,8 +522,7 @@ namespace FoodyGo.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Avatar")
-                        .IsRequired()
+                    b.Property<string>("AvatarUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -510,9 +545,6 @@ namespace FoodyGo.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("WalletBalance")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -570,6 +602,17 @@ namespace FoodyGo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FoodyGo.Core.Entities.Notification", b =>
+                {
+                    b.HasOne("FoodyGo.Core.Entities.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoodyGo.Core.Entities.Order", b =>
@@ -707,6 +750,8 @@ namespace FoodyGo.Infrastructure.Migrations
                     b.Navigation("Addresses");
 
                     b.Navigation("DonatedMeals");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("Orders");
 

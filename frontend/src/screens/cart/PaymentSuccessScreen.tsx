@@ -40,7 +40,7 @@ export default function PaymentSuccessScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="dark-content" backgroundColor={Colors.success} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       
       <View style={styles.content}>
         <View style={styles.circle}>

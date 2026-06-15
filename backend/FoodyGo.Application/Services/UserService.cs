@@ -87,8 +87,7 @@ public class UserService : IUserService
             Id = user.Id,
             Name = user.Name,
             Email = user.Email,
-            Avatar = user.Avatar,
-            WalletBalance = user.WalletBalance
+            AvatarUrl = user.AvatarUrl
         };
     }
 }

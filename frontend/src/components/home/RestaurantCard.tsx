@@ -47,8 +47,14 @@ export default function RestaurantCard({ restaurant, onPress }: RestaurantCardPr
           <Text style={styles.name} numberOfLines={1}>{restaurant.name}</Text>
           <View style={styles.ratingRow}>
             <Ionicons name="star" size={12} color="#FBBF24" />
-            <Text style={styles.rating}>{restaurant.rating}</Text>
-            <Text style={styles.reviewCount}>({restaurant.reviewCount})</Text>
+            {restaurant.reviewCount === 0 ? (
+              <Text style={styles.reviewCount}>({t('restaurant.noReviews', { defaultValue: 'Henüz yorum yok' })})</Text>
+            ) : (
+              <>
+                <Text style={styles.rating}>{restaurant.rating}</Text>
+                <Text style={styles.reviewCount}>({restaurant.reviewCount})</Text>
+              </>
+            )}
           </View>
         </View>
 

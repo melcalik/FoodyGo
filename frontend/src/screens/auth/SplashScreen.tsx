@@ -15,9 +15,12 @@ import { SplashScreenStyles as styles } from '../../styles/screenStyles';
 
 const { width } = Dimensions.get('window');
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'Splash'>;
+type Props = {
+  navigation?: any;
+  onComplete?: () => void;
+};
 
-export default function SplashScreen({ navigation }: Props) {
+export default function SplashScreen({ navigation, onComplete }: Props) {
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.7)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
@@ -53,13 +56,17 @@ export default function SplashScreen({ navigation }: Props) {
       }),
       Animated.delay(900),
     ]).start(() => {
-      navigation.replace('Login');
+      if (onComplete) {
+        onComplete();
+      } else if (navigation) {
+        navigation.replace('Login');
+      }
     });
   }, []);
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
 
       <View style={styles.bgCircle} />
 
@@ -70,7 +77,7 @@ export default function SplashScreen({ navigation }: Props) {
         ]}
       >
         <Image
-          source={require('../../assets/images/splash/logo.png')}
+          source={require('../../assets/images/splash/logo_brown_transparent.png')}
           style={styles.logo}
           resizeMode="contain"
         />

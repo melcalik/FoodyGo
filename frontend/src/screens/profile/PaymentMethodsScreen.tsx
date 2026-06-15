@@ -146,24 +146,35 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
             
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('payment.cardName')}</Text>
-              <TextInput style={styles.input} value={cardName} onChangeText={setCardName} placeholder="Örn: İş Kartım" />
+              <View style={styles.inputWrap}>
+                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardName} onChangeText={setCardName} placeholder="İş Kartım" />
+              </View>
             </View>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('payment.cardHolderName')}</Text>
-              <TextInput style={styles.input} value={cardHolder} onChangeText={setCardHolder} placeholder="AD SOYAD" />
+              <View style={styles.inputWrap}>
+                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardHolder} onChangeText={setCardHolder} placeholder="Ad Soyad" />
+              </View>
             </View>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('payment.cardNumber')}</Text>
-              <TextInput style={styles.input} value={cardNumber} onChangeText={formatCardNumber} placeholder="0000 0000 0000 0000" keyboardType="numeric" maxLength={19} />
+              <View style={styles.inputWrap}>
+                <Ionicons name="card" size={20} color={Colors.textPrimary} style={{ marginRight: 8 }} />
+                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardNumber} onChangeText={formatCardNumber} placeholder="1234 1234 1234 1234" keyboardType="numeric" maxLength={19} />
+              </View>
             </View>
             <View style={styles.row}>
               <View style={[styles.inputGroup, { flex: 1, marginRight: Spacing.sm }]}>
                 <Text style={styles.label}>{t('payment.expiry')}</Text>
-                <TextInput style={styles.input} value={expiry} onChangeText={formatExpiry} placeholder="AA/YY" keyboardType="numeric" maxLength={5} />
+                <View style={styles.inputWrap}>
+                  <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={expiry} onChangeText={formatExpiry} placeholder="AA/YY" keyboardType="numeric" maxLength={5} />
+                </View>
               </View>
               <View style={[styles.inputGroup, { flex: 1 }]}>
                 <Text style={styles.label}>CVV</Text>
-                <TextInput style={styles.input} value={cvv} onChangeText={setCvv} placeholder="123" keyboardType="numeric" maxLength={3} secureTextEntry />
+                <View style={styles.inputWrap}>
+                  <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cvv} onChangeText={setCvv} placeholder="123" keyboardType="numeric" maxLength={3} secureTextEntry />
+                </View>
               </View>
             </View>
             <TouchableOpacity style={styles.submitBtn} onPress={handleAdd} disabled={isSubmitting}>

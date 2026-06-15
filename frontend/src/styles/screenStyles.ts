@@ -9,7 +9,7 @@ export const LoginScreenStyles = StyleSheet.create({
   scroll: { flexGrow: 1, paddingBottom: 40 },
 
   hero: {
-    paddingTop: 60,
+    paddingTop: 140,
     paddingBottom: 32,
     alignItems: 'center',
     paddingHorizontal: Spacing.lg,
@@ -197,10 +197,10 @@ export const RegisterScreenStyles = StyleSheet.create({
   inputWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceElevated,
+    backgroundColor: Colors.primaryLight,
     borderRadius: Radius.md,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
+    borderColor: Colors.primary + '33',
     paddingHorizontal: Spacing.md,
   },
   inputIcon: { fontSize: 16, marginRight: 8 },
@@ -209,6 +209,7 @@ export const RegisterScreenStyles = StyleSheet.create({
     height: 48,
     color: Colors.textPrimary,
     fontSize: FontSize.md,
+    backgroundColor: Colors.primaryLight,
   },
 
   errorText: {
@@ -253,6 +254,45 @@ export const RegisterScreenStyles = StyleSheet.create({
   },
   linkText: { color: Colors.textSecondary, fontSize: FontSize.sm },
   linkAccent: { color: Colors.primary, fontSize: FontSize.sm, fontWeight: FontWeight.semibold },
+
+  forgotPasswordText: {
+    fontSize: FontSize.sm,
+    color: Colors.primaryDark,
+    textAlign: 'right',
+    marginTop: 8,
+  },
+  orDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: Spacing.lg,
+  },
+  orLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.surfaceBorder,
+  },
+  orText: {
+    marginHorizontal: Spacing.sm,
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+  },
+  googleBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 52,
+    borderRadius: Radius.md,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+    backgroundColor: Colors.surface,
+    marginBottom: Spacing.lg,
+  },
+  googleBtnText: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+    color: Colors.textPrimary,
+    marginLeft: 8,
+  },
 });
 
 
@@ -279,6 +319,9 @@ export const SplashScreenStyles = StyleSheet.create({
     borderRadius: 32,
     overflow: 'hidden',
     marginBottom: 24,
+    backgroundColor: Colors.background,
+    borderWidth: 2,
+    borderColor: Colors.primary,
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.5,
@@ -451,12 +494,13 @@ export const PaymentScreenStyles = StyleSheet.create({
   selectorName: { fontSize: FontSize.md, fontWeight: 'bold', color: Colors.textPrimary },
   selectorDesc: { fontSize: FontSize.xs, color: Colors.textSecondary },
 
-  form: { gap: Spacing.md },
+  formTitle: { fontSize: FontSize.lg, fontWeight: 'bold', color: Colors.textPrimary, marginBottom: Spacing.xs },
+  form: { backgroundColor: Colors.surface, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1, borderColor: Colors.surfaceBorder, gap: Spacing.md },
   row: { flexDirection: 'row' },
   inputGroup: { gap: 6 },
   label: { fontSize: FontSize.sm, fontWeight: FontWeight.medium, color: Colors.textSecondary },
-  inputWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surface, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, paddingHorizontal: Spacing.md },
-  input: { flex: 1, height: 52, color: Colors.textPrimary, fontSize: FontSize.md, backgroundColor: Colors.surface, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, paddingHorizontal: Spacing.md },
+  inputWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.background, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, paddingHorizontal: Spacing.md },
+  input: { flex: 1, height: 52, color: Colors.textPrimary, fontSize: FontSize.md, backgroundColor: Colors.background, paddingHorizontal: Spacing.md },
 
   noteBox: { flexDirection: 'row', backgroundColor: Colors.surfaceElevated, padding: Spacing.md, borderRadius: Radius.md, marginTop: Spacing.md, gap: 10 },
   noteText: { flex: 1, fontSize: FontSize.xs, color: Colors.textSecondary, lineHeight: 18 },
@@ -479,7 +523,7 @@ export const PaymentScreenStyles = StyleSheet.create({
 
 // --- PaymentSuccessScreen ---
 export const PaymentSuccessScreenStyles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.success },
+  safe: { flex: 1, backgroundColor: Colors.background },
   content: {
     flex: 1,
     alignItems: 'center',
@@ -502,19 +546,19 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
   },
   check: {
     fontSize: 50,
-    color: Colors.success,
+    color: Colors.primary,
     fontWeight: 'bold',
   },
   title: {
     fontSize: FontSize.xxl,
     fontWeight: FontWeight.extrabold,
-    color: Colors.white,
+    color: Colors.textPrimary,
     marginBottom: Spacing.md,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: FontSize.md,
-    color: Colors.white,
+    color: Colors.textSecondary,
     textAlign: 'center',
     lineHeight: 24,
     opacity: 0.9,
@@ -523,16 +567,18 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
   statsCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: Colors.surfaceElevated,
     padding: Spacing.md,
     borderRadius: Radius.lg,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
     gap: 12,
   },
   statsEmoji: { fontSize: 24 },
   statsText: {
     flex: 1,
     fontSize: FontSize.sm,
-    color: Colors.white,
+    color: Colors.textSecondary,
     lineHeight: 20,
   },
   statsBold: { fontWeight: FontWeight.bold },
@@ -542,7 +588,7 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
     gap: Spacing.md,
   },
   btnPrimary: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.primary,
     height: 56,
     borderRadius: Radius.lg,
     alignItems: 'center',
@@ -551,7 +597,7 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
   btnPrimaryText: {
     fontSize: FontSize.md,
     fontWeight: FontWeight.bold,
-    color: Colors.success,
+    color: Colors.white,
   },
   btnSecondary: {
     height: 56,
@@ -559,12 +605,12 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.5)',
+    borderColor: Colors.surfaceBorder,
   },
   btnSecondaryText: {
     fontSize: FontSize.md,
     fontWeight: FontWeight.semibold,
-    color: Colors.white,
+    color: Colors.primary,
   },
 });
 
@@ -603,6 +649,24 @@ export const HomeScreenStyles = StyleSheet.create({
     borderColor: Colors.surfaceBorder,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
+  },
+  notifBadge: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    backgroundColor: Colors.error,
+    borderRadius: 8,
+    minWidth: 16,
+    height: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 3,
+  },
+  notifBadgeText: {
+    color: Colors.white,
+    fontSize: 9,
+    fontWeight: 'bold',
   },
 
   searchRow: {
@@ -1146,7 +1210,8 @@ export const PaymentMethodsScreenStyles = StyleSheet.create({
   formTitle: { fontSize: FontSize.lg, fontWeight: 'bold', color: Colors.textPrimary, marginBottom: Spacing.md },
   inputGroup: { marginBottom: Spacing.sm },
   label: { fontSize: FontSize.xs, color: Colors.textSecondary, marginBottom: 4 },
-  input: { color: Colors.textPrimary, backgroundColor: Colors.background, borderRadius: Radius.md, height: 45, paddingHorizontal: Spacing.md, borderWidth: 1, borderColor: Colors.surfaceBorder },
+  inputWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.background, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.surfaceBorder, paddingHorizontal: Spacing.md },
+  input: { flex: 1, color: Colors.textPrimary, backgroundColor: Colors.background, borderRadius: Radius.md, height: 45, paddingHorizontal: Spacing.md, borderWidth: 1, borderColor: Colors.surfaceBorder },
   row: { flexDirection: 'row' },
   submitBtn: { backgroundColor: Colors.primary, height: 45, borderRadius: Radius.md, alignItems: 'center', justifyContent: 'center', marginTop: Spacing.sm },
   submitBtnText: { color: Colors.white, fontWeight: 'bold' },
@@ -1353,12 +1418,10 @@ export const RestaurantDetailScreenStyles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceElevated,
-    borderRadius: Radius.md,
-    padding: Spacing.sm,
+    justifyContent: 'space-between',
     marginBottom: Spacing.sm,
   },
-  statItem: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 4 },
+  statItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   statVal: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.textPrimary },
   statLabel: { fontSize: FontSize.xs, color: Colors.textMuted },
   statDivider: { width: 1, height: 20, backgroundColor: Colors.surfaceBorder, marginHorizontal: 4 },
@@ -1533,3 +1596,123 @@ export const SuspendedMealScreenStyles = StyleSheet.create({
 });
 
 
+
+export const RestaurantReviewsScreenStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Platform.OS === 'ios' ? 60 : 20,
+    paddingBottom: Spacing.md,
+    backgroundColor: Colors.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.surfaceBorder,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 4,
+    zIndex: 10,
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: FontSize.lg,
+    fontWeight: FontWeight.bold,
+    color: Colors.textPrimary,
+    marginRight: 40,
+  },
+  backBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+  },
+  content: {
+    padding: Spacing.lg,
+  },
+  listContent: {
+    paddingBottom: Spacing.xxl,
+  },
+  reviewCard: {
+    backgroundColor: Colors.surface,
+    padding: Spacing.lg,
+    borderRadius: Radius.lg,
+    marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+  },
+  reviewHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: Spacing.sm,
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.primaryLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: Spacing.md,
+  },
+  avatarInitial: {
+    color: Colors.primaryDark,
+    fontSize: FontSize.lg,
+    fontWeight: FontWeight.bold,
+  },
+  userName: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.semibold,
+    color: Colors.textPrimary,
+  },
+  date: {
+    fontSize: FontSize.xs,
+    color: Colors.textMuted,
+    marginTop: 2,
+  },
+  starsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  comment: {
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+    lineHeight: 20,
+    marginTop: Spacing.xs,
+  },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: Spacing.xxl,
+    marginTop: 40,
+  },
+  emptyText: {
+    fontSize: FontSize.md,
+    color: Colors.textSecondary,
+    marginTop: Spacing.lg,
+    textAlign: 'center',
+  },
+});
+
+// Temporarily appending here. If doing a real refactor, would merge into RestaurantReviewsScreenStyles.
+export const RestaurantReviewsExtraStyles = StyleSheet.create({
+  orderItemsText: {
+    fontSize: FontSize.xs,
+    color: Colors.textMuted,
+    marginTop: Spacing.sm,
+  }
+});

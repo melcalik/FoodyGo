@@ -76,7 +76,7 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
       <FlatList
         data={boxes}
@@ -107,17 +107,21 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
               </View>
 
               <View style={styles.statsRow}>
-                <View style={styles.statItem}>
+                <TouchableOpacity 
+                  style={styles.statItem} 
+                  onPress={() => navigation.navigate('RestaurantReviews', { restaurant })}
+                  activeOpacity={0.7}
+                >
                   <Ionicons name="star" size={14} color="#FBBF24" />
                   {restaurant.reviewCount === 0 ? (
-                    <Text style={styles.statVal}>{t('restaurant.noReviews', { defaultValue: 'Yorum Yok' })}</Text>
+                    <Text style={styles.statLabel}>({t('restaurant.noReviews', { defaultValue: 'Henüz yorum yok' })})</Text>
                   ) : (
                     <>
                       <Text style={styles.statVal}>{restaurant.rating}</Text>
                       <Text style={styles.statLabel}>({restaurant.reviewCount} {t('home.reviews')})</Text>
                     </>
                   )}
-                </View>
+                </TouchableOpacity>
                 <View style={styles.statDivider} />
                 <View style={styles.statItem}>
                   <Ionicons name="location" size={14} color={Colors.textSecondary} />
@@ -130,7 +134,7 @@ export default function RestaurantDetailScreen({ route, navigation }: Props) {
                 </View>
               </View>
 
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: Spacing.sm }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 6, marginBottom: Spacing.sm }}>
                 <Ionicons name="map-outline" size={14} color={Colors.textSecondary} />
                 <Text style={styles.address}>{restaurant.address}</Text>
               </View>
