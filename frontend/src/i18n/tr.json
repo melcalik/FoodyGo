@@ -81,7 +81,9 @@
     "impactSubtitle": "Topluluğumuz gıda israfını azaltıyor",
     "restaurantCount": "{{count}} restoran",
     "noResults": "Sonuç bulunamadı",
-    "noResultsDesc": "Farklı bir kategori veya arama deneyin"
+    "restaurantsTab": "Restoranlar",
+    "noResultsDesc": "Farklı bir kategori veya arama deneyin",
+    "discountUpTo": "%{{discount}}'e kadar indirim"
   },
   "restaurant": {
     "surpriseBoxes": "Sürpriz Kutular",
@@ -208,7 +210,8 @@
     "waitingToClaim": "Askıdan Alınmayı Bekleyenler",
     "emptyList": "Şu an askıda yemek bulunmuyor.",
     "donor": "Bağışlayan: ",
-    "claimBtn": "Askıdan Al"
+    "claimBtn": "Askıdan Al",
+    "andOthers": "ve diğerleri"
   },
   "profile": {
     "title": "Profil",
@@ -226,7 +229,7 @@
     "donations": "bağış",
     "savedBoxes": "Kurtarılan Kutu",
     "suspendedBoxes": "Askıya Bırakılan",
-    "moneySaved": "FoodyGO ile bugüne kadar toplam",
+    "moneySaved": "FoodyGo ile bugüne kadar toplam",
     "moneySavedSuffix": "tasarruf ettin!",
     "edit": "Düzenle",
     "account": "Hesap",
@@ -242,6 +245,45 @@
     "confirmNewPassword": "Yeni Şifre (Tekrar)",
     "newPasswordPlaceholder": "Değiştirmek istemiyorsanız boş bırakın",
     "updateSuccess": "Profiliniz başarıyla güncellendi!",
-    "updateFailed": "Profil güncellenirken bir hata oluştu."
+    "updateFailed": "Profil güncellenirken bir hata oluştu.",
+    "helpCenterHeading": "FoodyGo Yardım Merkezi",
+    "helpCenterDesc": "Sipariş, ödeme veya hesap işlemleriyle ilgili sorunlarda uygulama üzerinden Yardım Merkezi üzerinden bizimle iletişime geçebilirsiniz.",
+    "termsHeading": "FoodyGo Kullanım Şartları",
+    "termsDesc": "FoodyGo uygulamasını kullanarak aşağıdaki kullanım şartlarını kabul etmiş sayılırsınız.",
+    "addNewAddress": "Yeni Adres Ekle",
+    "selectedBadge": "Seçili",
+    "lastUsed": "Son Kullanılan",
+    "cardNamePlaceholder": "İş Kartım",
+    "fullNamePlaceholder": "Ad Soyad",
+    "helpCenterIntro": "FoodyGo, restoranlarda gün sonunda artan ancak tüketilebilir durumda olan yiyeceklerin kullanıcılarla uygun fiyatlarla buluşturulmasını sağlayan bir mobil uygulamadır.",
+    "faqTitle": "Sık Sorulan Sorular",
+    "faqQ1": "Siparişimizi nasıl oluşturabilirim?",
+    "faqA1": "Ana sayfadan restoranları inceleyebilir, uygun sürpriz kutuyu seçerek sepetinize ekleyebilir ve siparişinizi tamamlayabilirsiniz.",
+    "faqQ2": "Askıda yemek nedir?",
+    "faqA2": "Askıda yemek özelliği, ihtiyaç sahiplerine destek olmak amacıyla yemek bağışı yapılmasını sağlayan sosyal yardımlaşma sistemidir.",
+    "faqQ3": "Sorun yaşarsam ne yapmalıyım?",
+    "faqQ4": "Teslimat yapılıyor mu?",
+    "faqA4": "Hayır, FoodyGo şimdilik sadece \"Gel-Al\" (Pick-up) mantığıyla çalışmaktadır. Siparişinizi verdikten sonra, uygulamada belirtilen teslim saatleri aralığında restoranı bizzat ziyaret ederek sürpriz kutunuzu teslim almanız gerekmektedir.",
+    "contactInfo": "İletişim Bilgileri",
+    "terms1Title": "1. Hizmetin Amacı",
+    "terms1Desc": "FoodyGo, restoran ve kafelerdeki tüketilebilir durumdaki fazla ürünlerin israf edilmeden kullanıcılara sunulmasını amaçlar.",
+    "terms2Title": "2. Kullanıcı Sorumlulukları",
+    "terms2Desc": "Kullanıcılar, kayıt sırasında doğru bilgi vermekle ve hesap güvenliğini korumakla sorumludur. Uygulama kurallarına aykırı hareket eden hesaplar askıya alınabilir.",
+    "terms3Title": "3. Sipariş ve Teslim Alma",
+    "terms3Desc": "Kullanıcı, sipariş verdiği ürünleri belirtilen teslim alma saatleri içerisinde restorandan teslim almakla yükümlüdür. Teslim alınmayan ürünlerin iadesi yapılmaz.",
+    "terms4Title": "4. Askıda Yemek",
+    "terms4Desc": "Askıda yemek sistemi, sosyal yardımlaşmayı desteklemek amacıyla geliştirilmiştir. Yapılan bağışlar ihtiyaç sahiplerine ulaştırılmak üzere sisteme kaydedilir. Kötüye kullanım tespiti halinde işlem iptal edilir.",
+    "terms5Title": "5. Gizlilik",
+    "terms5Desc": "Kullanıcı bilgileri yalnızca uygulama hizmetlerinin sağlanması amacıyla kullanılır ve güvenli şekilde saklanır. Üçüncü taraflarla izinsiz paylaşılmaz.",
+    "terms6Title": "6. Ödeme İşlemleri",
+    "terms6Desc": "Kullanıcıların yaptıkları ödemeler güvenlik protokolleriyle korunur. Yapılan satın alımlarda ve bağışlarda belirtilen tutarlar anında tahsil edilir."
+  },
+  "notifications": {
+    "title": "Bildirimler",
+    "OrderReadyTitle": "Siparişiniz Hazır",
+    "OrderReadyMessage": "Siparişiniz teslim alınmaya hazır.",
+    "OrderDeliveredTitle": "Siparişiniz Teslim Edildi",
+    "OrderDeliveredMessage": "Afiyet olsun!",
+    "emptyDesc": "Henüz hiç bildiriminiz yok."
   }
 }

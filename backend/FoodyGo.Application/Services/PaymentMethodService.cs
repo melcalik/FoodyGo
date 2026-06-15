@@ -2,6 +2,7 @@ using FoodyGo.Application.DTOs;
 using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 
 namespace FoodyGo.Application.Services;
 
@@ -72,7 +73,7 @@ public class PaymentMethodService : IPaymentMethodService
         var method = await _repository.GetByIdAsync(paymentMethodId);
         if (method == null || method.UserId != userId)
         {
-            throw new Exception("Payment method not found.");
+            throw new Exception(Messages.Error.PaymentMethodNotFound);
         }
 
         await _repository.DeleteAsync(method);

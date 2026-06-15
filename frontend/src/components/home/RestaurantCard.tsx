@@ -68,7 +68,7 @@ export default function RestaurantCard({ restaurant, onPress }: RestaurantCardPr
 
         <View style={styles.pickupRow}>
           <View style={styles.savingBadge}>
-            <Text style={styles.savingText}>%{discount}'e kadar indirim</Text>
+            <Text style={styles.savingText}>{t('home.discountUpTo', { discount })}</Text>
           </View>
           <Text style={styles.meta}>{restaurant.address.split(',')[1]?.trim() || ''}</Text>
         </View>

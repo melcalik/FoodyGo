@@ -2,6 +2,7 @@ using FoodyGo.Application.DTOs;
 using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.Extensions.Configuration;
 
 namespace FoodyGo.Application.Services;
@@ -23,7 +24,7 @@ public class AuthService : IAuthService
         var user = users.FirstOrDefault();
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
-            throw new Exception("Invalid email or password.");
+            throw new Exception(Messages.Error.InvalidCredentials);
 
         return new AuthResponseDto { Token = GenerateJwtToken(user), User = MapToUserDto(user) };
     }
@@ -32,7 +33,7 @@ public class AuthService : IAuthService
     {
         var existing = await _userRepo.FindAsync(u => u.Email == registerDto.Email);
         if (existing.Any())
-            throw new Exception("Email is already registered.");
+            throw new Exception(Messages.Error.EmailAlreadyRegistered);
 
         var user = new User
         {
@@ -44,7 +45,7 @@ public class AuthService : IAuthService
 
         user.Addresses.Add(new UserAddress
         {
-            Title = !string.IsNullOrWhiteSpace(registerDto.AddressTitle) ? registerDto.AddressTitle : "Ev",
+            Title = !string.IsNullOrWhiteSpace(registerDto.AddressTitle) ? registerDto.AddressTitle : Messages.Common.DefaultAddressTitle,
             City = registerDto.City,
             District = registerDto.District,
             AddressDetail = registerDto.AddressDetail,

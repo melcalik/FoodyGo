@@ -3,6 +3,7 @@ using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Enums;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodyGo.Application.Services;
@@ -69,7 +70,7 @@ public class UserService : IUserService
         var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
         {
-            throw new Exception("User not found.");
+            throw new Exception(Messages.Error.UserNotFound);
         }
 
         user.Name = dto.Name;

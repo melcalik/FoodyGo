@@ -2,6 +2,7 @@ using FoodyGo.Application.DTOs;
 using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodyGo.Application.Services;
@@ -26,11 +27,11 @@ public class SuspendedMealService : ISuspendedMealService
         {
             Id = sm.Id,
             RestaurantId = sm.RestaurantId,
-            RestaurantName = sm.Restaurant?.Name ?? "",
-            RestaurantImageUrl = sm.Restaurant?.ImageUrl ?? "",
+            RestaurantName = sm.Restaurant?.Name ?? Messages.Common.Empty,
+            RestaurantImageUrl = sm.Restaurant?.ImageUrl ?? Messages.Common.Empty,
             BoxId = sm.BoxId,
-            BoxName = sm.Box?.Name ?? "",
-            DonorName = sm.DonorUser?.Name ?? "Anonymous",
+            BoxName = sm.Box?.Name ?? Messages.Common.Empty,
+            DonorName = sm.DonorUser?.Name ?? Messages.Common.AnonymousUser,
             CreatedAt = sm.CreatedAt
         }).OrderByDescending(sm => sm.CreatedAt);
     }

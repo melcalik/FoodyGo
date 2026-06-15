@@ -1,6 +1,7 @@
 using Cronos;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Enums;
+using FoodyGo.Core.Constants;
 using FoodyGo.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +48,7 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                     {
                         order.Status = OrderStatus.ReadyForPickup;
                         order.UpdatedAt = now;
-                        await notificationService.SendNotificationAsync(order.UserId, "Siparişiniz Hazır", "Siparişiniz teslim alınmaya hazır.", order.Id.ToString().Substring(32).ToUpper());
+                        await notificationService.SendNotificationAsync(order.UserId, Messages.Notification.OrderReadyTitle, Messages.Notification.OrderReadyMessage, order.Id.ToString().Substring(32).ToUpper());
                     }
 
                     var pickupOrders = await dbContext.Orders
@@ -60,7 +61,7 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                     {
                         order.Status = OrderStatus.Completed;
                         order.UpdatedAt = now;
-                        await notificationService.SendNotificationAsync(order.UserId, "Siparişiniz Teslim Edildi", "Afiyet olsun!", order.Id.ToString().Substring(32).ToUpper());
+                        await notificationService.SendNotificationAsync(order.UserId, Messages.Notification.OrderDeliveredTitle, Messages.Notification.OrderDeliveredMessage, order.Id.ToString().Substring(32).ToUpper());
                     }
 
                     if (toReady.Any() || toCompleted.Any())

@@ -12,6 +12,14 @@ export default function NotificationsScreen({ navigation }: any) {
   const markAllAsRead = useNotificationStore(state => state.markAllAsRead);
   const fetchNotifications = useNotificationStore(state => state.fetchNotifications);
 
+  const getTranslatedNotification = (text: string) => {
+    if (text === "Siparişiniz Hazır") return t('notifications.OrderReadyTitle');
+    if (text === "Siparişiniz teslim alınmaya hazır.") return t('notifications.OrderReadyMessage');
+    if (text === "Siparişiniz Teslim Edildi") return t('notifications.OrderDeliveredTitle');
+    if (text === "Afiyet olsun!") return t('notifications.OrderDeliveredMessage');
+    return text;
+  };
+
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
@@ -27,7 +35,7 @@ export default function NotificationsScreen({ navigation }: any) {
       </View>
       <View style={styles.textContainer}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Text style={[styles.title, !item.isRead && styles.unreadText, { flex: 1 }]}>{item.title}</Text>
+          <Text style={[styles.title, !item.isRead && styles.unreadText, { flex: 1 }]}>{getTranslatedNotification(item.title)}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {item.orderCode && (
               <Text style={{ fontSize: FontSize.xs, fontWeight: FontWeight.bold, color: Colors.primary }}>
@@ -37,7 +45,7 @@ export default function NotificationsScreen({ navigation }: any) {
             {!item.isRead && <View style={[styles.unreadDot, { marginTop: 0 }]} />}
           </View>
         </View>
-        <Text style={styles.message}>{item.message}</Text>
+        <Text style={styles.message}>{getTranslatedNotification(item.message)}</Text>
         <Text style={styles.time}>{new Date(item.createdAt.endsWith('Z') ? item.createdAt : `${item.createdAt}Z`).toLocaleString()}</Text>
       </View>
     </TouchableOpacity>
@@ -50,7 +58,7 @@ export default function NotificationsScreen({ navigation }: any) {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Bildirimler</Text>
+        <Text style={styles.headerTitle}>{t('notifications.title')}</Text>
         <TouchableOpacity onPress={() => markAllAsRead()} style={styles.readAllBtn}>
           <Ionicons name="checkmark-done" size={24} color={Colors.primary} />
         </TouchableOpacity>
@@ -65,7 +73,7 @@ export default function NotificationsScreen({ navigation }: any) {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="notifications-off-outline" size={64} color={Colors.surfaceBorder} />
-            <Text style={styles.emptyText}>Henüz hiç bildiriminiz yok.</Text>
+            <Text style={styles.emptyText}>{t('notifications.emptyDesc')}</Text>
           </View>
         }
       />

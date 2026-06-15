@@ -173,7 +173,7 @@ export default function PaymentScreen({ navigation }: Props) {
                 style={[styles.input, { flex: undefined, color: Colors.textPrimary, width: '100%', marginTop: 8, marginBottom: Spacing.xl }]}
                 value={newCardName}
                 onChangeText={setNewCardName}
-                placeholder="İş Kartım"
+                placeholder={t('profile.cardNamePlaceholder')}
                 autoFocus={true}
               />
 
@@ -258,7 +258,7 @@ export default function PaymentScreen({ navigation }: Props) {
                     style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]}
                     value={name}
                     onChangeText={setName}
-                    placeholder="Ad Soyad"
+                    placeholder={t('profile.fullNamePlaceholder')}
                     placeholderTextColor={Colors.textMuted}
                     autoCapitalize="characters"
                   />

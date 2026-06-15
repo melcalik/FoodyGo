@@ -22,26 +22,26 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
       </View>
 
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.mainHeading}>FoodyGo Kullanım Şartları</Text>
-        <Text style={styles.paragraph}>FoodyGo uygulamasını kullanarak aşağıdaki kullanım şartlarını kabul etmiş sayılırsınız.</Text>
+        <Text style={styles.mainHeading}>{t('profile.termsHeading')}</Text>
+        <Text style={styles.paragraph}>{t('profile.termsDesc')}</Text>
 
-        <Text style={styles.sectionHeading}>1. Hizmetin Amacı</Text>
-        <Text style={styles.paragraph}>FoodyGo, restoran ve kafelerdeki tüketilebilir durumdaki fazla ürünlerin israf edilmeden kullanıcılara sunulmasını amaçlar.</Text>
+        <Text style={styles.sectionHeading}>{t('profile.terms1Title')}</Text>
+        <Text style={styles.paragraph}>{t('profile.terms1Desc')}</Text>
 
-        <Text style={styles.sectionHeading}>2. Kullanıcı Sorumlulukları</Text>
-        <Text style={styles.paragraph}>Kullanıcılar, kayıt sırasında doğru bilgi vermekle ve hesap güvenliğini korumakla sorumludur. Uygulama kurallarına aykırı hareket eden hesaplar askıya alınabilir.</Text>
+        <Text style={styles.sectionHeading}>{t('profile.terms2Title')}</Text>
+        <Text style={styles.paragraph}>{t('profile.terms2Desc')}</Text>
 
-        <Text style={styles.sectionHeading}>3. Sipariş ve Teslim Alma</Text>
-        <Text style={styles.paragraph}>Kullanıcı, sipariş verdiği ürünleri belirtilen teslim alma saatleri içerisinde restorandan teslim almakla yükümlüdür. Teslim alınmayan ürünlerin iadesi yapılmaz.</Text>
+        <Text style={styles.sectionHeading}>{t('profile.terms3Title')}</Text>
+        <Text style={styles.paragraph}>{t('profile.terms3Desc')}</Text>
 
-        <Text style={styles.sectionHeading}>4. Askıda Yemek</Text>
-        <Text style={styles.paragraph}>Askıda yemek sistemi, sosyal yardımlaşmayı desteklemek amacıyla geliştirilmiştir. Yapılan bağışlar ihtiyaç sahiplerine ulaştırılmak üzere sisteme kaydedilir. Kötüye kullanım tespiti halinde işlem iptal edilir.</Text>
+        <Text style={styles.sectionHeading}>{t('profile.terms4Title')}</Text>
+        <Text style={styles.paragraph}>{t('profile.terms4Desc')}</Text>
 
-        <Text style={styles.sectionHeading}>5. Gizlilik</Text>
-        <Text style={styles.paragraph}>Kullanıcı bilgileri yalnızca uygulama hizmetlerinin sağlanması amacıyla kullanılır ve güvenli şekilde saklanır. Üçüncü taraflarla izinsiz paylaşılmaz.</Text>
+        <Text style={styles.sectionHeading}>{t('profile.terms5Title')}</Text>
+        <Text style={styles.paragraph}>{t('profile.terms5Desc')}</Text>
 
-        <Text style={styles.sectionHeading}>6. Ödeme İşlemleri</Text>
-        <Text style={styles.paragraph}>Kullanıcıların yaptıkları ödemeler güvenlik protokolleriyle korunur. Yapılan satın alımlarda ve bağışlarda belirtilen tutarlar anında tahsil edilir.</Text>
+        <Text style={styles.sectionHeading}>{t('profile.terms6Title')}</Text>
+        <Text style={styles.paragraph}>{t('profile.terms6Desc')}</Text>
       </ScrollView>
     </SafeAreaView>
   );

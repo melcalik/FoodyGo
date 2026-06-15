@@ -147,13 +147,13 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('payment.cardName')}</Text>
               <View style={styles.inputWrap}>
-                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardName} onChangeText={setCardName} placeholder="İş Kartım" />
+                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardName} onChangeText={setCardName} placeholder={t('profile.cardNamePlaceholder')} />
               </View>
             </View>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t('payment.cardHolderName')}</Text>
               <View style={styles.inputWrap}>
-                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardHolder} onChangeText={setCardHolder} placeholder="Ad Soyad" />
+                <TextInput style={[styles.input, { borderWidth: 0, backgroundColor: 'transparent', paddingHorizontal: 0 }]} value={cardHolder} onChangeText={setCardHolder} placeholder={t('profile.fullNamePlaceholder')} />
               </View>
             </View>
             <View style={styles.inputGroup}>
@@ -193,7 +193,7 @@ export default function PaymentMethodsScreen({ navigation }: Props) {
             renderItem={({ item }) => (
               <View style={styles.cardItem}>
                 <View style={styles.cardInfo}>
-                  <Text style={styles.cardName}>{item.cardName} {item.isLastUsed && <Text style={styles.lastUsedBadge}>(Son Kullanılan)</Text>}</Text>
+                  <Text style={styles.cardName}>{item.cardName} {item.isLastUsed && <Text style={styles.lastUsedBadge}>({t('profile.lastUsed')})</Text>}</Text>
                   <Text style={styles.cardNumber}>**** **** **** {item.cardNumber.slice(-4) || '****'}</Text>
                 </View>
                 <TouchableOpacity style={styles.actionBtn} onPress={() => handleDelete(item.id)}>

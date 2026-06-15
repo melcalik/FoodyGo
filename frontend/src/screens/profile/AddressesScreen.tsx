@@ -60,7 +60,7 @@ export default function AddressesScreen({ navigation }: Props) {
           <Text style={[styles.addressTitle, item.isActive && styles.activeText]}>{item.title}</Text>
           {item.isActive && (
             <View style={styles.activeBadge}>
-              <Text style={styles.activeBadgeText}>Seçili</Text>
+              <Text style={styles.activeBadgeText}>{t('profile.selectedBadge')}</Text>
             </View>
           )}
         </View>
@@ -86,7 +86,7 @@ export default function AddressesScreen({ navigation }: Props) {
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Adreslerim</Text>
+        <Text style={styles.headerTitle}>{t('profile.addresses')}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -112,7 +112,7 @@ export default function AddressesScreen({ navigation }: Props) {
       <View style={styles.footer}>
         <TouchableOpacity style={styles.primaryBtn} activeOpacity={0.85} onPress={() => setModalVisible(true)}>
           <Ionicons name="add-circle-outline" size={20} color={Colors.white} />
-          <Text style={styles.primaryBtnText}>Yeni Adres Ekle</Text>
+          <Text style={styles.primaryBtnText}>{t('profile.addNewAddress')}</Text>
         </TouchableOpacity>
       </View>
 

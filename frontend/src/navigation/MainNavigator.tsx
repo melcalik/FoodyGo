@@ -118,7 +118,7 @@ export default function MainNavigator() {
         options={{
           tabBarLabel: ({ color }) => (
             <Text style={[styles.tabLabel, { color }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
-              Restoranlar
+              {t('home.restaurantsTab')}
             </Text>
           ),
           tabBarIcon: ({ focused }) => <TabIcon icon="home" focused={focused} />,

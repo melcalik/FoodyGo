@@ -22,24 +22,24 @@ export default function HelpCenterScreen({ navigation }: Props) {
       </View>
 
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.mainHeading}>FoodyGo Yardım Merkezi</Text>
-        <Text style={styles.paragraph}>FoodyGo, restoranlarda gün sonunda artan ancak tüketilebilir durumda olan yiyeceklerin kullanıcılarla uygun fiyatlarla buluşturulmasını sağlayan bir mobil uygulamadır.</Text>
+        <Text style={styles.mainHeading}>{t('profile.helpCenterHeading')}</Text>
+        <Text style={styles.paragraph}>{t('profile.helpCenterIntro')}</Text>
 
-        <Text style={styles.sectionTitle}>Sık Sorulan Sorular</Text>
+        <Text style={styles.sectionTitle}>{t('profile.faqTitle')}</Text>
 
-        <Text style={styles.question}>Siparişimizi nasıl oluşturabilirim?</Text>
-        <Text style={styles.answer}>Ana sayfadan restoranları inceleyebilir, uygun sürpriz kutuyu seçerek sepetinize ekleyebilir ve siparişinizi tamamlayabilirsiniz.</Text>
+        <Text style={styles.question}>{t('profile.faqQ1')}</Text>
+        <Text style={styles.answer}>{t('profile.faqA1')}</Text>
 
-        <Text style={styles.question}>Askıda yemek nedir?</Text>
-        <Text style={styles.answer}>Askıda yemek özelliği, ihtiyaç sahiplerine destek olmak amacıyla yemek bağışı yapılmasını sağlayan sosyal yardımlaşma sistemidir.</Text>
+        <Text style={styles.question}>{t('profile.faqQ2')}</Text>
+        <Text style={styles.answer}>{t('profile.faqA2')}</Text>
 
-        <Text style={styles.question}>Sorun yaşarsam ne yapmalıyım?</Text>
-        <Text style={styles.answer}>Sipariş, ödeme veya hesap işlemleriyle ilgili sorunlarda uygulama üzerinden Yardım Merkezi üzerinden bizimle iletişime geçebilirsiniz.</Text>
+        <Text style={styles.question}>{t('profile.faqQ3')}</Text>
+        <Text style={styles.answer}>{t('profile.helpCenterDesc')}</Text>
 
-        <Text style={styles.question}>Teslimat yapılıyor mu?</Text>
-        <Text style={styles.answer}>Hayır, FoodyGo şimdilik sadece "Gel-Al" (Pick-up) mantığıyla çalışmaktadır. Siparişinizi verdikten sonra, uygulamada belirtilen teslim saatleri aralığında restoranı bizzat ziyaret ederek sürpriz kutunuzu teslim almanız gerekmektedir.</Text>
+        <Text style={styles.question}>{t('profile.faqQ4')}</Text>
+        <Text style={styles.answer}>{t('profile.faqA4')}</Text>
 
-        <Text style={styles.sectionTitle}>İletişim Bilgileri</Text>
+        <Text style={styles.sectionTitle}>{t('profile.contactInfo')}</Text>
         <Text style={styles.contactItem}>Cenker Tüzün - 202103011033@dogus.edu.tr</Text>
         <Text style={styles.contactItem}>Nazlı İlayda Karademir - 202203011017@dogus.edu.tr</Text>
         <Text style={styles.contactItem}>Buse Sarıçayır - 202203011040@dogus.edu.tr</Text>

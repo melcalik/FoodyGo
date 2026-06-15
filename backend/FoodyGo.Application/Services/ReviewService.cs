@@ -2,6 +2,7 @@ using FoodyGo.Application.DTOs;
 using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodyGo.Application.Services;
@@ -22,14 +23,14 @@ public class ReviewService : IReviewService
     public async Task<ReviewResponseDto> AddReviewAsync(Guid userId, CreateReviewDto dto)
     {
         if (dto.Rating < 1 || dto.Rating > 5)
-            throw new ArgumentException("Rating must be between 1 and 5.");
+            throw new ArgumentException(Messages.Validation.InvalidRating);
 
         var existingReview = await _reviewRepository.FindAsync(r => r.OrderId == dto.OrderId);
         if (existingReview.Any())
-            throw new Exception("You have already reviewed this order.");
+            throw new Exception(Messages.Error.AlreadyReviewed);
 
         var restaurant = await _restaurantRepository.GetByIdAsync(dto.RestaurantId);
-        if (restaurant == null) throw new Exception("Restaurant not found.");
+        if (restaurant == null) throw new Exception(Messages.Error.RestaurantNotFound);
 
         var review = new Review
         {
@@ -70,12 +71,12 @@ public class ReviewService : IReviewService
         Id = rev.Id,
         RestaurantId = rev.RestaurantId,
         UserId = rev.UserId,
-        UserName = rev.User?.Name ?? "",
-        UserAvatar = rev.User?.AvatarUrl ?? "",
+        UserName = rev.User?.Name ?? Messages.Common.Empty,
+        UserAvatar = rev.User?.AvatarUrl ?? Messages.Common.Empty,
         OrderId = rev.OrderId,
         Rating = rev.Rating,
         Comment = rev.Comment,
         CreatedAt = rev.CreatedAt,
-        OrderItems = rev.Order?.Items.Select(i => i.Box?.Name ?? "Bilinmeyen Ürün").ToList() ?? new List<string>()
+        OrderItems = rev.Order?.Items.Select(i => i.Box?.Name ?? Messages.Common.UnknownProduct).ToList() ?? new List<string>()
     };
 }

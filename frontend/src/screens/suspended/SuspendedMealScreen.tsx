@@ -133,9 +133,9 @@ export default function SuspendedMealScreen({ navigation }: Props) {
                   <Image source={meal.restaurantImageUrl as any} style={styles.restaurantImage} />
                   <View style={styles.mealInfo}>
                     <Text style={styles.mealBoxName}>{meal.boxName}</Text>
-                    <Text style={{ color: Colors.primary, fontWeight: FontWeight.medium, fontSize: FontSize.sm, marginBottom: 4 }}>{meal.count} Adet</Text>
+                    <Text style={{ color: Colors.primary, fontWeight: FontWeight.medium, fontSize: FontSize.sm, marginBottom: 4 }}>{meal.count} {t('common.piece')}</Text>
                     <Text style={styles.mealRestaurantName}>{meal.restaurantName}</Text>
-                    <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName} {meal.count > 1 ? 've diğerleri' : ''}</Text>
+                    <Text style={styles.mealDonor}>{t('suspended.donor')}{meal.donorName} {meal.count > 1 ? t('suspended.andOthers') : ''}</Text>
                   </View>
                   {inCart > 0 ? (
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: Spacing.sm, height: 36, width: 115 }}>

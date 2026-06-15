@@ -3,6 +3,7 @@ using FoodyGo.Application.Interfaces;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Enums;
 using FoodyGo.Core.Interfaces;
+using FoodyGo.Core.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodyGo.Application.Services;
@@ -29,10 +30,10 @@ public class OrderService : IOrderService
     public async Task<OrderResponseDto> CreateOrderAsync(Guid userId, CreateOrderDto createOrderDto)
     {
         if (!createOrderDto.Items.Any())
-            throw new ArgumentException("Order must contain at least one item.");
+            throw new ArgumentException(Messages.Validation.OrderMustContainItem);
 
         var restaurant = await _restaurantRepository.GetByIdAsync(createOrderDto.RestaurantId);
-        if (restaurant == null) throw new Exception("Restaurant not found.");
+        if (restaurant == null) throw new Exception(Messages.Error.RestaurantNotFound);
 
         var requestedClaimedSuspendedMeals = createOrderDto.Items.Where(i => i.ClaimingSuspendedMealId.HasValue).Sum(i => i.Quantity);
         if (requestedClaimedSuspendedMeals > 0)
@@ -49,7 +50,7 @@ public class OrderService : IOrderService
 
             if (pastClaimedCount + requestedClaimedSuspendedMeals > 5)
             {
-                throw new Exception("12 saat içerisinde yalnızca 5 adet askıda ürün alabilirsiniz.");
+                throw new Exception(Messages.Error.SuspendedMealLimitExceeded);
             }
         }
 
@@ -67,13 +68,13 @@ public class OrderService : IOrderService
             foreach (var itemDto in createOrderDto.Items)
             {
                 var box = await _boxRepository.GetByIdAsync(itemDto.BoxId);
-                if (box == null) throw new Exception($"Box with ID {itemDto.BoxId} not found.");
+                if (box == null) throw new Exception(Messages.Error.BoxNotFound);
                 
                 if (!itemDto.ClaimingSuspendedMealId.HasValue)
                 {
                     if (box.Stock < itemDto.Quantity)
                     {
-                        throw new Exception($"Not enough stock for box {box.Name}. Available: {box.Stock}");
+                        throw new Exception(Messages.Error.NotEnoughStock);
                     }
 
                     box.Stock -= itemDto.Quantity;
@@ -111,7 +112,7 @@ public class OrderService : IOrderService
                     var mealsToClaim = (await _suspendedMealRepository.FindAsync(m => m.BoxId == box.Id && !m.IsClaimed)).ToList();
                     if (mealsToClaim.Count < itemDto.Quantity)
                     {
-                        throw new Exception("Not enough suspended meals available.");
+                        throw new Exception(Messages.Error.NotEnoughSuspendedMeals);
                     }
                     
                     for (int i = 0; i < itemDto.Quantity; i++)
@@ -166,8 +167,8 @@ public class OrderService : IOrderService
             Id = order.Id,
             UserId = order.UserId,
             RestaurantId = order.RestaurantId,
-            RestaurantName = restaurant?.Name ?? "",
-            RestaurantImageUrl = restaurant?.ImageUrl ?? "",
+            RestaurantName = restaurant?.Name ?? Messages.Common.Empty,
+            RestaurantImageUrl = restaurant?.ImageUrl ?? Messages.Common.Empty,
             TotalAmount = order.TotalAmount,
             Status = order.Status,
             Type = order.Type,
@@ -177,7 +178,7 @@ public class OrderService : IOrderService
             Items = order.Items.Select(i => new OrderItemResponseDto
             {
                 BoxId = i.BoxId,
-                BoxName = i.Box?.Name ?? "",
+                BoxName = i.Box?.Name ?? Messages.Common.Empty,
                 Quantity = i.Quantity,
                 UnitPrice = i.UnitPrice,
                 IsSuspended = i.IsSuspended
