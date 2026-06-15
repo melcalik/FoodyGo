@@ -7,11 +7,14 @@ import { useNotificationStore } from '../../store/useNotificationStore';
 
 export default function NotificationsScreen({ navigation }: any) {
   const { t } = useTranslation();
-  const { notifications, markAsRead, markAllAsRead, fetchNotifications } = useNotificationStore();
+  const notifications = useNotificationStore(state => state.notifications);
+  const markAsRead = useNotificationStore(state => state.markAsRead);
+  const markAllAsRead = useNotificationStore(state => state.markAllAsRead);
+  const fetchNotifications = useNotificationStore(state => state.fetchNotifications);
 
   useEffect(() => {
     fetchNotifications();
-  }, []);
+  }, [fetchNotifications]);
 
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
@@ -58,6 +61,7 @@ export default function NotificationsScreen({ navigation }: any) {
         keyExtractor={item => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
+        extraData={notifications}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="notifications-off-outline" size={64} color={Colors.surfaceBorder} />

@@ -179,7 +179,7 @@ export const RegisterScreenStyles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: Colors.surface,
+    backgroundColor: '#F5EBE0',
     marginHorizontal: Spacing.md,
     borderRadius: Radius.xl,
     padding: Spacing.lg,
@@ -197,7 +197,7 @@ export const RegisterScreenStyles = StyleSheet.create({
   inputWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: Colors.surface,
     borderRadius: Radius.md,
     borderWidth: 1,
     borderColor: Colors.primary + '33',
@@ -209,7 +209,7 @@ export const RegisterScreenStyles = StyleSheet.create({
     height: 48,
     color: Colors.textPrimary,
     fontSize: FontSize.md,
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: Colors.surface,
   },
 
   errorText: {

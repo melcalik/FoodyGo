@@ -1,3 +1,4 @@
+using Cronos;
 using FoodyGo.Core.Entities;
 using FoodyGo.Core.Enums;
 using FoodyGo.Infrastructure.Data;
@@ -21,6 +22,8 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var cronExpression = CronExpression.Parse("*/10 * * * * *", CronFormat.IncludeSeconds);
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
@@ -72,7 +75,13 @@ public class OrderStatusUpdaterBackgroundService : BackgroundService
                 _logger.LogError(ex, "Error occurred while updating order statuses.");
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            var currentTime = DateTimeOffset.UtcNow;
+            var next = cronExpression.GetNextOccurrence(currentTime, TimeZoneInfo.Utc);
+            if (next.HasValue)
+            {
+                var delay = next.Value - currentTime;
+                await Task.Delay(delay, stoppingToken);
+            }
         }
     }
 }

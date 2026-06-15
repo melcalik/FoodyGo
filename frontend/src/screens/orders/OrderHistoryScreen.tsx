@@ -59,12 +59,22 @@ export default function OrderHistoryScreen({ navigation }: Props) {
 
       for (const item of order.items) {
         const boxData = boxesData.find((b: any) => b.id === item.boxId);
+        const okText = i18n.language === 'tr' ? 'Tamam' : 'OK';
+
         if (!boxData) {
-          Alert.alert('Ürün Bulunamadı', `${item.boxName} artık bulunmuyor.`);
+          Alert.alert(
+            i18n.language === 'tr' ? 'Yetersiz Stok' : 'Out of Stock',
+            i18n.language === 'tr' ? `${item.boxName} için yeterli stok bulunmuyor.` : `Not enough stock for ${item.boxName}.`,
+            [{ text: okText }]
+          );
           return;
         }
         if (boxData.stock < item.quantity) {
-          Alert.alert('Yetersiz Stok', `${item.boxName} için yeterli stok yok.`);
+          Alert.alert(
+            i18n.language === 'tr' ? 'Yetersiz Stok' : 'Out of Stock',
+            i18n.language === 'tr' ? `${item.boxName} için yeterli stok yok.` : `Not enough stock for ${item.boxName}.`,
+            [{ text: okText }]
+          );
           return;
         }
 

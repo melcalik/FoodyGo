@@ -65,7 +65,8 @@ export default function SuspendedMealScreen({ navigation }: Props) {
       originalPrice: 0,
       discountedPrice: 0,
       stock: 1,
-      createdAt: meal.createdAt.toISOString()
+      createdAt: meal.createdAt.toISOString(),
+      image: meal.restaurantImageUrl
     };
     
     const fakeRestaurant = {
