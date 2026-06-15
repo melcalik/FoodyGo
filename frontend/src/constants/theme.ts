@@ -4,7 +4,7 @@ export const Colors = {
   primaryLight: '#EAD6C3',
   primaryDark: '#5E3A12',
 
-  teal: '#8A561D', // Mapping teal to primary so existing styles using teal look good
+  teal: '#8A561D',
   tealLight: '#EAD6C3',
   tealDark: '#5E3A12',
 

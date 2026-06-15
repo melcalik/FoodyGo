@@ -1,6 +1,5 @@
 'use client';
 
-// NativeWind vars() removed - using plain objects for React Native compatibility
 const vars = (obj: Record<string, string>) => obj;
 
 export const config = {

@@ -3,7 +3,6 @@ import { Colors, FontSize, FontWeight, Spacing, Radius, Shadow } from '../consta
 
 const { width } = Dimensions.get('window');
 
-// --- LoginScreen ---
 export const LoginScreenStyles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: Colors.background },
   scroll: { flexGrow: 1, paddingBottom: 40 },
@@ -131,7 +130,6 @@ export const LoginScreenStyles = StyleSheet.create({
 });
 
 
-// --- RegisterScreen ---
 export const RegisterScreenStyles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: Colors.background },
   scroll: { flexGrow: 1, paddingBottom: 40 },
@@ -296,7 +294,6 @@ export const RegisterScreenStyles = StyleSheet.create({
 });
 
 
-// --- SplashScreen ---
 export const SplashScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -360,7 +357,6 @@ export const SplashScreenStyles = StyleSheet.create({
 });
 
 
-// --- CartScreen ---
 export const CartScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   list: { padding: Spacing.md, paddingBottom: 40 },
@@ -471,7 +467,6 @@ export const CartScreenStyles = StyleSheet.create({
 });
 
 
-// --- PaymentScreen ---
 export const PaymentScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   flex: { flex: 1 },
@@ -521,7 +516,6 @@ export const PaymentScreenStyles = StyleSheet.create({
 });
 
 
-// --- PaymentSuccessScreen ---
 export const PaymentSuccessScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   content: {
@@ -615,7 +609,6 @@ export const PaymentSuccessScreenStyles = StyleSheet.create({
 });
 
 
-// --- HomeScreen ---
 export const HomeScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   list: {},
@@ -734,7 +727,6 @@ export const HomeScreenStyles = StyleSheet.create({
 });
 
 
-// --- OrderHistoryScreen ---
 export const OrderHistoryScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   list: { padding: Spacing.md, paddingBottom: 40 },
@@ -869,7 +861,6 @@ export const OrderHistoryScreenStyles = StyleSheet.create({
 });
 
 
-// --- OrderTrackingScreen ---
 export const OrderTrackingScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   scroll: { padding: Spacing.md, paddingBottom: 40 },
@@ -1028,7 +1019,6 @@ export const OrderTrackingScreenStyles = StyleSheet.create({
 });
 
 
-// --- ReviewScreen ---
 export const ReviewScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   flex: { flex: 1 },
@@ -1129,7 +1119,6 @@ export const ReviewScreenStyles = StyleSheet.create({
 });
 
 
-// --- EditProfileScreen ---
 export const EditProfileScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   flex: { flex: 1 },
@@ -1196,7 +1185,6 @@ export const EditProfileScreenStyles = StyleSheet.create({
 });
 
 
-// --- PaymentMethodsScreen ---
 export const PaymentMethodsScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   flex: { flex: 1 },
@@ -1227,7 +1215,6 @@ export const PaymentMethodsScreenStyles = StyleSheet.create({
 });
 
 
-// --- ProfileScreen ---
 export const ProfileScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   scroll: { padding: Spacing.md, paddingBottom: 40 },
@@ -1351,7 +1338,6 @@ export const ProfileScreenStyles = StyleSheet.create({
 });
 
 
-// --- RestaurantDetailScreen ---
 export const RestaurantDetailScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   list: { paddingBottom: 80 },
@@ -1467,7 +1453,6 @@ export const RestaurantDetailScreenStyles = StyleSheet.create({
 });
 
 
-// --- SuspendedMealScreen ---
 export const SuspendedMealScreenStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
   scroll: { paddingBottom: 40 },
@@ -1708,7 +1693,6 @@ export const RestaurantReviewsScreenStyles = StyleSheet.create({
   },
 });
 
-// Temporarily appending here. If doing a real refactor, would merge into RestaurantReviewsScreenStyles.
 export const RestaurantReviewsExtraStyles = StyleSheet.create({
   orderItemsText: {
     fontSize: FontSize.xs,

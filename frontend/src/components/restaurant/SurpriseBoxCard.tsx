@@ -24,7 +24,6 @@ export default function SurpriseBoxCard({ box, onAddToCart, onSuspend }: Surpris
   const inCartSuspended = getItemQuantity(box.id, true);
 
   const isGlobalOutOfStock = box.stock === 0;
-  // User cannot add more than stock for a single meal across both suspended and normal.
   const isOutOfStockTotal = (inCartNormal + inCartSuspended) >= box.stock;
 
   return (
