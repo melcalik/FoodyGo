@@ -1,0 +1,3 @@
+Yazılım mühendisliği öğrencisi olarak mobil uygulama geliştirme ve backend teknolojileri alanlarında kendimi geliştiriyorum.
+Gıda israfını azaltmayı ve sosyal dayanışmayı desteklemeyi amaçlayan FoodyGo projesinde aktif olarak görev aldım. Proje kapsamında React Native ve TypeScript kullanarak mobil uygulama geliştirme, ASP.NET Core Web API ile backend servislerinin oluşturulması, Entity Framework Core ve SQLite ile veritabanı yönetimi, JWT tabanlı kimlik doğrulama süreçleri üzerinde çalıştım.
+Kullanıcı odaklı, sürdürülebilir ve toplumsal fayda sağlayan yazılım çözümleri geliştirmeyi hedefliyorum.
